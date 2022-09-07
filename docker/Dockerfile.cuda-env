@@ -1,0 +1,142 @@
+# CLion remote docker environment (How to build docker container, run and stop it)
+#
+# Build and run:
+#   docker build -t clion/remote-cuda-env:1.0 -f Dockerfile.remote-cuda-env .
+#   docker run -d --cap-add sys_ptrace -p127.0.0.1:2222:22 clion/remote-cuda-env:1.0
+#   ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
+#
+# ssh credentials (test user):
+#   user@password
+
+ARG CUDA="11.7.0"
+ARG UBUNTU="20.04"
+ARG ARCH=""
+
+FROM nvidia/cuda${ARCH}:${CUDA}-cudnn8-devel-ubuntu${UBUNTU}
+
+ARG NVIDIA_DISTRO="ubuntu1804/x86_64"
+ARG OPENCV="4.5.2"
+ARG CUDA_ARCH_BIN="7.5"
+ARG CUDA_ARCH_PTX=""
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# See https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${NVIDIA_DISTRO}/3bf863cc.pub
+
+RUN apt update && apt install -y --no-install-recommends build-essential \
+    cmake \
+    gcc \
+    g++ \
+    ninja-build \
+    gdb \
+    clang \
+    git \
+    wget \
+    unzip \
+    yasm \
+    autoconf \
+    doxygen \
+    pkg-config \
+    checkinstall \
+    libdc1394-22 \
+    libdc1394-22-dev \
+    libatlas-base-dev \
+    gfortran \
+    libflann-dev \
+    libtbb2 \
+    libtbb-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libglew-dev \
+    libtiff5-dev \
+    zlib1g-dev \
+    libjpeg-dev \
+    libgdal-dev \
+    libeigen3-dev \
+    libgflags-dev \
+    libgoogle-glog-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
+    python-dev \
+    python-numpy \
+    python3-dev \
+    python3-numpy \
+    ffmpeg \
+    libavcodec-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libswscale-dev \
+    libavresample-dev \
+    libleptonica-dev \
+    libtesseract-dev \
+    libgtk-3-dev \
+    libgtk2.0-dev \
+    libvtk6-dev \
+    liblapack-dev \
+    libv4l-dev \
+    libhdf5-serial-dev
+
+WORKDIR /tmp
+RUN wget https://github.com/opencv/opencv/archive/refs/tags/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
+RUN wget https://github.com/opencv/opencv_contrib/archive/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
+RUN mkdir opencv-${OPENCV}/build && \
+    cd opencv-${OPENCV}/build && \
+    cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=/tmp/opencv_contrib-${OPENCV}/modules \
+        -DWITH_CUDA=ON \
+        -DWITH_CUDNN=ON \
+        -DOPENCV_DNN_CUDA=ON \
+        -DENABLE_FAST_MATH=ON \
+        -DCUDA_FAST_MATH=ON \
+        -DCUDA_ARCH_BIN=7.5 \
+        -DWITH_CUBLAS=ON \
+        -DOPENCV_ENABLE_NONFREE=ON \
+        -DWITH_GSTREAMER=OFF \
+        -DCMAKE_BUILD_TYPE=RELEASE \
+        -DCMAKE_INSTALL_PREFIX=/usr/local \
+        -DBUILD_TESTS=OFF \
+        -DBUILD_PERF_TESTS=OFF \
+        -DBUILD_EXAMPLES=OFF \
+        -DBUILD_opencv_apps=ON \
+        .. && \
+    ninja && \
+    ninja install && \
+    ldconfig
+
+RUN rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y install tzdata keyboard-configuration
+
+RUN apt-get install libssl-dev
+RUN apt-get install -y libboost-all-dev
+RUN apt-get install -y unzip
+RUN mkdir -p ~/temp-fruit \
+    && cd ~/temp-fruit \
+    && wget https://github.com/google/fruit/archive/refs/tags/v3.6.0.zip \
+    && unzip v3.6.0.zip \
+    && rm v3.6.0.zip \
+    && cd fruit-3.6.0 \
+    && mkdir build && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
+    && cmake --build . --target install -- -j$(nproc)
+
+RUN mkdir -p ~/temp-amqp \
+    && cd ~/temp-amqp \
+    && wget https://github.com/CopernicaMarketingSoftware/AMQP-CPP/archive/refs/tags/v4.3.16.zip \
+    && unzip v4.3.16.zip \
+    && rm v4.3.16.zip \
+    && cd AMQP-CPP-4.3.16 \
+    && mkdir build && cd build \
+    && cmake .. -DAMQP-CPP_LINUX_TCP=ON \
+    && cmake --build . --target install
+
+RUN apt-get install -y git
+RUN mkdir -p ~/temp-msgpack \
+    && cd ~/temp-msgpack \
+    && git clone https://github.com/jamalabo1/cppack\
+    && cd cppack \
+    && mkdir build && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Debug\
+    && cmake --build . --target install -- -j$(nproc)

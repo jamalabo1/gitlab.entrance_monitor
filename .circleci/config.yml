@@ -1,0 +1,72 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@2.1.2
+  azure-aks: circleci/azure-aks@0.3.0
+  kubernetes: circleci/kubernetes@0.4.0
+jobs:
+  build-image:
+    executor:
+      name: docker/docker
+      tag: "3.6"
+    parameters:
+      target:
+        type: string
+    steps:
+      - checkout
+      - docker/install-docker-tools
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+
+          command: |
+            docker build --build-arg PROJECT_TARGET=<< parameters.target >> -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
+      - run:
+          name: Push Docker image
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS emregistery.azurecr.io
+            docker push emregistery.azurecr.io/entrance_monitor:<< parameters.target >>
+  create-deployment:
+    executor: azure-aks/default
+    parameters:
+      cluster-name:
+        description: |
+          Name of the AKS cluster
+        type: string
+      resource-group:
+        description: |
+          Resource group that the cluster is in
+        type: string
+      target:
+        description: |
+          Project target
+        type: string
+    steps:
+      - checkout
+      - azure-aks/update-kubeconfig-with-credentials:
+          cluster-name: << parameters.cluster-name >>
+          install-kubectl: true
+          perform-login: true
+          resource-group: << parameters.resource-group >>
+      - kubernetes/create-or-update-resource:
+          namespace: entrance-monitor
+          get-rollout-status: true
+          resource-file-path: deployment/<< parameters.target>>-deployment.yaml
+          resource-name: deployment/<< parameters.target >>
+workflows:
+  build-and-deploy:
+    jobs:
+      - build-image:
+          name: build-image-target_<< matrix.target >>
+          context: entrance-monitor
+          matrix:
+            parameters:
+              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]
+      - create-deployment:
+          cluster-name: entrance-monitor-cluster
+          requires:
+              - build-image-target_<< matrix.target >>
+          resource-group: entrance-monitor
+          context: entrance-monitor
+          matrix:
+            parameters:
+              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]

@@ -1,0 +1,89 @@
+ARG CUDA_VERSION="11.7.0"
+ARG UBUNTU="20.04"
+ARG OPENCV_VERSION="4.5.0"
+
+FROM nvidia/cuda:${CUDA_VERSION}-cudnn8-devel-ubuntu${UBUNTU}
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        cmake \
+        git \
+        wget \
+        unzip \
+        yasm \
+        pkg-config \
+        libswscale-dev \
+        libtbb2 \
+        libtbb-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libtiff-dev \
+        libavformat-dev \
+        libpq-dev \
+        libxine2-dev \
+        libglew-dev \
+        libtiff5-dev \
+        zlib1g-dev \
+        libjpeg-dev \
+        libavcodec-dev \
+        libavformat-dev \
+        libavutil-dev \
+        libpostproc-dev \
+        libswscale-dev \
+        libeigen3-dev \
+        libtbb-dev \
+        libgtk2.0-dev \
+        pkg-config \
+        ninja-build \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV OPENCV_VERSION=4.5.0
+WORKDIR /opt/opencv
+RUN wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
+RUN unzip $OPENCV_VERSION.zip
+RUN wget -O $OPENCV_VERSION-contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip
+RUN unzip ${OPENCV_VERSION}-contrib.zip
+RUN mkdir /opt/opencv/opencv-${OPENCV_VERSION}/build && cd /opt/opencv/opencv-${OPENCV_VERSION}/build
+RUN cmake /opt/opencv/opencv-$OPENCV_VERSION \
+            -G Ninja \
+            -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv/opencv_contrib-${OPENCV_VERSION}/modules \
+            -D WITH_CUDA=ON \
+            -D CUDA_ARCH_PTX="" \
+            -D CUDA_ARCH_BIN="7.5" \
+            -D WITH_CUBLAS=ON \
+            -D WITH_CUDNN=ON \
+            -D ENABLE_FAST_MATH=ON \
+            -D CUDA_FAST_MATH=ON \
+            -D OPENCV_DNN_CUDA=ON \
+            -D WITH_OPENGL=ON \
+            -D WITH_FFMPEG=ON \
+            -D WITH_GSTREAMER=ON \
+            -D BUILD_SHARED_LIBS=OFF \
+            -D WITH_LIBV4L=OFF \
+            -D WITH_EIGEN=OFF \
+            -D ENABLE_NEON=OFF \
+            -D WITH_QT=OFF \
+            -D WITH_OPENMP=OFF \
+            -D WITH_TBB=OFF \
+            -D BUILD_TBB=OFF \
+            -D BUILD_TESTS=OFF \
+            -D BUILD_opencv_python3=OFF \
+            -D BUILD_opencv_python2=OFF \
+            -D BUILD_opencv_java=OFF \
+            -D WITH_GTK=OFF \
+            -D BUILD_TESTS=OFF \
+            -D BUILD_PERF_TESTS=OFF \
+            -D BUILD_EXAMPLES=OFF \
+            # Install path will be /usr/local/lib (lib is implicit)
+            -D CMAKE_INSTALL_PREFIX=/usr/local \
+            ..
+
+RUN cmake --build . -j 8
+RUN cmake --install .
+
+RUN rm ${OPENCV_VERSION}.zip
+RUN rm ${OPENCV_VERSION}-contrib.zip
+
+RUN rm -rf /opt/opencv
+
+WORKDIR /

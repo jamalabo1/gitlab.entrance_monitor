@@ -1,0 +1,10 @@
+{
+  "name": "entrance-monitor-v2",
+  "version-string": "2.0.0",
+  "dependencies": [
+    "azure-security-keyvault-secrets-cpp",
+    "azure-identity-cpp",
+    "fruit",
+    "amqpcpp"
+  ]
+}
