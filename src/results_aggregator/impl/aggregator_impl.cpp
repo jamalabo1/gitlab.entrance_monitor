@@ -22,6 +22,7 @@ void AggregatorImpl::add(uint64_t x, int y) {
 }
 
 double AggregatorImpl::aggregate() {
+    if(b_sum == 0) return 0;
     double avg = double(a_sum) / double(b_sum);
     BOOST_LOG_TRIVIAL(trace) << "avg: " << to_string(avg);
     reset();
