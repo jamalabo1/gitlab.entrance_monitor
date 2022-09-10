@@ -4,7 +4,7 @@
 #include "download_file.h"
 
 #include <curl/curl.h>
-#include <core/string_utils.h>
+#include <utils/string_utils.h>
 #include <core/logging.h>
 
 #include <iostream>

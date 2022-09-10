@@ -5,7 +5,7 @@
 
 #include "utils/packed.h"
 
-#include <core/string_utils.h>
+#include <utils/string_utils.h>
 
 #include <opencv2/imgcodecs.hpp>
 
