@@ -1,4 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 project(utils-tests)
 
-list(APPEND TEST_SOURCES "temp_test.cpp")
+set(CMAKE_CXX_STANDARD 17)
+
+include(utils)
+
+add_library(utils_tests vector_test.cpp)
+
+create_testing_target(utils)

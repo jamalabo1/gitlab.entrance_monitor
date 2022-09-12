@@ -1,18 +1,19 @@
+# This file handles building each task as sub-project.
+#
+# Each task becomes an independent project in which you can experiment.
+#
+# Tasks are added as separate sub-projects so as compilation errors in
+# one task don't affect another task.
 cmake_minimum_required(VERSION 3.16)
 project(tests)
 
 set(CMAKE_CXX_STANDARD 17)
 
-enable_testing()
-find_package(GTest REQUIRED)
-include(GoogleTest)
+include(utils)
 
-# create a variable to append all test sources to it. https://stackoverflow.com/a/33432463/7615694
-# maybe change this to use macro.
-set(TEST_SOURCES "")
+create_global_testing_target(entrance_monitor_tests main.cpp) # create a global target for sub-tests to link their test library to
 
+add_subdirectory(core)
 add_subdirectory(utils)
 
-add_executable(tests_exc ${TEST_SOURCES})
-target_link_libraries(tests_exc GTest::GTest GTest::Main)
-gtest_discover_tests(tests_exc) # integration with CTest
+enable_global_testing_target() # enable this target by linking the global target to an executable (order is important, for the global test target to populate it's self)
