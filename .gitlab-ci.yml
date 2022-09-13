@@ -23,7 +23,7 @@ build-image:
     - docker push $CONTAINER_TEST_IMAGE
   parallel:
     matrix:
-      - PROJECT_TARGET: ["all"]
+      - PROJECT_TARGET: ["entrance_monitor_tests_exc"]
 
 test-project:
   stage: test
