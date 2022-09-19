@@ -3,8 +3,6 @@ project(object_detector)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(OpenCV_STATIC ON)
-find_package(OpenCV REQUIRED)
 find_package(CURL REQUIRED)
 
 set(private_headers
@@ -40,7 +38,6 @@ target_include_directories(
 target_link_libraries(
         object_detector_lib
         PRIVATE
-        ${OpenCV_LIBRARIES}
         ${CURL_LIBRARIES}
         PUBLIC
         core

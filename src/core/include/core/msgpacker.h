@@ -6,17 +6,17 @@
 #define ENTRANCE_MONITOR_V2_MSGPACKER_H
 
 #include <system_error>
-
-#include <core/string_utils.h>
+#include <unordered_map>
+#include <msgpack/msgpack.hpp>
 
 #include <core/consumer_message.h>
 
-#include <msgpack/msgpack.hpp>
+#include <utils/string_utils.h>
 
+#include <view_models/frame_view.h>
+#include <opencv2/core/mat.hpp>
 
 namespace core::msgpacker {
-
-
 
 
     template<class T>
@@ -39,6 +39,13 @@ namespace core::msgpacker {
     std::vector<uint8_t> pack(T data) {
         return msgpack::pack(data);
     }
+
+
+    cv::Mat unpack_frame_mat(const std::string &);
+
+    cv::Mat unpack_frame_mat(const FrameView &);
+
+    FrameView unpack_frame(const std::string &);
 }
 
 

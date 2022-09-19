@@ -28,12 +28,6 @@ target_include_directories(
         include
 )
 
-target_link_libraries(
-        blocking_computation_lib
-        PRIVATE
-        ${OpenCV_LIBRARIES}
-)
-
 add_executable(
         blocking_computation_standalone
         main.cpp

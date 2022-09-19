@@ -3,7 +3,7 @@
 //
 
 
-#include <utils/standalone.h>
+#include <core/standalone.h>
 #include <blocking_computation/blocking_computation.h>
 
 using namespace fruit;
