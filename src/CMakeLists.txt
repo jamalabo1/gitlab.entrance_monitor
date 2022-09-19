@@ -8,20 +8,22 @@ set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost REQUIRED log)
 find_package(Fruit REQUIRED)
 
-include_directories(${FRUIT_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} models)
+include_directories(${FRUIT_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} )
 
 link_libraries(${Fruit_LIBS} ${Boost_LIBRARIES})
 
-add_subdirectory(core)
-
-link_libraries(core)
-link_directories(core)
+add_subdirectory(models)
+link_libraries(view_models)
 
 add_subdirectory(utils)
 
 link_libraries(utils)
-link_directories(utils)
+#include_directories(utils)
 
+add_subdirectory(core)
+
+link_libraries(core)
+#link_directories(core)
 
 add_subdirectory(blocking_computation)
 add_subdirectory(object_detector)

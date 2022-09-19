@@ -2,13 +2,12 @@
 // Created by jamal on 10/08/2022.
 //
 
-#ifndef ENTRANCE_MONITOR_V2_STANDALONE_H
-#define ENTRANCE_MONITOR_V2_STANDALONE_H
+#ifndef ENTRANCE_MONITOR_V2_CORE_STANDALONE_H
+#define ENTRANCE_MONITOR_V2_CORE_STANDALONE_H
 
+#include <core/init.h>
 #include <core/logging.h>
-#include <fruit/fruit.h>
 #include <boost/asio.hpp>
-#include <core/logging.h>
 
 #ifdef WIN32
 
@@ -26,7 +25,7 @@ void init_service_runner() {
 
     BOOST_LOG_TRIVIAL(info) << "initiation service runner";
 
-#if NDEBUG
+#if APP_DEBUG
     boost::log::core::get()->set_filter
             (
                     boost::log::trivial::severity >= boost::log::trivial::trace
@@ -56,4 +55,4 @@ return -1; \
 }\
 
 
-#endif //ENTRANCE_MONITOR_V2_STANDALONE_H
+#endif //ENTRANCE_MONITOR_V2_CORE_STANDALONE_H

@@ -3,10 +3,11 @@
 //
 #include "detection_message_handler.h"
 
+#include <core/msgpacker.h>
+
 #include <view_models/detection_result_view.h>
 #include <view_models/blocking_result_view.h>
 
-#include "utils/packed.h"
 #include <core/logging.h>
 #include <opencv2/opencv.hpp>
 
@@ -22,6 +23,7 @@ using namespace std;
 using namespace cv;
 using namespace core;
 using namespace core::publish;
+using namespace core::msgpacker;
 using namespace core::consume;
 
 

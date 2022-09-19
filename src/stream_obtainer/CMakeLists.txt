@@ -22,13 +22,6 @@ target_include_directories(
 )
 
 
-target_link_libraries(
-        stream_obtainer_lib
-        PRIVATE
-        ${OpenCV_LIBS}
-)
-
-
 add_executable(stream_obtainer_standalone main.cpp)
 
 target_link_libraries(stream_obtainer_standalone stream_obtainer_lib core)
