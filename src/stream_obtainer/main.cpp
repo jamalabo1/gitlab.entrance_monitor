@@ -1,5 +1,5 @@
 #include <stream_obtainer/stream_obtainer.h>
-#include <utils/standalone.h>
+#include <core/standalone.h>
 
 using namespace fruit;
 using namespace core;

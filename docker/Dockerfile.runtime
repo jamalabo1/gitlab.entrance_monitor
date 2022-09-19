@@ -1,8 +1,12 @@
-#ARG CUDA="11.7.0"
-#ARG UBUNTU="20.04"
-#ARG OPENCV="4.6.0"
+ARG CUDA_VERSION="11.7.0"
+ARG UBUNTU="20.04"
+
 
 FROM jamalabo1/entrance_monitor:builder as builder
-FROM jamalabo1/entrance_monitor:gpu-opencv as runtime
+FROM nvidia/cuda:${CUDA_VERSION}-cudnn8-runtime-ubuntu${UBUNTU} as runtime
+
+
+RUN apt update && apt install -y --no-install-recommends libavcodec-dev libavformat-dev libswscale-dev && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /opt/vcpkg /opt/vcpkg
 ENV CMAKE_TOOLCHAIN_FILE="/opt/vcpkg/scripts/buildsystems/vcpkg.cmake"

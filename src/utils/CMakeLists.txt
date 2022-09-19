@@ -8,8 +8,9 @@ find_package(OpenCV REQUIRED)
 
 add_library(
         utils
-        packed.cpp
-        mat.cpp time.cpp)
+        mat.cpp
+        time.cpp
+)
 
 
 target_include_directories(
@@ -21,9 +22,3 @@ target_include_directories(
         include
 )
 
-
-target_link_libraries(
-        core
-        PRIVATE
-        ${OpenCV_LIBS}
-)

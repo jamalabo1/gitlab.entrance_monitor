@@ -7,7 +7,6 @@
 #include <core/msgpacker.h>
 #include <core/logging.h>
 
-#include <utils/packed.h>
 #include <utils/reference_time.h>
 
 #include <opencv2/opencv.hpp>
@@ -23,6 +22,7 @@ using namespace fruit;
 using namespace core;
 using namespace core::consume;
 using namespace core::publish;
+using namespace core::msgpacker;
 using namespace core::amqp;
 
 

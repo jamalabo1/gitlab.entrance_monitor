@@ -6,7 +6,7 @@
 #define ENTRANCE_MONITOR_V2_INIT_H
 
 // TODO: flip the include dependency from sub-headers including the core headers to the opposite
-
+#include <utils/macros.h>
 #include <fruit/fruit.h>
 #include <core/ptrs.h>
 #include <core/configurations.h>
@@ -22,7 +22,8 @@ using RequiredComponents = fruit::Required<_RequiredComponents>;
 #define unique_factory(x) std::function<unique_ptr<x>()>
 #define unique_factory_a(x, r) std::function<unique_ptr<x>(r)>
 
-#define APP_DEBUG !NDEBUG
+// if the build type is not debug then set app_debug to false
+
 //#ifndef NDEBUG
 //#endif
 

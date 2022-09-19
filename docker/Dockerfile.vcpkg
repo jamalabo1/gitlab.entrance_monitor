@@ -1,7 +1,7 @@
-FROM danger89/cmake:4.4 as thirdparty_bundler
+FROM bitnami/minideb:bullseye as thirdparty_bundler
 
 WORKDIR /opt
-RUN apt-get update && apt-get install -y build-essential pkg-config git curl zip unzip tar bison && rm -rf /var/lib/apt/lists/*
+RUN install_packages build-essential pkg-config git curl zip unzip tar bison ca-certificates cmake
 RUN git clone https://github.com/microsoft/vcpkg.git
 RUN cd vcpkg && ./bootstrap-vcpkg.sh
 ENV PATH="/opt/vcpkg:${PATH}"
@@ -10,5 +10,7 @@ RUN vcpkg install azure-security-keyvault-secrets-cpp azure-identity-cpp fruit a
 
 WORKDIR /tmp
 RUN git clone https://github.com/jamalabo1/cppack
-RUN cd cppack && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/opt/cppack \
+RUN cd cppack && mkdir build && cd build && cmake ..  \
+    -D CMAKE_BUILD_TYPE=Debug  \
+    -D CMAKE_INSTALL_PREFIX=/opt/cppack \
 && cmake --build . --target install -- -j$(nproc)

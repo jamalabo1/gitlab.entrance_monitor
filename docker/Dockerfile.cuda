@@ -46,34 +46,50 @@ RUN unzip ${OPENCV_VERSION}-contrib.zip
 RUN mkdir /opt/opencv/opencv-${OPENCV_VERSION}/build && cd /opt/opencv/opencv-${OPENCV_VERSION}/build
 RUN cmake /opt/opencv/opencv-$OPENCV_VERSION \
             -G Ninja \
-            -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv/opencv_contrib-${OPENCV_VERSION}/modules \
-            -D WITH_CUDA=ON \
             -D CUDA_ARCH_PTX="" \
             -D CUDA_ARCH_BIN="7.5" \
+            -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv/opencv_contrib-${OPENCV_VERSION}/modules \
+            -D OPENCV_DNN_CUDA=ON \
+            -D BUILD_JPEG=ON \
+            -D WITH_FFMPEG=ON \
+            -D WITH_CUDA=ON \
             -D WITH_CUBLAS=ON \
             -D WITH_CUDNN=ON \
-            -D ENABLE_FAST_MATH=ON \
-            -D CUDA_FAST_MATH=ON \
-            -D OPENCV_DNN_CUDA=ON \
             -D WITH_OPENGL=ON \
-            -D WITH_FFMPEG=ON \
-            -D WITH_GSTREAMER=ON \
-            -D BUILD_SHARED_LIBS=OFF \
-            -D WITH_LIBV4L=OFF \
-            -D WITH_EIGEN=OFF \
-            -D ENABLE_NEON=OFF \
-            -D WITH_QT=OFF \
-            -D WITH_OPENMP=OFF \
-            -D WITH_TBB=OFF \
+            -D CUDA_FAST_MATH=ON \
+            -D ENABLE_FAST_MATH=ON \
             -D BUILD_TBB=OFF \
             -D BUILD_TESTS=OFF \
+            -D BUILD_JAVA=OFF \
+            -D BUILD_SHARED_LIBS=OFF \
+            -D BUILD_opencv_world=OFF \
+            -D BUILD_opencv_calib3d=OFF \
+            -D BUILD_opencv_features2d=OFF \
             -D BUILD_opencv_python3=OFF \
             -D BUILD_opencv_python2=OFF \
             -D BUILD_opencv_java=OFF \
-            -D WITH_GTK=OFF \
+            -D BUILD_opencv_gapi=OFF \
+            -D BUILD_opencv_flann=OFF \
             -D BUILD_TESTS=OFF \
             -D BUILD_PERF_TESTS=OFF \
             -D BUILD_EXAMPLES=OFF \
+            -D BUILD_DOCS=OFF \
+            -D WITH_GSTREAMER=OFF \
+            -D WITH_PNG=OFF \
+            -D WITH_PNG=OFF \
+            -D WITH_TIFF=OFF \
+            -D WITH_WEBP=OFF \
+            -D WITH_OPENJPEG=OFF \
+            -D WITH_JASPER=OFF \
+            -D WITH_FREETYPE=OFF \
+            -D WITH_OPENEXR=OFF \
+            -D WITH_LIBV4L=OFF \
+            -D WITH_EIGEN=OFF \
+            -D WITH_QT=OFF \
+            -D WITH_OPENMP=OFF \
+            -D WITH_TBB=OFF \
+            -D WITH_GTK=OFF \
+            -D ENABLE_NEON=OFF \
             # Install path will be /usr/local/lib (lib is implicit)
             -D CMAKE_INSTALL_PREFIX=/usr/local \
             ..

@@ -2,7 +2,7 @@
 // Created by jamal on 02/07/2022.
 //
 
-#include <utils/standalone.h>
+#include <core/standalone.h>
 #include <object_detector/object_detector.h>
 
 using namespace fruit;

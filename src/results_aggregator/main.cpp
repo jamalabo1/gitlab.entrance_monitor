@@ -2,7 +2,7 @@
 // Created by jamal on 13/08/2022.
 //
 
-#include <utils/standalone.h>
+#include <core/standalone.h>
 #include <results_aggregator/results_aggregator.h>
 
 using namespace fruit;
