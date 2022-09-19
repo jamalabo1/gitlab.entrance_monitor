@@ -9,7 +9,7 @@
 #include <core/amqp.h>
 #include <core/cancellation_token.h>
 #include <core/configurations.h>
-#include <core/queueFps.h>
+#include <core/queue_fps.h>
 #include <core/view.h>
 #include <core/task_service.h>
 #include <core/ptrs.h>
