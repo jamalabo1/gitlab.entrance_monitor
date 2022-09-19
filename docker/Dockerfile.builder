@@ -17,6 +17,7 @@ RUN apt update && apt install -y --no-install-recommends  \
     gdb \
     clang \
     ninja-build \
+    git \
     autoconf \
     pkg-config \
     checkinstall \

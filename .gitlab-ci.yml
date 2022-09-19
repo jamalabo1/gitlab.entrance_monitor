@@ -1,0 +1,32 @@
+image: docker:20.10.16
+services:
+  - docker:20.10.16-dind
+
+stages:
+  - build
+  - test
+
+variables:
+  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build-image:
+  stage: build
+  script:
+    - docker build --pull --target=builder --build-arg CMAKE_PROJECT_TARGET=$PROJECT_TARGET --build-arg PROJECT_TARGET=$PROJECT_TARGET -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+  parallel:
+    matrix:
+      - PROJECT_TARGET: ["entrance_monitor_tests_exc"]
+
+test-project:
+  stage: test
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE /home/project/build/tests/entrance_monitor_tests_exc

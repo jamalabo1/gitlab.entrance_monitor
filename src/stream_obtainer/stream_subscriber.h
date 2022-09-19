@@ -6,7 +6,7 @@
 #define ENTRANCE_MONITOR_V2_STREAM_SUBSCRIBER_H
 
 #include <opencv2/core/mat.hpp>
-#include <core/queueFps.h>
+#include <core/queue_fps.h>
 #include <core/ptrs.h>
 
 
