@@ -5,26 +5,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Msgpack REQUIRED)
-set(OpenCV_STATIC ON)
 find_package(OpenCV REQUIRED)
-#find_package(SimpleAmqpClient REQUIRED)
+# to fix issue of OpenCV_LIBS including libraries that are not built.
+set(OpenCV_LIBS "opencv_core;opencv_dnn;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_photo;opencv_video;opencv_videoio;opencv_bioinspired;opencv_cudaarithm;opencv_cudabgsegm;opencv_cudacodec;opencv_cudafilters;opencv_cudaimgproc;opencv_cudalegacy;opencv_cudawarping;opencv_cudev;opencv_dnn_objdetect;opencv_dnn_superres;opencv_fuzzy;opencv_hfs;opencv_img_hash;opencv_intensity_transform;opencv_line_descriptor;opencv_phase_unwrapping;opencv_plot;opencv_quality;opencv_reg;opencv_tracking;opencv_xphoto")
+#set(OpenCV_LIBS "opencv_core")
 find_package(amqpcpp REQUIRED)
 
 #find_package(Eigen3 IMPORTED  REQUIRED)
 find_package(azure-identity-cpp CONFIG REQUIRED)
 find_package(azure-security-keyvault-secrets-cpp CONFIG REQUIRED)
 
-
-
-#find_package(azure-security-keyvault-keys-cpp CONFIG REQUIRED)
-#target_link_libraries(<your project name> PRIVATE Azure::azure-security-keyvault-keys)
-#
-#get_cmake_property(_variableNames VARIABLES)
-#list(SORT _variableNames)
-#foreach (_variableName ${_variableNames})
-#    message(STATUS "${_variableName}=${${_variableName}}")
-#endforeach ()
-#
 
 SET(private_headers
         amqp.h
@@ -55,10 +45,11 @@ add_library(
         paths.cpp
         publisher.cpp
         publisher_factory.cpp
-        configurations_impl.cpp
         consumer_factory.cpp
         consumer_impl.cpp
+        msgpacker.cpp
 
+        configurations_impl.cpp
         consumer_message_handler.cpp
         gui_handler_impl.cpp
         consumer_message.cpp
