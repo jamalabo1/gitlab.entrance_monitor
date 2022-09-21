@@ -26,7 +26,7 @@ using namespace core;
 
 ResultsAggregatorService::ResultsAggregatorService(core::consume::Consumer *consumer,
                                                    core::consume::ConsumerMessageHandler *handler,
-                                                   core::publish::PublisherFactory *publisher_factory,
+                                                   core::communication::publish::PublisherFactory *publisher_factory,
                                                    core::IoRunner *io_runner,
                                                    Aggregator *aggregator) : TaskService(io_runner),
                                                                              consumer(consumer),

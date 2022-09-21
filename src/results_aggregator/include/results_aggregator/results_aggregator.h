@@ -13,14 +13,14 @@ class ResultsAggregatorService : public core::TaskService {
 private:
     core::consume::Consumer *consumer;
     core::consume::ConsumerMessageHandler *handler;
-    unique_ptr<core::publish::Publisher> publisher;
+    unique_ptr<core::communication::publish::Publisher> publisher;
     Aggregator *aggregator;
 
 public:
     INJECT(ResultsAggregatorService(
             core::consume::Consumer * consumer,
             core::consume::ConsumerMessageHandler * handler,
-            core::publish::PublisherFactory * publisher_factory,
+            core::communication::publish::PublisherFactory * publisher_factory,
             core::IoRunner * io_runner,
             Aggregator * aggregator
     )

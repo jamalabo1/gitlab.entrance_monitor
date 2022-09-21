@@ -18,6 +18,5 @@ namespace core::amqp {
     using AmqpIoContextComponent = fruit::Component<RequiredComponents, AmqpIoContext>;
 
     AmqpIoContextComponent getAmqpIoContextComponent();
-
 }
 #endif //ENTRANCE_MONITOR_V2_AMQP_IO_CONTEXT_H

@@ -19,3 +19,11 @@ shared_ptr<AMQP::Channel> ChannelHolderImpl::operator*() const {
 shared_ptr<AMQP::Channel> ChannelHolderImpl::operator->() const {
     return this->operator*();
 }
+
+
+AmqpChannelComponent core::amqp::getAmqpChannelComponent() {
+    return fruit::createComponent()
+            .install(getAmqpIoContextComponent)
+            .install(getAmqpConnectionComponent)
+            .bind<ChannelHolder, ChannelHolderImpl>();
+}

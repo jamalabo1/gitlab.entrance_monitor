@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 #COPY --from=gpu_opencv /usr/lib/x86_64-linux-gnu/lib*.so /usr/lib/x86_64-linux-gnu/
 
-RUN apt update && apt install -y --no-install-recommends  \
+RUN apt-get update && apt-get install -y --no-install-recommends  \
     build-essential \
     cmake \
     gcc \
@@ -23,7 +23,7 @@ RUN apt update && apt install -y --no-install-recommends  \
     checkinstall \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt update && apt install -y --no-install-recommends libavcodec-dev libavformat-dev libswscale-dev libboost-all-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends libavcodec-dev libavformat-dev libswscale-dev libboost-all-dev && rm -rf /var/lib/apt/lists/*
 # copy opencv artifacts (bin,lib,headers) ## bin is not needed since it's used for linkage only.
 COPY --from=gpu_opencv /usr/local/lib/libopencv*.a /usr/local/lib/
 COPY --from=gpu_opencv /usr/local/lib/opencv4 /usr/local/lib/opencv4

@@ -4,7 +4,7 @@
 
 #include <fruit/component.h>
 
-#include "impl/configuration_impl.h"
+#include "configuration_impl.h"
 #include <azure/identity.hpp>
 
 

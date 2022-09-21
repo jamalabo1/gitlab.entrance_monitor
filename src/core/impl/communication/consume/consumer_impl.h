@@ -5,21 +5,19 @@
 #ifndef ENTRANCE_MONITOR_V2_CONSUMER_IMPL_H
 #define ENTRANCE_MONITOR_V2_CONSUMER_IMPL_H
 
-#include <fruit/fruit.h>
-#include <core/consumer.h>
+#include <core/communication/consume/consumer.h>
 #include "channel_holder.h"
 
-namespace core::impl {
+namespace core::communication::consume::impl {
 
-    class ConsumerImpl : public consume::Consumer {
+    class ConsumerImpl : public Consumer {
 
     public:
         INJECT(ConsumerImpl(unique_factory(amqp::ChannelHolder) channel_factory)) {
             this->channel = channel_factory();
         }
 
-        void
-        consume(const consume::ConsumeOptions &) override;
+        void consume(const ConsumeOptions &) override;
 
 
     private:

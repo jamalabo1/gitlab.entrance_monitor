@@ -8,67 +8,71 @@ find_package(Msgpack REQUIRED)
 find_package(OpenCV REQUIRED)
 # to fix issue of OpenCV_LIBS including libraries that are not built.
 set(OpenCV_LIBS "opencv_core;opencv_dnn;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_photo;opencv_video;opencv_videoio;opencv_bioinspired;opencv_cudaarithm;opencv_cudabgsegm;opencv_cudacodec;opencv_cudafilters;opencv_cudaimgproc;opencv_cudalegacy;opencv_cudawarping;opencv_cudev;opencv_dnn_objdetect;opencv_dnn_superres;opencv_fuzzy;opencv_hfs;opencv_img_hash;opencv_intensity_transform;opencv_line_descriptor;opencv_phase_unwrapping;opencv_plot;opencv_quality;opencv_reg;opencv_tracking;opencv_xphoto")
-#set(OpenCV_LIBS "opencv_core")
-find_package(amqpcpp REQUIRED)
 
-#find_package(Eigen3 IMPORTED  REQUIRED)
+find_package(amqpcpp REQUIRED)
 find_package(azure-identity-cpp CONFIG REQUIRED)
 find_package(azure-security-keyvault-secrets-cpp CONFIG REQUIRED)
 
-
 SET(private_headers
-        amqp.h
-        consumer_message.h
         interfaces/channel_holder.h
 
-        amqp/channel_holder_impl.h
-        amqp/amqp_io_context_impl.h
+        impl/amqp.h
+        impl/amqp/channel_holder_impl.h
+        impl/amqp/amqp_io_context_impl.h
+        impl/amqp/amqp_io_runner_impl.h
+        impl/amqp/amqp_connection_impl.h
 
-        impl/consumer_impl.h
-        impl/publisher_impl.h
-        impl/consumer_factory_impl.h
-        impl/publisher_factory.h
+        impl/communication/consume/consumer_impl.h
+        impl/communication/consume/consumer_message.h
 
-        amqp/amqp_io_runner_impl.h
-        amqp/amqp_connection_impl.h
+        impl/communication/publish/publisher_impl.h
+        impl/communication/publish/publisher_factory.h
+
 
         interfaces/amqp/connection.h
         interfaces/amqp/io_context.h
 
-        impl/configuration_impl.h impl/io_runner_impl.h impl/gui_handler_impl.h)
+        impl/configuration_impl.h
+        impl/io_runner_impl.h
+        impl/gui_handler_impl.h
 
+        )
 
 add_library(
         core
         core.cpp
-        ptrs.cpp
-        paths.cpp
-        publisher.cpp
-        publisher_factory.cpp
-        consumer_factory.cpp
-        consumer_impl.cpp
         msgpacker.cpp
 
-        configurations_impl.cpp
-        consumer_message_handler.cpp
-        gui_handler_impl.cpp
-        consumer_message.cpp
-        amqp.cpp
-        publisher_impl.cpp
-        io_runner_impl.cpp
+        impl/communication/publish/publisher.cpp
+        impl/communication/publish/publisher_factory.cpp
+        impl/communication/publish/publisher_impl.cpp
+
+        impl/communication/consume/consumer_impl.cpp
+        impl/communication/consume/consumer_message.cpp
+        impl/communication/consume/consumer_message_handler.cpp
+
+        impl/amqp/amqp.cpp
+        impl/amqp/channel_holder_impl.cpp
+        impl/amqp/amqp_io_context_impl.cpp
+        impl/amqp/amqp_io_runner_impl.cpp
+        impl/amqp/amqp_connection_impl.cpp
+
+        impl/configurations_impl.cpp
+        impl/gui_handler_impl.cpp
+
+        impl/io_runner_impl.cpp
         task_service.cpp
 
-        amqp/connection_factory.cpp
-        amqp/channel_holder_impl.cpp
-        amqp/amqp_io_context_impl.cpp
-        amqp/amqp_io_runner_impl.cpp
-        amqp/amqp_connection_impl.cpp
+
 
         ${private_headers}
+        impl/communication/communication.cpp
+        impl/communication/publish/publish.cpp
+        impl/communication/consume/consume.cpp
+
 )
 
 target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets )
-
 
 target_include_directories(
         core
@@ -84,7 +88,6 @@ target_include_directories(
         include
 )
 
-
 target_link_libraries(
         core
         PRIVATE
@@ -92,10 +95,4 @@ target_link_libraries(
         ${Boost_LIBRARIES}
         ${Fruit_LIBS}
         amqpcpp
-)
-
-target_compile_definitions(
-        core
-        PUBLIC
-        NOMINMAX
 )

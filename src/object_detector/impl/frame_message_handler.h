@@ -15,16 +15,16 @@
 class FrameMessageHandler : public core::consume::ConsumerMessageHandler {
 private:
     Detector *detector;
-    unique_ptr<core::publish::Publisher> publisher;
+    unique_ptr<core::communication::publish::Publisher> publisher;
     core::GUIHandler *gui_handler;
 public:
-    INJECT(FrameMessageHandler(Detector * detector, core::publish::PublisherFactory * publisher_factory,
+    INJECT(FrameMessageHandler(Detector * detector, core::communication::publish::PublisherFactory * publisher_factory,
                                core::GUIHandler * guiHandler));
 
     void operator()(const core::consume::ConsumerMessage::ptr_t &envelope) const override;
 };
 
-using FrameMessageHandlerComponent = fruit::Component<MakeRequiredComponents(core::publish::PublisherFactory, core::IoRunner, core::GUIHandler), core::consume::ConsumerMessageHandler>;
+using FrameMessageHandlerComponent = fruit::Component<MakeRequiredComponents(core::communication::publish::PublisherFactory, core::IoRunner, core::GUIHandler), core::consume::ConsumerMessageHandler>;
 
 FrameMessageHandlerComponent getFrameMessageHandlerComponent();
 

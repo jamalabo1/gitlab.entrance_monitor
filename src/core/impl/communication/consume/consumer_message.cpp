@@ -3,7 +3,7 @@
 //
 #include "consumer_message.h"
 
-using namespace core::impl;
+using namespace core::communication::consume::impl;
 
 std::string ConsumerMessageImpl::Body() {
     const char *data = envelope->body();

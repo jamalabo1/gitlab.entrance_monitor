@@ -20,7 +20,7 @@
 class DetectionMessageHandler : public core::consume::ConsumerMessageHandler {
 
 private:
-    unique_ptr<core::publish::Publisher> publisher;
+    unique_ptr<core::communication::publish::Publisher> publisher;
     core::GUIHandler *gui_handler;
 
     boost::optional<bool>
@@ -30,7 +30,7 @@ private:
 
 public:
 
-    INJECT(DetectionMessageHandler(core::publish::PublisherFactory * publisher, core::GUIHandler * gui_handler));
+    INJECT(DetectionMessageHandler(core::communication::publish::PublisherFactory * publisher, core::GUIHandler * gui_handler));
 
     void operator()(const core::consume::ConsumerMessage::ptr_t &envelope) const override;
 };

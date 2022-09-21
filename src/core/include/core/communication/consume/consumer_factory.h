@@ -2,14 +2,14 @@
 // Created by jamal on 26/07/2022.
 //
 
-#ifndef ENTRANCE_MONITOR_V2_CONSUMER_FACTORY_H
-#define ENTRANCE_MONITOR_V2_CONSUMER_FACTORY_H
+#ifndef ENTRANCE_MONITOR_V2_CORE_COMMUNICATION_CONSUME_FACTORY_H
+#define ENTRANCE_MONITOR_V2_CORE_COMMUNICATION_CONSUME_FACTORY_H
 
 #include <core/init.h>
 #include <core/amqp.h>
-#include <core/consumer.h>
+#include "consumer.h"
 
-namespace core::consume {
+namespace core::communication::consume {
 
     using CreateConsumerCb = std::function<void(const CancellationToken &token, const ConsumerMessageHandler &handler)>;
 
@@ -19,10 +19,11 @@ namespace core::consume {
     };
 
 
-    using ConsumerFactoryComponent = fruit::Component<RequiredComponents, ConsumerFactory>;
+    using $ConsumerFactoryComponent = $Exported<ConsumerFactory>;
+    using ConsumerFactoryComponent = $ConsumerFactoryComponent::PureComponent;
 
     ConsumerFactoryComponent getConsumerFactoryComponent();
 }
 
 
-#endif //ENTRANCE_MONITOR_V2_CONSUMER_FACTORY_H
+#endif //ENTRANCE_MONITOR_V2_CORE_COMMUNICATION_CONSUME_FACTORY_H

@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <msgpack/msgpack.hpp>
 
-#include <core/consumer_message.h>
+#include <core/communication/consume/consumer_message.h>
 
 #include <utils/string_utils.h>
 
@@ -31,7 +31,7 @@ namespace core::msgpacker {
     }
 
     template<class T>
-    T unpack(const core::consume::ConsumerMessage::ptr_t &message) {
+    T unpack(const core::communication::consume::ConsumerMessage::ptr_t &message) {
         return unpack<T>(message->Body());
     }
 

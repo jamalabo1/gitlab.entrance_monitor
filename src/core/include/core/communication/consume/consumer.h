@@ -2,17 +2,17 @@
 // Created by jamal on 26/07/2022.
 //
 
-#ifndef ENTRANCE_MONITOR_V2_CONSUMER_H
-#define ENTRANCE_MONITOR_V2_CONSUMER_H
+#ifndef ENTRANCE_MONITOR_V2_CORE_COMMUNICATION_CONSUME_CONSUMER_H
+#define ENTRANCE_MONITOR_V2_CORE_COMMUNICATION_CONSUME_CONSUMER_H
+
 
 #include <core/init.h>
-#include <core/consumer_message_handler.h>
 #include <core/cancellation_token.h>
 #include <core/amqp.h>
+#include "consumer_message_handler.h"
 
-#include <utility>
 
-namespace core::consume {
+namespace core::communication::consume {
 
 
     struct ConsumeOptions {
@@ -42,11 +42,10 @@ namespace core::consume {
         consume(const ConsumeOptions &) = 0;
     };
 
-//using ConsumerFactory_t = std::function<std::shared_ptr<Consumer>(std::shared_ptr<ChannelHolder>)>;
+    using $ConsumerComponent = $Exported<Consumer>;
+    using ConsumerComponent = $ConsumerComponent::PureComponent;
 
-    using ConsumerComponent = fruit::Component<RequiredComponents, Consumer>;
-
-    ConsumerComponent getConsumerComponent();
+    ConsumerComponent getCommunicationConsumeConsumerComponent();
 }
 
-#endif //ENTRANCE_MONITOR_V2_CONSUMER_H
+#endif //ENTRANCE_MONITOR_V2_CORE_COMMUNICATION_CONSUME_CONSUMER_H

@@ -6,14 +6,12 @@
 
 using namespace core;
 using namespace core::amqp;
-using namespace core::consume;
-using namespace core::publish;
+using namespace core::communication;
 
-CoreComponents core::getCoreComponents() {
+core::Components core::getCoreComponents() {
     return fruit::createComponent()
             .install(getGUIHandlerComponent)
-            .install(getConsumerComponent)
             .install(getIoRunnerComponent)
-            .install(getPublisherFactoryComponent)
-            .install(getAmqpIoRunnerComponent);
+            .install(getCommunicationComponents)
+            .install(getAmqpComponents);
 }

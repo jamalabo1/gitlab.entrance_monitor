@@ -18,7 +18,7 @@ using namespace std;
 using namespace fruit;
 using namespace cv;
 using namespace core;
-using namespace core::publish;
+using namespace core::communication::publish;
 
 
 StreamObtainer::StreamObtainer(

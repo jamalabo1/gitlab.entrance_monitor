@@ -6,12 +6,12 @@
 #define ENTRANCE_MONITOR_V2_CONSUMER_MESSAGE_IMPL_H
 
 #include <amqpcpp.h>
-#include <core/consumer_message.h>
+#include <core/communication/consume/consumer_message.h>
 #include <core/ptrs.h>
 
-namespace core::impl {
+namespace core::communication::consume::impl {
 
-    class ConsumerMessageImpl : public consume::ConsumerMessage {
+    class ConsumerMessageImpl : public ConsumerMessage {
     private:
         const AMQP::Message *envelope;
     public:

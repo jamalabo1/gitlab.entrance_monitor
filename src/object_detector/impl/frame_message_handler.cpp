@@ -21,7 +21,7 @@ using namespace std;
 using namespace fruit;
 using namespace core;
 using namespace core::consume;
-using namespace core::publish;
+using namespace core::communication::publish;
 using namespace core::msgpacker;
 using namespace core::amqp;
 

@@ -1,10 +1,9 @@
 //
 // Created by jamal on 26/07/2022.
 //
-#include "impl/consumer_impl.h"
+#include "consumer_impl.h"
 #include <core/cancellation_token.h>
 #include "consumer_message.h"
-#include "core/consumer.h"
 #include "amqp.h"
 
 #include <core/logging.h>
@@ -12,8 +11,8 @@
 using namespace std;
 using namespace core;
 using namespace core::amqp;
-using namespace core::impl;
-using namespace core::consume;
+using namespace core::communication::consume;
+using namespace core::communication::consume::impl;
 
 void ConsumerImpl::consume(const ConsumeOptions& options) {
 
@@ -93,9 +92,9 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
             });
 }
 
-ConsumerComponent consume::getConsumerComponent() {
+ConsumerComponent core::communication::consume::getCommunicationConsumeConsumerComponent() {
     return fruit::createComponent()
-            .install(getAmqpComponent)
+            .install(getAmqpChannelComponent)
             .bind<Consumer, ConsumerImpl>();
 }
 
