@@ -6,7 +6,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
-#include <opencv2/core.hpp>
+#include <opencv2/core/utility.hpp>
 #include <core/logging.h>
 
 enum severity_level {

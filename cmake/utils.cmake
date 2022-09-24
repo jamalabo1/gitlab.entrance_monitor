@@ -37,15 +37,15 @@ macro(create_testing_target test_target_prefix)
     set(test_target_exc "${test_target}_exc")
 
 
-    target_link_libraries(${test_target} ${target_to_test})
-    target_link_libraries(${global_test_target}  $<TARGET_OBJECTS:${test_target}>)
+    target_link_libraries(${test_target} PUBLIC ${target_to_test})
+    target_link_libraries(${global_test_target} PRIVATE $<TARGET_OBJECTS:${test_target}> ${target_to_test})
 
     create_testing_executable(${test_target} ${test_target_exc})
 endmacro()
 
 
 macro(create_testing_executable test_target test_target_exc)
-    target_link_libraries(${test_target} GTest::gtest) # link with gtest to register all tests.
+    target_link_libraries(${test_target} PUBLIC GTest::gtest) # link with gtest to register all tests.
 
     add_executable(${test_target_exc} $<TARGET_OBJECTS:${test_target}>) # add a executable with test_target objects.
 
@@ -64,10 +64,9 @@ macro(create_global_testing_target global_test_target_name source_files)
     set(test_target ${global_test_target})
 
     add_library(${test_target} ${source_files})
-
 endmacro()
 
-macro(enable_global_testing_target )
+macro(enable_global_testing_target)
     set(target_name_exc "${test_target}_exc")
 
     create_testing_executable(${test_target} ${target_name_exc})

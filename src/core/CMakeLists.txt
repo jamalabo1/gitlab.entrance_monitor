@@ -72,7 +72,7 @@ add_library(
 
 )
 
-target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets )
+target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets)
 
 target_include_directories(
         core
