@@ -15,9 +15,10 @@ namespace core::amqp {
         virtual shared_ptr<boost::asio::io_context> get_service() = 0;
     };
 
-    using AmqpIoContextComponent = fruit::Component<RequiredComponents, AmqpIoContext>;
+
+    using $IoContext = $Exported<AmqpIoContext>;
+    using AmqpIoContextComponent = $IoContext::PureComponent;
 
     AmqpIoContextComponent getAmqpIoContextComponent();
-
 }
 #endif //ENTRANCE_MONITOR_V2_AMQP_IO_CONTEXT_H

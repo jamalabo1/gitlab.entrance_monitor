@@ -9,18 +9,16 @@
 
 #include <boost/optional.hpp>
 
-#include <core/consumer_message_handler.h>
-
-#include <core/publisher_factory.h>
+#include <core/communication.h>
 
 #include <core/gui_handler.h>
 
 #include <view_models/detection_result_view.h>
 
-class DetectionMessageHandler : public core::consume::ConsumerMessageHandler {
+class DetectionMessageHandler : public core::communication::consume::ConsumerMessageHandler {
 
 private:
-    unique_ptr<core::publish::Publisher> publisher;
+    unique_ptr<core::communication::publish::Publisher> publisher;
     core::GUIHandler *gui_handler;
 
     boost::optional<bool>
@@ -30,13 +28,13 @@ private:
 
 public:
 
-    INJECT(DetectionMessageHandler(core::publish::PublisherFactory * publisher, core::GUIHandler * gui_handler));
+    INJECT(DetectionMessageHandler(core::communication::publish::PublisherFactory * publisher, core::GUIHandler * gui_handler));
 
-    void operator()(const core::consume::ConsumerMessage::ptr_t &envelope) const override;
+    void operator()(const core::communication::consume::ConsumerMessage::ptr_t &envelope) const override;
 };
 
 using DetectionMessageHandlerComponent = fruit::Component<MakeRequiredComponents(
-        core::GUIHandler), core::consume::ConsumerMessageHandler>;
+        core::GUIHandler), core::communication::consume::ConsumerMessageHandler>;
 
 DetectionMessageHandlerComponent getDetectionMessageHandlerComponent();
 

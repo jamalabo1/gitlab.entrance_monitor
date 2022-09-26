@@ -6,25 +6,24 @@
 #define ENTRANCE_MONITOR_V2_FRAME_MESSAGE_HANDLER_H
 
 #include <fruit/fruit.h>
-#include <core/consumer_message_handler.h>
-#include <core/publisher_factory.h>
+#include <core/communication.h>
 #include <core/gui_handler.h>
 
 #include "detector.h"
 
-class FrameMessageHandler : public core::consume::ConsumerMessageHandler {
+class FrameMessageHandler : public core::communication::consume::ConsumerMessageHandler {
 private:
     Detector *detector;
-    unique_ptr<core::publish::Publisher> publisher;
+    unique_ptr<core::communication::publish::Publisher> publisher;
     core::GUIHandler *gui_handler;
 public:
-    INJECT(FrameMessageHandler(Detector * detector, core::publish::PublisherFactory * publisher_factory,
+    INJECT(FrameMessageHandler(Detector * detector, core::communication::publish::PublisherFactory * publisher_factory,
                                core::GUIHandler * guiHandler));
 
-    void operator()(const core::consume::ConsumerMessage::ptr_t &envelope) const override;
+    void operator()(const core::communication::consume::ConsumerMessage::ptr_t &envelope) const override;
 };
 
-using FrameMessageHandlerComponent = fruit::Component<MakeRequiredComponents(core::publish::PublisherFactory, core::IoRunner, core::GUIHandler), core::consume::ConsumerMessageHandler>;
+using FrameMessageHandlerComponent = fruit::Component<MakeRequiredComponents(core::communication::publish::PublisherFactory, core::IoRunner, core::GUIHandler), core::communication::consume::ConsumerMessageHandler>;
 
 FrameMessageHandlerComponent getFrameMessageHandlerComponent();
 

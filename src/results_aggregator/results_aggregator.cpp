@@ -2,15 +2,11 @@
 // Created by jamal on 13/08/2022.
 //
 
-#include <core/amqp/connection_factory.h>
 #include <results_aggregator/results_aggregator.h>
 
 #include <core/logging.h>
-#include <core/consumer_factory.h>
-#include <core/gui_handler.h>
 
 #include <view_models/computed_result_view.h>
-
 
 #include "blocking_result_message_handler.h"
 
@@ -24,11 +20,11 @@ using namespace fruit;
 using namespace core;
 
 
-ResultsAggregatorService::ResultsAggregatorService(core::consume::Consumer *consumer,
-                                                   core::consume::ConsumerMessageHandler *handler,
-                                                   core::publish::PublisherFactory *publisher_factory,
+ResultsAggregatorService::ResultsAggregatorService(core::communication::consume::Consumer *consumer,
+                                                   core::communication::consume::ConsumerMessageHandler *handler,
+                                                   core::communication::publish::PublisherFactory *publisher_factory,
                                                    core::IoRunner *io_runner,
-                                                   Aggregator *aggregator) : TaskService(io_runner),
+                                                   Aggregator *aggregator) : Service(io_runner),
                                                                              consumer(consumer),
                                                                              handler(handler),
                                                                              aggregator(aggregator) {
@@ -82,5 +78,5 @@ ResultAggregatorServiceComponent getResultsAggregatorServiceComponent() {
             .install(getCoreComponents)
             .install(getBlockingResultMessageHandlerComponent)
             .install(getAggregatorComponent)
-            .addMultibinding<TaskService, ResultsAggregatorService>();
+            .addMultibinding<Service, ResultsAggregatorService>();
 }

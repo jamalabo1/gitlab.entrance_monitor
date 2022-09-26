@@ -7,14 +7,14 @@
 
 #include <core/core.h>
 
-class ObjectDetector : public core::TaskService {
+class ObjectDetector : public core::Service {
 private:
-    core::consume::Consumer *consumer;
-    core::consume::ConsumerMessageHandler *handler;
+    core::communication::consume::Consumer *consumer;
+    core::communication::consume::ConsumerMessageHandler *handler;
 
 public:
-    INJECT(ObjectDetector(core::consume::Consumer * consumer,
-                          core::consume::ConsumerMessageHandler * handler,
+    INJECT(ObjectDetector(core::communication::consume::Consumer * consumer,
+                          core::communication::consume::ConsumerMessageHandler * handler,
                           core::IoRunner* io_runner));
 
 

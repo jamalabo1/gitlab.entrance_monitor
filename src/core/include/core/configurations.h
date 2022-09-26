@@ -11,7 +11,6 @@
 #include <sstream>
 
 #include <utility>
-#include <core/paths.h>
 
 namespace core {
 

@@ -17,8 +17,8 @@ namespace core::amqp {
         virtual shared_ptr<AMQP::Channel> create_channel() = 0;
     };
 
-
-    using AmqpConnectionComponent = fruit::Component<MakeRequiredComponents(AmqpIoContext), AmqpConnection>;
+    using $Connection = $Exported<AmqpConnection>;
+    using AmqpConnectionComponent = $Connection::Component<AmqpIoContext>;
 
     AmqpConnectionComponent getAmqpConnectionComponent();
 }

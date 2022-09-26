@@ -22,7 +22,9 @@ namespace core {
     };
 
 
-    using IoRunnerComponent = fruit::Component<MakeRequiredComponents(GUIHandler, amqp::AmqpIoRunner), core::IoRunner>;
+    using $IoRunner = $Exported<IoRunner>;
+
+    using IoRunnerComponent = $IoRunner::Component<GUIHandler, amqp::AmqpIoRunner>;
 
     IoRunnerComponent getIoRunnerComponent();
 }

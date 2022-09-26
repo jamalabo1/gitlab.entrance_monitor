@@ -14,7 +14,10 @@ namespace core::amqp {
         virtual void run() = 0;
     };
 
-    using AmqpIoRunnerComponent = fruit::Component<RequiredComponents, AmqpIoRunner>;
+
+    using $AmqpIoRunner = $Exported<AmqpIoRunner>;
+
+    using AmqpIoRunnerComponent = $AmqpIoRunner::PureComponent;
 
     AmqpIoRunnerComponent getAmqpIoRunnerComponent();
 }

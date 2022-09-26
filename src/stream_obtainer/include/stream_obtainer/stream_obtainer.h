@@ -7,12 +7,12 @@
 
 #include <core/core.h>
 
-class StreamObtainer : public core::TaskService {
+class StreamObtainer : public core::Service {
 private:
-    core::publish::PublisherFactory *publisher_factory;
+    core::communication::publish::PublisherFactory *publisher_factory;
     core::Configurations *configs;
 public:
-    INJECT(StreamObtainer(core::publish::PublisherFactory * publisher_factory, core::IoRunner* io_runner, core::Configurations * configurations));
+    INJECT(StreamObtainer(core::communication::publish::PublisherFactory * publisher_factory, core::IoRunner * io_runner, core::Configurations * configurations));
 
     int setup() override;
 
