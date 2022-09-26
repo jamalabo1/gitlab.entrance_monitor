@@ -11,8 +11,8 @@ using namespace core;
 using namespace core::amqp;
 
 
-ObjectDetector::ObjectDetector(core::consume::Consumer *consumer, core::consume::ConsumerMessageHandler *handler,
-                               core::IoRunner *io_runner) : TaskService(io_runner), consumer(consumer),
+ObjectDetector::ObjectDetector(core::communication::consume::Consumer *consumer, core::communication::consume::ConsumerMessageHandler *handler,
+                               core::IoRunner *io_runner) : Service(io_runner), consumer(consumer),
                                                             handler(handler) {
 
 }
@@ -34,5 +34,5 @@ ObjectDetectorComponent getObjectDetectorComponent() {
     return createComponent()
             .install(getCoreComponents)
             .install(getFrameMessageHandlerComponent)
-            .addMultibinding<TaskService, ObjectDetector>();
+            .addMultibinding<Service, ObjectDetector>();
 }

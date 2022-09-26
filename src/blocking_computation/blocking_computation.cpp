@@ -15,9 +15,9 @@ using namespace core;
 using namespace core::amqp;
 
 
-BlockingComputationService::BlockingComputationService(core::consume::ConsumerMessageHandler *handler,
-                                                       core::consume::Consumer *consumer,
-                                                       core::IoRunner *io_runner) : TaskService(io_runner),
+BlockingComputationService::BlockingComputationService(core::communication::consume::ConsumerMessageHandler *handler,
+                                                       core::communication::consume::Consumer *consumer,
+                                                       core::IoRunner *io_runner) : Service(io_runner),
                                                                                     handler(handler),
                                                                                     consumer(consumer) {
 
@@ -42,5 +42,5 @@ BlockingComputationComponent getBlockingComputationComponent() {
     return createComponent()
             .install(getCoreComponents)
             .install(getDetectionMessageHandlerComponent)
-            .addMultibinding<TaskService, BlockingComputationService>();
+            .addMultibinding<Service, BlockingComputationService>();
 }

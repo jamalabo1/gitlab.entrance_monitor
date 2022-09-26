@@ -5,7 +5,6 @@
 
 #include <core/msgpacker.h>
 
-#include <view_models/detection_result_view.h>
 #include <view_models/blocking_result_view.h>
 
 #include <core/logging.h>
@@ -24,7 +23,7 @@ using namespace cv;
 using namespace core;
 using namespace core::communication::publish;
 using namespace core::msgpacker;
-using namespace core::consume;
+using namespace core::communication::consume;
 
 
 vector<Point> match_to_shape(vector<Point> &pts, Size original_shape, Size shape);
@@ -171,6 +170,6 @@ bool compareContourAreas(const std::vector<cv::Point> &contour1, const std::vect
 
 DetectionMessageHandlerComponent getDetectionMessageHandlerComponent() {
     return createComponent()
-            .install(getPublisherFactoryComponent)
+            .install(getCommunicationPublishComponents)
             .bind<ConsumerMessageHandler, DetectionMessageHandler>();
 }

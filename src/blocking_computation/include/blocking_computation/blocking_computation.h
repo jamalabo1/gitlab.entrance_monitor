@@ -8,15 +8,15 @@
 #include <core/core.h>
 
 
-class BlockingComputationService : public core::TaskService {
+class BlockingComputationService : public core::Service {
 private:
-    core::consume::ConsumerMessageHandler *handler;
-    core::consume::Consumer *consumer;
+    core::communication::consume::ConsumerMessageHandler *handler;
+    core::communication::consume::Consumer *consumer;
 
 public:
 
-    INJECT(BlockingComputationService(core::consume::ConsumerMessageHandler * ,
-                                      core::consume::Consumer * , core::IoRunner * ));
+    INJECT(BlockingComputationService(core::communication::consume::ConsumerMessageHandler * ,
+                                      core::communication::consume::Consumer * , core::IoRunner * ));
 
 
     int setup() override;

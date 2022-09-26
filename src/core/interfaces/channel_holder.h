@@ -8,6 +8,8 @@
 //#include <functional>
 #include <core/init.h>
 
+#include <boost/asio.hpp>
+
 #include <amqpcpp.h>
 
 // CCD = CORE CHANNEL DEFERRED
@@ -25,11 +27,20 @@ namespace core::amqp {
 
         virtual shared_ptr<AMQP::Channel> operator->() const = 0;
 
+//        template <typename CompletionToken>
+//         boost::asio::async_result<boost::asio::decay<CompletionToken>,
+//        void(boost::system::error_code, size_t)
+//        >
+//        declareQueue(
+//                tcp::socket& s,
+//                const mutable_buffer& b,
+//                CompletionToken&& token) = 0;
+
     };
 
-    using $AmqpChannel = $Exported<ChannelHolder, std::function<std::unique_ptr<ChannelHolder>()>>;
+    using $Channel = $Exported<ChannelHolder, std::function<std::unique_ptr<ChannelHolder>()>>;
 
-    using AmqpChannelComponent = $AmqpChannel::PureComponent;
+    using AmqpChannelComponent = $Channel::PureComponent;
 
     AmqpChannelComponent getAmqpChannelComponent();
 }

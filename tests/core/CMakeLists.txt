@@ -6,6 +6,12 @@ include(utils)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(core_tests cancellation_token_test.cpp queue_fps_test.cpp)
+set(mock_headers
+        mock/azure_secret_client_mock.h
+        )
+
+add_library(core_tests cancellation_token_test.cpp queue_fps_test.cpp impl/configurations_impl_test.cpp)
+
+target_include_directories(core_tests PRIVATE mock)
 
 create_testing_target(core)

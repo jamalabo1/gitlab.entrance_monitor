@@ -61,7 +61,7 @@ add_library(
         impl/gui_handler_impl.cpp
 
         impl/io_runner_impl.cpp
-        task_service.cpp
+        service.cpp
 
 
 
@@ -74,18 +74,27 @@ add_library(
 
 target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets)
 
+set_property(
+        TARGET
+        core
+        APPEND PROPERTY private_include_directories
+        ${CMAKE_CURRENT_LIST_DIR}/impl
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces
+)
+
 target_include_directories(
         core
         PRIVATE
         $<TARGET_PROPERTY:amqpcpp,INTERFACE_INCLUDE_DIRECTORIES>
-        impl
+        $<TARGET_PROPERTY:core,private_include_directories>
         interfaces
         PUBLIC
         ${Msgpack_INCLUDE_DIR}
         ${FRUIT_INCLUDE_DIR}
         ${Boost_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS}
-        include
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 
 target_link_libraries(

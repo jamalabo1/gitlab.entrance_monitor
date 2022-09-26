@@ -7,7 +7,7 @@
 
 #include <core/core.h>
 
-class StreamObtainer : public core::TaskService {
+class StreamObtainer : public core::Service {
 private:
     core::communication::publish::PublisherFactory *publisher_factory;
     core::Configurations *configs;

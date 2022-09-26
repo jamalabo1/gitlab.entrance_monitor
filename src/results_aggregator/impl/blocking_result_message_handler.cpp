@@ -10,7 +10,7 @@
 
 
 using namespace core;
-using namespace core::consume;
+using namespace core::communication::consume;
 
 BlockingResultMessageHandler::BlockingResultMessageHandler(Aggregator *aggregator) : aggregator(aggregator) {}
 

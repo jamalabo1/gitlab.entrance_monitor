@@ -11,7 +11,7 @@
 
 
 #define CREATE_CONSUMER_SERVICE_RUNNER(...) \
-core::consume::ConsumeOptions options(handler, token, __VA_ARGS__);           \
+core::communication::consume::ConsumeOptions options(handler, token, __VA_ARGS__);           \
 post([this, &options]() { \
 consumer->consume(options); \
 }) \

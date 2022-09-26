@@ -22,7 +22,6 @@ namespace core::communication::consume::impl {
 
     private:
         shared_ptr<amqp::ChannelHolder> channel;
-        const std::string queue_name;
     };
 }
 

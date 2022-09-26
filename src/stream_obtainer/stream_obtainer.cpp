@@ -25,7 +25,7 @@ StreamObtainer::StreamObtainer(
         PublisherFactory *publisher_factory,
         IoRunner *io_runner,
         Configurations *configurations
-) : TaskService(io_runner), publisher_factory(publisher_factory), configs(configurations) {
+) : Service(io_runner), publisher_factory(publisher_factory), configs(configurations) {
 
 }
 
@@ -93,5 +93,5 @@ StreamObtainer::~StreamObtainer() {
 StreamObtainerComponent getStreamObtainerComponent() {
     return createComponent()
             .install(getCoreComponents)
-            .addMultibinding<TaskService, StreamObtainer>();
+            .addMultibinding<Service, StreamObtainer>();
 }

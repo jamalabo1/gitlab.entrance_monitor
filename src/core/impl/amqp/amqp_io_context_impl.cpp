@@ -11,10 +11,10 @@ using namespace core::amqp::impl;
 
 
 AmqpIoContextImpl::AmqpIoContextImpl() {
-    service = make_shared<io_service>(4);
+    service = make_shared<io_context>(4);
 }
 
-shared_ptr<io_service> AmqpIoContextImpl::get_service() {
+shared_ptr<io_context> AmqpIoContextImpl::get_service() {
     return service;
 }
 

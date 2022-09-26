@@ -7,7 +7,7 @@
 #include <core/msgpacker.h>
 
 using namespace core;
-using namespace core::consume;
+using namespace core::communication::consume;
 using namespace core::msgpacker;
 
 

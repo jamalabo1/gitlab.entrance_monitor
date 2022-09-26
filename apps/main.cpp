@@ -76,8 +76,8 @@ int main() {
     for (const ComponentFunc &component: components) {
         shared_ptr<Injector<>> injector = make_unique<Injector<>>(getCreateComponent, &component);
 
-        const vector<TaskService *> &services = injector->getMultibindings<TaskService>();
-        for (TaskService *service: services) {
+        const vector<Service *> &services = injector->getMultibindings<Service>();
+        for (Service *service: services) {
             BOOST_LOG_TRIVIAL(debug) << "registered " << typeid(*service).name() << " as service";
             boost::asio::post(pool, [service] { service->setup(); });
         }

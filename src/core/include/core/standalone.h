@@ -37,7 +37,7 @@ void init_service_runner() {
 init_service_runner();\
 fruit::Injector injector(getRootComponent);                          \
 BOOST_LOG_TRIVIAL(info) << "Running as standalone"; \
-BOOST_LOG_TRIVIAL(trace) << "getting `TaskService` from injector"; \
+BOOST_LOG_TRIVIAL(trace) << "getting `Service` from injector"; \
 const std::vector<TaskService *> &services = injector.getMultibindings<TaskService>(); \
 BOOST_LOG_TRIVIAL(trace) << "creating thread pool with size " << services.size(); \
 boost::asio::thread_pool pool(services.size()); \

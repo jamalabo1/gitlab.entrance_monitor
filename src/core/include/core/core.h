@@ -11,7 +11,7 @@
 #include <core/configurations.h>
 #include <core/queue_fps.h>
 #include <core/view.h>
-#include <core/task_service.h>
+#include <core/service.h>
 #include <core/ptrs.h>
 #include <core/gui_handler.h>
 #include <core/logging.h>
