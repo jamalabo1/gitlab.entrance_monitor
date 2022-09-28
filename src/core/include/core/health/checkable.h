@@ -8,6 +8,7 @@
 #include "status.h"
 
 namespace core::health {
+    /// interface representing units that can be checked for health.
     class ICheckable {
     public:
         virtual Status health_check() const = 0;

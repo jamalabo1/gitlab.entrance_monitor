@@ -9,6 +9,8 @@
 #include <core/io_context.h>
 #include <core/cancellation_token.h>
 #include <core/health.h>
+#include <core/task.h>
+#include <set>
 
 /*
  *
@@ -22,6 +24,7 @@ namespace core {
 class Service : public health::ICheckable {
     protected:
         shared_ptr<IoContext> ctx_;
+        std::set<shared_ptr<Task>> tasks_;
 //        shared_ptr<boost::asio::thread_pool> pool;
 //        IoRunner* io_runner;
 //        CancellationToken token;
@@ -36,9 +39,13 @@ class Service : public health::ICheckable {
         virtual int setup() = 0;
 
         // default health check.
-        health::Status health_check() const override {
-            return health::Status::Ok;
-        }
+        health::Status health_check() const override;
+
+        virtual void registerTask(shared_ptr<Task> task);
+
+
+        virtual void registerTasks(std::set<shared_ptr<Task>> &tasks);
+
 
 
     };

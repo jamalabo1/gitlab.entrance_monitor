@@ -51,6 +51,10 @@ add_library(
         impl/communication/consume/consumer_message.cpp
         impl/communication/consume/consumer_message_handler.cpp
 
+        impl/communication/consume/consume.cpp
+        impl/communication/publish/publish.cpp
+        impl/communication/communication.cpp
+
         impl/amqp/amqp.cpp
         impl/amqp/channel_holder_impl.cpp
         impl/amqp/amqp_io_context_impl.cpp
@@ -62,14 +66,9 @@ add_library(
 
         impl/io_runner_impl.cpp
         service.cpp
-
-
+        task.cpp
 
         ${private_headers}
-        impl/communication/communication.cpp
-        impl/communication/publish/publish.cpp
-        impl/communication/consume/consume.cpp
-
 )
 
 target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets)

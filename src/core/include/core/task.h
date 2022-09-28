@@ -12,6 +12,7 @@
 namespace core {
 
     // task class representing work for service.
+    // singleton.
     class Task : public health::ICheckable {
     protected:
         shared_ptr<IoContext> ctx_;

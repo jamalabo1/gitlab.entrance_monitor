@@ -3,20 +3,15 @@
 //
 #include <core/service.h>
 
-using namespace core;
 
-Service::Service(IoRunner *io_runner) : io_runner(io_runner) {
-    pool = io_runner->get_pool();
+void core::Service::registerTask(shared_ptr<core::Task> task) {
+    tasks_.emplace(task);
 }
 
-int Service::run() {
-    io_runner->setup();
-    pool->join();
-    return -1;
+void core::Service::registerTasks(std::set<shared_ptr<Task>> &tasks) {
+    tasks_.merge(tasks);
 }
 
-void Service::post(std::function<void()> cb) {
-    io_runner->post(cb);
+core::health::Status core::Service::health_check() const  {
+    return health::Status::Ok;
 }
-
-
