@@ -6,9 +6,9 @@
 #define ENTRANCE_MONITOR_V2_CORE_TASK_SERVICE_H
 
 #include <boost/asio.hpp>
-#include <core/io_runner.h>
+#include <core/io_context.h>
 #include <core/cancellation_token.h>
-
+#include <core/health.h>
 
 /*
  *
@@ -19,23 +19,28 @@ namespace core {
 /***
  * tasks service is class for manging services in project_runner, or standalone.
  * */
-    class Service {
+class Service : public health::ICheckable {
     protected:
-        shared_ptr<boost::asio::thread_pool> pool;
-        IoRunner* io_runner;
-        CancellationToken token;
+        shared_ptr<IoContext> ctx_;
+//        shared_ptr<boost::asio::thread_pool> pool;
+//        IoRunner* io_runner;
+//        CancellationToken token;
 
         ///
         /// \param io_runner io runner is a class given to the task service to operate tasks on.
-        explicit Service(core::IoRunner* io_runner);
-
+//        explicit Service(core::IoRunner* io_runner);
+//        void registerTask(core::Task& task);
     public:
 
+        // setup function, called to coordinate the handling of tasks.
         virtual int setup() = 0;
 
-        virtual int run();
+        // default health check.
+        health::Status health_check() const override {
+            return health::Status::Ok;
+        }
 
-        virtual void post(std::function<void()> cb);
+
     };
 
 }
