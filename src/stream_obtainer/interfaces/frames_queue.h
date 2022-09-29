@@ -10,6 +10,11 @@
 
 namespace stream_obtainer {
     using FramesQueue = core::QueueFPS<cv::Mat>;
+
+    using $FramesQueue = $Exported<FramesQueue>;
+    using FramesQueueComponent = $FramesQueue::PureComponent;
+
+    FramesQueueComponent getFramesQueueComponent();
 }
 
 #endif //ENTRANCE_MONITOR_V2_FRAMES_QUEUE_H

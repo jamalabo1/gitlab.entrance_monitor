@@ -61,6 +61,7 @@ core::Task::TaskResult impl::SubscribeToStreamTaskImpl::operator()() {
             retry_policy_->ping();
         }
     }
+
 }
 
 bool impl::SubscribeToStreamTaskImpl::retry_handler() {

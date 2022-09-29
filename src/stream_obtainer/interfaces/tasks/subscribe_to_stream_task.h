@@ -5,22 +5,10 @@
 #ifndef ENTRANCE_MONITOR_V2_STREAM_OBTAINER_INTERFACES_TASKS_SUBSCRIBE_TO_STREAM_TASK_H
 #define ENTRANCE_MONITOR_V2_STREAM_OBTAINER_INTERFACES_TASKS_SUBSCRIBE_TO_STREAM_TASK_H
 
-#include <core/init.h>
-#include <core/cancellation_token.h>
 #include <core/task.h>
 
 namespace stream_obtainer::tasks {
-
-class SubscribeToStreamTask : public core::Task {
-
-
-};
-
-using $SubscribeToStreamTask = $Exported<SubscribeToStreamTask>;
-using SubscribeToStreamTaskComponent = $SubscribeToStreamTask::PureComponent;
-
-SubscribeToStreamTaskComponent getStreamObtainerSubscribeToStreamTask();
-
+    CORE_DEFINE_TASK_DEFAULT(StreamObtainer, SubscribeToStreamTask);
 }
 
 #endif //ENTRANCE_MONITOR_V2_STREAM_OBTAINER_INTERFACES_TASKS_SUBSCRIBE_TO_STREAM_TASK_H

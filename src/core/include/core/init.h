@@ -149,6 +149,10 @@ using Components = ExportCoreComponent($Components); \
 Components funcName()
 
 
+#define EXPORT_TASKS_MODULE(funcName, ...)          \
+using $Tasks = $Exported<std::vector<core::Task*>>; \
+EXPORT_MODULE(getStreamObtainerTasks, $Tasks, __VA_ARGS__)
+
 #define shared_factory(x) std::function<shared_ptr<x>()>
 #define unique_factory(x) std::function<unique_ptr<x>()>
 #define unique_factory_p(x, ...) std::function<unique_ptr<x>(__VA_ARGS__)>

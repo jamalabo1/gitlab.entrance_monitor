@@ -22,6 +22,7 @@ namespace core {
 
         virtual operator shared_ptr<boost::asio::io_context>() const = 0;
 
+        virtual void run() = 0;
 
     };
 

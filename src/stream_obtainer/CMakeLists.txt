@@ -8,19 +8,20 @@ find_package(OpenCV REQUIRED)
 set(
         impl_headers
 
-        impl/tasks/subscribe_to_stream_task_impl.h
+        impl/tasks/subscribe_to_stream_task_impl/subscribe_to_stream_task_impl.h
+        impl/tasks/publish_stream_task_impl/publish_stream_task_impl.h
 )
 
 add_library(
         stream_obtainer_lib
 
-        impl/tasks/subscribe_to_stream_task_impl.cpp
+        impl/tasks/subscribe_to_stream_task_impl/subscribe_to_stream_task_impl.cpp
 
         stream_obtainer.cpp
         stream_subscriber.cpp
 
         ${impl_headers}
-)
+        impl/tasks/publish_stream_task_impl/publish_stream_task_impl.cpp)
 
 target_include_directories(
         stream_obtainer_lib
