@@ -36,7 +36,7 @@ SET(private_headers
         impl/io_runner_impl.h
         impl/gui_handler_impl.h
 
-        )
+        impl/retry/retry_policy_impl.h)
 
 add_library(
         core
@@ -69,7 +69,7 @@ add_library(
         task.cpp
 
         ${private_headers}
-)
+        impl/retry/retry_policy_impl.cpp)
 
 target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets)
 

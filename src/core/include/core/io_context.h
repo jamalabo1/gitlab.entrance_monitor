@@ -10,12 +10,16 @@
 #include <core/amqp.h>
 #include <functional>
 
+#define GET_BOOST_IO_CONTEXT(ctx) *ctx->get_context()
+
 namespace core {
     class IoContext {
     public:
 
         virtual shared_ptr<boost::asio::io_context> get_context() = 0;
+
         virtual operator boost::asio::io_context() const = 0;
+
         virtual operator shared_ptr<boost::asio::io_context>() const = 0;
 
 

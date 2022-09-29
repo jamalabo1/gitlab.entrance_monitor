@@ -6,6 +6,7 @@
 
 #include <core/init.h>
 #include <core/io_context.h>
+#include <core/cancellation_token.h>
 #include <core/health.h>
 #include <boost/asio.hpp>
 
@@ -16,7 +17,8 @@ namespace core {
     class Task : public health::ICheckable {
     protected:
         shared_ptr<IoContext> ctx_;
-
+        /// unique token for the task, but is defined as shared_ptr because it can be shared with multiple threads.
+        shared_ptr<core::CancellationToken> token_;
     public:
         /// task result struct
         struct TaskResult {
@@ -29,9 +31,11 @@ namespace core {
         virtual TaskResult operator()() = 0;
 
         /// health check function for periodic check.
-        health::Status health_check() const override {
-            // defaults to true if not overridden.
-            return health::Status::Ok;
+        health::Status health_check() const override;
+
+        template<typename CompletionToken>
+        BOOST_ASIO_INITFN_RESULT_TYPE(CompletionToken, void()) post(BOOST_ASIO_MOVE_ARG(CompletionToken) token) {
+            return boost::asio::post(GET_BOOST_IO_CONTEXT(ctx_), token);
         }
     };
 
