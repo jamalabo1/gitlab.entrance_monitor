@@ -33,7 +33,7 @@ SET(private_headers
         interfaces/amqp/io_context.h
 
         impl/configuration_impl.h
-        impl/io_runner_impl.h
+        impl/io_context_impl.h
         impl/gui_handler_impl.h
 
         impl/retry/retry_policy_impl.h)
@@ -64,12 +64,12 @@ add_library(
         impl/configurations_impl.cpp
         impl/gui_handler_impl.cpp
 
-        impl/io_runner_impl.cpp
+        impl/io_context_impl.cpp
         service.cpp
         task.cpp
 
         ${private_headers}
-        impl/retry/retry_policy_impl.cpp)
+        impl/retry/retry_policy_impl.cpp standalone.cpp impl/retry/retry.cpp)
 
 target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets)
 

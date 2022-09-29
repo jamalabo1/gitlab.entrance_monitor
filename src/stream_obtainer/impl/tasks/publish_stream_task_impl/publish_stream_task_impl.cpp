@@ -10,6 +10,10 @@
 
 #include <view_models/frame_view.h>
 
+using fruit::createComponent;
+using core::Task;
+using core::communication::publish::getCommunicationPublishComponents;
+using stream_obtainer::tasks::PublishStreamTaskComponent;
 
 using stream_obtainer::FramesQueue;
 using core::communication::publish::PublisherFactory;
@@ -26,6 +30,7 @@ stream_obtainer::tasks::impl::PublishStreamTaskImpl::PublishStreamTaskImpl(Frame
 }
 
 core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::operator()() {
+
     BOOST_LOG_TRIVIAL(debug) << "creating publisher from factory";
     // create rabbitmq channel & connection
     shared_ptr<Publisher> publisher = publisher_factory_->create_publisher("frames.{1}");
@@ -66,4 +71,11 @@ core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::oper
         float fps = queue_->getFPS();
         BOOST_LOG_TRIVIAL(trace) << "queue_ fps: " << fps;
     }
+}
+
+PublishStreamTaskComponent stream_obtainer::tasks::getStreamObtainerPublishStreamTask() {
+    return createComponent()
+            .install(getCommunicationPublishComponents)
+            .bind<PublishStreamTask, impl::PublishStreamTaskImpl>()
+            .addMultibinding<core::Task, impl::PublishStreamTaskImpl>();
 }

@@ -4,16 +4,21 @@
 
 #include "subscribe_to_stream_task_impl.h"
 
-using namespace std;
-using namespace cv;
-using namespace stream_obtainer::tasks;
+using fruit::createComponent;
+using core::Task;
+using core::retry::getRetryComponents;
+using stream_obtainer::tasks::SubscribeToStreamTaskComponent;
+
+using std::lock_guard;
+using cv::Mat;
+using cv::VideoCapture;
 
 unique_ptr<VideoCapture> create_capture() {
     BOOST_LOG_TRIVIAL(trace) << "creating `cv::VideoCapture`";
     return make_unique<VideoCapture>();
 }
 
-impl::SubscribeToStreamTaskImpl::SubscribeToStreamTaskImpl(core::Configurations* configs, FramesQueue* framesQueue, core::retry::Factory retry_policy_factory) {
+stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::SubscribeToStreamTaskImpl(core::Configurations* configs, FramesQueue* framesQueue, core::retry::Factory retry_policy_factory) {
     cap_ = create_capture();
     queue_ = framesQueue;
     stream_url_ = configs->get("camera-stream-url");
@@ -24,7 +29,7 @@ impl::SubscribeToStreamTaskImpl::SubscribeToStreamTaskImpl(core::Configurations*
     });
 }
 
-core::Task::TaskResult impl::SubscribeToStreamTaskImpl::operator()() {
+core::Task::TaskResult stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::operator()() {
 
     BOOST_LOG_TRIVIAL(debug) << "subscribing to stream";
 
@@ -64,7 +69,7 @@ core::Task::TaskResult impl::SubscribeToStreamTaskImpl::operator()() {
 
 }
 
-bool impl::SubscribeToStreamTaskImpl::retry_handler() {
+bool stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::retry_handler() {
     BOOST_LOG_TRIVIAL(debug) << "[SubscribeToStreamTaskImpl::retry_handler] retrying to ensure video stream is opened.";
 
     BOOST_LOG_TRIVIAL(trace) << "`retry_handler` requesting lock on `cap_lock` mutex";
@@ -81,13 +86,18 @@ bool impl::SubscribeToStreamTaskImpl::retry_handler() {
     BOOST_LOG_TRIVIAL(debug) << "opening `VideoCapture` from `retry_handler`";
     // open the stream inside the retry handler.
     // this function blocks the while loop, because the loop is waiting for `cap_lock` mutex to be unlocked.
-    return cap->open(stream_url_);
+    return cap_->open(stream_url_);
 }
 
-void impl::SubscribeToStreamTaskImpl::retry_stop_handler() {
+void stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::retry_stop_handler() {
     BOOST_LOG_TRIVIAL(trace) << "calling the stream token to be canceled.";
     // stop the stream obtaining loop
     token_->cancel();
 }
 
-
+SubscribeToStreamTaskComponent stream_obtainer::tasks::getStreamObtainerSubscribeToStreamTask() {
+    return createComponent()
+            .install(getRetryComponents)
+            .bind<SubscribeToStreamTask, impl::SubscribeToStreamTaskImpl>()
+            .addMultibinding<core::Task, impl::SubscribeToStreamTaskImpl>();
+}

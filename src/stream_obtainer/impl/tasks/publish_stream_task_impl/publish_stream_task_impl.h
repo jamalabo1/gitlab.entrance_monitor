@@ -7,7 +7,6 @@
 
 #include "tasks/publish_stream_task.h"
 
-#include "frames_queue.h"
 #include <core/communication/publish.h>
 
 namespace stream_obtainer::tasks::impl {

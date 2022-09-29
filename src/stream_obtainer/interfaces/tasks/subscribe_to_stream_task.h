@@ -6,9 +6,10 @@
 #define ENTRANCE_MONITOR_V2_STREAM_OBTAINER_INTERFACES_TASKS_SUBSCRIBE_TO_STREAM_TASK_H
 
 #include <core/task.h>
+#include "frames_queue.h"
 
 namespace stream_obtainer::tasks {
-    CORE_DEFINE_TASK_DEFAULT(StreamObtainer, SubscribeToStreamTask);
+    CORE_DEFINE_TASK_DEFAULT(StreamObtainer, SubscribeToStreamTask, FramesQueue);
 }
 
 #endif //ENTRANCE_MONITOR_V2_STREAM_OBTAINER_INTERFACES_TASKS_SUBSCRIBE_TO_STREAM_TASK_H

@@ -31,6 +31,9 @@ namespace core::retry {
 
     using Factory = MakeUniqueFactoryP(RetryPolicy, RetryPolicy::Options);
     using $RetryPolicy = $Exported<Factory>;
+
+    using RetryPolicyComponent = $RetryPolicy::PureComponent;
+    RetryPolicyComponent getRetryPolicyComponent();
 }
 
 #endif //ENTRANCE_MONITOR_V2_CORE_RETRY_POLICY_H

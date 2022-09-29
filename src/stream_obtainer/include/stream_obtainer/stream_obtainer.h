@@ -12,7 +12,7 @@ namespace stream_obtainer {
     class StreamObtainer : public core::Service {
 
     public:
-        INJECT(StreamObtainer(const std::vector<core::Task*>& tasks));
+        INJECT(StreamObtainer(const std::vector<core::Task*>& ));
 
         int setup() override;
 

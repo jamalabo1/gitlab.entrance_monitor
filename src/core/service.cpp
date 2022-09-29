@@ -15,3 +15,7 @@ void core::Service::registerTasks(std::set<shared_ptr<Task>> &tasks) {
 core::health::Status core::Service::health_check() const  {
     return health::Status::Ok;
 }
+
+const std::set<shared_ptr<core::Task>> &core::Service::getTasks() const {
+    return tasks_;
+}

@@ -8,7 +8,6 @@
 #include <core/retry.h>
 
 #include "tasks/subscribe_to_stream_task.h"
-#include "frames_queue.h"
 #include <opencv2/videoio.hpp>
 
 namespace stream_obtainer::tasks::impl {

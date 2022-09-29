@@ -22,6 +22,8 @@ int stream_obtainer::StreamObtainer::setup() {
     return 0;
 }
 
+stream_obtainer::StreamObtainer::~StreamObtainer() = default;
+
 
 stream_obtainer::StreamObtainerComponent stream_obtainer::getStreamObtainerComponent() {
     return createComponent()

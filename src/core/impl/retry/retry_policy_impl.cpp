@@ -4,6 +4,8 @@
 
 #include "retry_policy_impl.h"
 
+using fruit::createComponent;
+
 core::retry::impl::RetryPolicyImpl::RetryPolicyImpl(ASSISTED(Options) options) : timer_(GET_BOOST_IO_CONTEXT(options.io_context)), failed_retry_count(0) {
 }
 
@@ -52,3 +54,7 @@ void core::retry::impl::RetryPolicyImpl::retry_handler() {
     return ping();
 }
 
+core::retry::RetryPolicyComponent core::retry::getRetryPolicyComponent() {
+    return createComponent()
+            .bind<RetryPolicy, impl::RetryPolicyImpl>();
+}

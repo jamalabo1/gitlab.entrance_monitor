@@ -5,12 +5,10 @@
 #ifndef ENTRANCE_MONITOR_V2_IO_RUNNER_H
 #define ENTRANCE_MONITOR_V2_IO_RUNNER_H
 
+#include <core/init.h>
 #include <boost/asio.hpp>
-#include <core/gui_handler.h>
-#include <core/amqp.h>
-#include <functional>
 
-#define GET_BOOST_IO_CONTEXT(ctx) *ctx->get_context()
+#define GET_BOOST_IO_CONTEXT(ctx) *(ctx)->get_context()
 
 namespace core {
     class IoContext {
@@ -18,18 +16,16 @@ namespace core {
 
         virtual shared_ptr<boost::asio::io_context> get_context() = 0;
 
-        virtual operator boost::asio::io_context() const = 0;
-
         virtual operator shared_ptr<boost::asio::io_context>() const = 0;
 
-        virtual void run() = 0;
+        virtual size_t run() = 0;
 
     };
 
 
     using $IoContext = $Exported<IoContext>;
 
-    using IoContextComponent = $IoContext::Component<GUIHandler, amqp::AmqpIoRunner>;
+    using IoContextComponent = $IoContext::PureComponent;
 
     IoContextComponent getIoContextComponent();
 }

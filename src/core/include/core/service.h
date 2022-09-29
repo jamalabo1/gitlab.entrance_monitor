@@ -47,7 +47,7 @@ class Service : public health::ICheckable {
         virtual void registerTasks(std::set<shared_ptr<Task>> &tasks);
 
 
-        virtual const set<shared_ptr<Task>>& getTasks() const;
+        virtual const std::set<shared_ptr<Task>>& getTasks() const;
     };
 
 }
