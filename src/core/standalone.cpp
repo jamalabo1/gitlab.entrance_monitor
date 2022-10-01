@@ -28,9 +28,9 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
     };
 
     for (const auto &service: services) {
-        post([&]() {
+        post([&post, &io_context, service]() {
             // setup service to register tasks.
-            service->setup();
+             service->setup();
 
             // get registered tasks.
             auto tasks = service->getTasks();
@@ -39,7 +39,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
             for (const auto &task: tasks) {
 
                 // post each task to the io_context.
-                post([&]() {
+                post([&io_context, task]() {
                     // subscribe sub-token to the main token.
                     auto token = make_shared<CancellationToken>();
 
@@ -54,7 +54,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
                     auto options = task->setup(io_context, token);
 
                     // execute the task.
-                    options.executor([&] {
+                    options.executor([task] {
                             task->operator()();
                     });
                 });

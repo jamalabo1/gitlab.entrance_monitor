@@ -6,7 +6,8 @@
 
 using fruit::createComponent;
 
-core::retry::impl::RetryPolicyImpl::RetryPolicyImpl(ASSISTED(Options) options) : timer_(GET_BOOST_IO_CONTEXT(options.io_context)), failed_retry_count(0) {
+core::retry::impl::RetryPolicyImpl::RetryPolicyImpl(ASSISTED(Options) options, shared_ptr<IoContext> io_context) : timer_(GET_BOOST_IO_CONTEXT(io_context)),
+                                                                                                                   options(options), failed_retry_count(0) {
 }
 
 void core::retry::impl::RetryPolicyImpl::ping() {

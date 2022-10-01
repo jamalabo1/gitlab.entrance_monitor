@@ -17,7 +17,7 @@ namespace core::retry::impl {
 
     public:
 
-        INJECT(RetryPolicyImpl(ASSISTED(Options)));
+        INJECT(RetryPolicyImpl(ASSISTED(Options), shared_ptr<IoContext>));
 
         void ping() override;
 

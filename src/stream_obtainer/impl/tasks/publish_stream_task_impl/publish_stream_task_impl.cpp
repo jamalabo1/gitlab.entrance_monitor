@@ -43,7 +43,7 @@ core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::oper
     // TODO: override the setup method to change the executor so it calls the task handle only when the queue is not empty.
 
 
-    BOOST_LOG_TRIVIAL(trace) << "setting up stream publisher";
+//    BOOST_LOG_TRIVIAL(trace) << "setting up stream publisher";
     while (!queue_->empty()) {
         BOOST_LOG_TRIVIAL(trace) << "receiving frame from fpsQueue";
         Mat frame = queue_->get();

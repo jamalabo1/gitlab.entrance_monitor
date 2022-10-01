@@ -18,7 +18,6 @@ namespace core::retry {
         virtual ~RetryPolicy() = default;
 
         struct Options {
-            shared_ptr<IoContext> io_context;
             boost::posix_time::time_duration retry_duration;
             boost::function<bool()> retry_handler;
             boost::function<void()> fail_handler;
@@ -32,7 +31,7 @@ namespace core::retry {
     using Factory = MakeUniqueFactoryP(RetryPolicy, RetryPolicy::Options);
     using $RetryPolicy = $Exported<Factory>;
 
-    using RetryPolicyComponent = $RetryPolicy::PureComponent;
+    using RetryPolicyComponent = $RetryPolicy::Component<IoContext>;
     RetryPolicyComponent getRetryPolicyComponent();
 }
 

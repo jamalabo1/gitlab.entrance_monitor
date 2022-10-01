@@ -9,5 +9,6 @@ using core::retry::getRetryPolicyComponent;
 
 Components core::retry::getRetryComponents() {
     return createComponent()
-            .install(getRetryPolicyComponent);
+        .install(getIoContextComponent)
+        .install(getRetryPolicyComponent);
 }

@@ -9,9 +9,9 @@
 #include <core/ptrs.h>
 #include <core/configurations.h>
 
-#include <boost/mp11.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
+#include <boost/mp11.hpp>
 
 
 #define mergeTypelist(...) boost::mp11::mp_append<__VA_ARGS__>
@@ -37,7 +37,7 @@ using RequiredComponents = fruit::Required<_RequiredComponents>;
 
 
 #define TYPENAMES_CLS(r, token, i, elm) BOOST_PP_COMMA_IF(i) elm::Typenames
-#define WRAP_IEXPORTED(...) BOOST_PP_SEQ_FOR_EACH_I(TYPENAMES_CLS, _, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+#define WRAP_IEXPORTED(...) BOOST_PP_SEQ_FOR_EACH_I(TYPENAMES_CLS,, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 
 
 // create required components from typelist
@@ -86,9 +86,13 @@ public:
 };
 
 
-#define EXPORT_MODULE(funcName, ...)     using $Components = $Module<__VA_ARGS__>; \
-using Components = ExportCoreComponent($Components); \
+//#define EXPORT_DEPENDANT_MODULE(required, funcName, ...) ExportCoreComponentWithRequired(required, $typelist<>)
+#define EXPORT_DEPENDANT_MODULE(required, funcName, ...) \
+using $Components = $Module<__VA_ARGS__>; \
+using Components = MakeComponentFromTypeListWithRequired(required, $Components::Typenames); \
 Components funcName()
+
+#define EXPORT_MODULE(funcName, ...) EXPORT_DEPENDANT_MODULE(MakeRequiredComponentsFromTypeList(typelist<>), funcName, __VA_ARGS__)
 
 
 #define EXPORT_TASKS_MODULE(funcName, ...)          \
