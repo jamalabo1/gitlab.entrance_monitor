@@ -24,7 +24,7 @@ namespace core {
 class Service : public health::ICheckable {
     protected:
         shared_ptr<IoContext> ctx_;
-        std::set<shared_ptr<Task>> tasks_;
+        std::vector<shared_ptr<Task>> tasks_;
 //        shared_ptr<boost::asio::thread_pool> pool;
 //        IoRunner* io_runner;
 //        CancellationToken token;
@@ -44,10 +44,10 @@ class Service : public health::ICheckable {
         virtual void registerTask(shared_ptr<Task> task);
 
 
-        virtual void registerTasks(std::set<shared_ptr<Task>> &tasks);
+        virtual void registerTasks(std::vector<shared_ptr<Task>> &tasks);
 
 
-        virtual const std::set<shared_ptr<Task>>& getTasks() const;
+        virtual const std::vector<shared_ptr<Task>>& getTasks() const;
     };
 
 }

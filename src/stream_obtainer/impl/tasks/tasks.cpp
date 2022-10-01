@@ -12,7 +12,7 @@ using stream_obtainer::tasks::Components;
 Components stream_obtainer::tasks::getStreamObtainerTasks() {
     return createComponent()
     .registerProvider([]() {
-        return std::vector<core::Task*>();
+        return std::vector<shared_ptr<core::Task>>();
     })
     .install(getFramesQueueComponent)
     .install(getStreamObtainerPublishStreamTask)

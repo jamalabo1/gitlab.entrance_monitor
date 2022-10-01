@@ -92,7 +92,7 @@ Components funcName()
 
 
 #define EXPORT_TASKS_MODULE(funcName, ...)          \
-using $Tasks = $Exported<std::vector<core::Task*>>; \
+using $Tasks = $Exported<std::vector<shared_ptr<core::Task>>>; \
 EXPORT_MODULE(getStreamObtainerTasks, $Tasks, __VA_ARGS__)
 
 #define shared_factory(x) std::function<shared_ptr<x>()>

@@ -14,8 +14,8 @@ using core::getCoreComponents;
 using core::Service;
 
 
-stream_obtainer::StreamObtainer::StreamObtainer(const std::vector<core::Task *> &tasks) {
-
+stream_obtainer::StreamObtainer::StreamObtainer(const std::vector<shared_ptr<core::Task>> &tasks) {
+    tasks_ = tasks;
 }
 
 int stream_obtainer::StreamObtainer::setup() {

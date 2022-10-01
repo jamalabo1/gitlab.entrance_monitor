@@ -28,7 +28,7 @@ namespace core {
     /// \param io_context io context for running services on (post)
     /// \param services services which have tasks to be ran
     /// \return -1
-    int run_services(core::IoContext *io_context, const std::vector<core::Service *> &services);
+    int run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services);
 }
 
 #define BUILD_STANDALONE_FROM_SERVICE(component)                                             \
@@ -37,7 +37,7 @@ fruit::Injector injector(component);                                            
 BOOST_LOG_TRIVIAL(info) << "initiation service runner";                                      \
 core::init_service_runner();                                                                 \
 BOOST_LOG_TRIVIAL(info) << "Running as standalone";                                          \
-auto io_context = injector.get<core::IoContext *>();                                         \
+auto io_context = injector.get<shared_ptr<core::IoContext>>();                               \
 BOOST_LOG_TRIVIAL(trace) << "getting `Service`(s) from injector";                            \
 const std::vector<core::Service *> &services = injector.getMultibindings<core::Service>();   \
 core::run_services(io_context, services);                                                    \

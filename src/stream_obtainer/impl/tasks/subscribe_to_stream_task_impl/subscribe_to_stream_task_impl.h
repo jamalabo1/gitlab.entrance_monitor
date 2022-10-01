@@ -23,6 +23,8 @@ namespace stream_obtainer::tasks::impl {
 
         INJECT(SubscribeToStreamTaskImpl(core::Configurations*, FramesQueue*, core::retry::Factory));
 
+        bool configure() override;
+
         TaskResult operator()() override;
 
 

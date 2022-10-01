@@ -2,6 +2,7 @@
 // Created by root on 9/29/22.
 //
 #include <core/standalone.h>
+#include <core/cancellation_token.h>
 
 void core::init_service_runner() {
 #ifdef WIN32
@@ -19,9 +20,9 @@ void core::init_service_runner() {
 #endif
 }
 
-int core::run_services(core::IoContext* io_context, const std::vector<core::Service *> &services) {
-    auto post = [&](const std::function<void()>& func) {
-        boost::asio::post(GET_BOOST_IO_CONTEXT(io_context), [&func](){
+int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services) {
+    auto post = [&]( std::function<void()>&& func) {
+        boost::asio::post(GET_BOOST_IO_CONTEXT(io_context), [func](){
             func();
         });
     };
@@ -39,17 +40,39 @@ int core::run_services(core::IoContext* io_context, const std::vector<core::Serv
 
                 // post each task to the io_context.
                 post([&]() {
-                    task->operator()();
+                    // subscribe sub-token to the main token.
+                    auto token = make_shared<CancellationToken>();
+
+                    // configure the task.
+                    bool result = task->configure();
+
+                    if(!result) {
+                        // TODO: handle the failing of the task (e.g., re-schedule executing (retry-policy)).
+                    }
+
+                    // get runtime options for the task.
+                    auto options = task->setup(io_context, token);
+
+                    // execute the task.
+                    options.executor([&] {
+                            task->operator()();
+                    });
                 });
             }
         });
     }
 
     boost::thread_group pool;
-    for (auto i = 0u; i<boost::thread::hardware_concurrency(); ++i)
+    auto hc = boost::thread::hardware_concurrency();
+
+    BOOST_LOG_TRIVIAL(trace) << "device hardware concurrency: " << hc;
+
+    for (auto i = 0u; i<hc; ++i)
         pool.create_thread([&] {io_context->run(); });
 
+    BOOST_LOG_TRIVIAL(debug) << "joining all threads for io_context.";
     pool.join_all();
+    BOOST_LOG_TRIVIAL(debug) << "threads finished joining.";
 
     return -1;
 }

@@ -25,7 +25,7 @@ namespace core {
     // singleton.
     class Task : public health::ICheckable {
     protected:
-        shared_ptr<IoContext> ctx_;
+        //shared_ptr<IoContext> ctx_;
         /// unique token for the task, but is defined as shared_ptr because it can be shared with multiple threads.
         shared_ptr<core::CancellationToken> token_;
     public:
@@ -35,6 +35,23 @@ namespace core {
             boost::system::error_code err;
         };
 
+        struct RunOptions {
+            using ExecutorCallback = std::function<void()>;
+            using Executor = std::function<void(ExecutorCallback)>;
+
+            Executor executor;
+        };
+
+
+        // set up the task. this method purpose is to tell the caller how to execute the task
+        virtual RunOptions setup(shared_ptr<IoContext>, shared_ptr<core::CancellationToken>);
+
+        // configure the task, this is almost like a constructor job, but it's move here to enable faster object creation
+        // so that the DI can create the objects faster (faster startup time).
+        // if this function fails, the task is re-scheduled to be executed for later time.
+        // it's called before the setup method. so that if it failed, there is no need to set up the task.
+        virtual bool configure();
+
         ///
         /// \return if there is an error occurred in executing the task, it's returned.
         virtual TaskResult operator()() = 0;
@@ -42,10 +59,7 @@ namespace core {
         /// health check function for periodic check.
         health::Status health_check() const override;
 
-        template<typename CompletionToken>
-        BOOST_ASIO_INITFN_RESULT_TYPE(CompletionToken, void()) post(BOOST_ASIO_MOVE_ARG(CompletionToken) token) {
-            return boost::asio::post(GET_BOOST_IO_CONTEXT(ctx_), token);
-        }
+
     };
 
 }

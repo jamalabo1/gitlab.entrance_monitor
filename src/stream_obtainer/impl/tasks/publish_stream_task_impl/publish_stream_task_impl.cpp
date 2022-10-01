@@ -29,13 +29,19 @@ stream_obtainer::tasks::impl::PublishStreamTaskImpl::PublishStreamTaskImpl(Frame
 
 }
 
+bool stream_obtainer::tasks::impl::PublishStreamTaskImpl::configure() {
+    BOOST_LOG_TRIVIAL(debug) << "[PublishStreamTaskImpl::configure]: configuring task";
+
+    BOOST_LOG_TRIVIAL(trace) << "creating publisher from factory";
+    // TODO: check if the publisher was created successfully. if not report.
+    // create rabbitmq channel & connection
+    publisher_ = publisher_factory_->create_publisher("frames.{1}");
+}
+
 core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::operator()() {
 
-    BOOST_LOG_TRIVIAL(debug) << "creating publisher from factory";
-    // create rabbitmq channel & connection
-    shared_ptr<Publisher> publisher = publisher_factory_->create_publisher("frames.{1}");
+    // TODO: override the setup method to change the executor so it calls the task handle only when the queue is not empty.
 
-    // TODO: check if the publisher was created successfully. if not report.
 
     BOOST_LOG_TRIVIAL(trace) << "setting up stream publisher";
     while (token_->isActive()) {
@@ -64,7 +70,7 @@ core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::oper
         auto frameView = FrameView(mat_to_encoded_vector(resizedFrame), currentTimestamp);
 
         BOOST_LOG_TRIVIAL(trace) << "publishing frame with id " << string(frameView.id);
-        publisher->publish(
+        publisher_->publish(
                 frameView
         );
 
@@ -72,6 +78,8 @@ core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::oper
         BOOST_LOG_TRIVIAL(trace) << "queue_ fps: " << fps;
     }
 }
+
+
 
 PublishStreamTaskComponent stream_obtainer::tasks::getStreamObtainerPublishStreamTask() {
     return createComponent()

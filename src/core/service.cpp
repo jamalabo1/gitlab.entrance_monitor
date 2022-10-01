@@ -5,17 +5,17 @@
 
 
 void core::Service::registerTask(shared_ptr<core::Task> task) {
-    tasks_.emplace(task);
+    tasks_.emplace_back(task);
 }
 
-void core::Service::registerTasks(std::set<shared_ptr<Task>> &tasks) {
-    tasks_.merge(tasks);
+void core::Service::registerTasks(std::vector<shared_ptr<Task>> &tasks) {
+//    tasks_.(tasks);
 }
 
 core::health::Status core::Service::health_check() const  {
     return health::Status::Ok;
 }
 
-const std::set<shared_ptr<core::Task>> &core::Service::getTasks() const {
+const std::vector<shared_ptr<core::Task>> &core::Service::getTasks() const {
     return tasks_;
 }

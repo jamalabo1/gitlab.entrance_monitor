@@ -29,17 +29,13 @@ stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::SubscribeToStreamTaskIm
     });
 }
 
-core::Task::TaskResult stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::operator()() {
-
-    BOOST_LOG_TRIVIAL(debug) << "subscribing to stream";
-
+bool stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::configure() {
+    BOOST_LOG_TRIVIAL(debug) << "[SubscribeToStreamTaskImpl::configure]: configuring task";
     BOOST_LOG_TRIVIAL(trace) << "opening `VideoCapture` stream";
-    cap_->open(stream_url_);
+    return cap_->open(stream_url_);
+}
 
-    BOOST_LOG_TRIVIAL(trace) << "posting work";
-
-    while (token_->isActive()) {
-
+core::Task::TaskResult stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::operator()() {
         // NOTE: problem with locking is blocking time.
         // TODO: re-implement to use lock-free approach.
         cap_lock.lock();
@@ -49,7 +45,11 @@ core::Task::TaskResult stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::
         // so it's just a safeguard.
         if (!cap_->isOpened()) {
             cap_lock.unlock();
-            continue;
+
+            // return an error. because if the VideoCapture is not opened, it means something at some point failed.
+            return TaskResult {
+                .err = boost::system::error_code()
+            };
         }
 
         Mat frame;
@@ -65,8 +65,6 @@ core::Task::TaskResult stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::
             // this ensures that if the grabbed condition is met, the `retry_handler` is not triggered.
             retry_policy_->ping();
         }
-    }
-
 }
 
 bool stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::retry_handler() {
@@ -94,6 +92,8 @@ void stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::retry_stop_handler
     // stop the stream obtaining loop
     token_->cancel();
 }
+
+
 
 SubscribeToStreamTaskComponent stream_obtainer::tasks::getStreamObtainerSubscribeToStreamTask() {
     return createComponent()
