@@ -44,9 +44,7 @@ core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::oper
 
 
     BOOST_LOG_TRIVIAL(trace) << "setting up stream publisher";
-    while (token_->isActive()) {
-        if (queue_->empty()) continue;
-
+    while (!queue_->empty()) {
         BOOST_LOG_TRIVIAL(trace) << "receiving frame from fpsQueue";
         Mat frame = queue_->get();
 

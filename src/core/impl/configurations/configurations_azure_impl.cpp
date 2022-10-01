@@ -2,9 +2,11 @@
 // Created by jamal on 23/07/2022.
 //
 
-#include <fruit/component.h>
 
-#include "configuration_impl.h"
+#include "configurations_azure_impl.h"
+
+#include <core/logging.h>
+
 #include <azure/identity.hpp>
 
 
@@ -17,7 +19,7 @@ using namespace Azure::Security::KeyVault::Secrets;
 using namespace core;
 using namespace core::impl;
 
-ConfigurationsImpl::ConfigurationsImpl(SecretClient *client) : m_secretsClient(client) {
+ConfigurationsAzureImpl::ConfigurationsAzureImpl(SecretClient *client) : m_secretsClient(client) {
 
 #ifdef ENABLE_EGARLY_LOAD_SECRETS
 
@@ -34,7 +36,7 @@ ConfigurationsImpl::ConfigurationsImpl(SecretClient *client) : m_secretsClient(c
 }
 
 
-std::string ConfigurationsImpl::get_value_from_key(const std::string &key) {
+std::string ConfigurationsAzureImpl::get_value_from_key(const std::string &key) {
 
     // if a cached value of the key exists, then return the value.
     if (m_cacheMap.find(key) == m_cacheMap.end()) {
@@ -64,6 +66,8 @@ std::string ConfigurationsImpl::get_value_from_key(const std::string &key) {
 ConfigurationsComponent core::getConfigurationsComponent() {
     return fruit::createComponent()
             .registerProvider([]() {
+                BOOST_LOG_TRIVIAL(debug) << "creating azure key-vault secret client provider.";
+
                 auto credential = std::make_shared<Azure::Identity::ChainedTokenCredential>(
                         Azure::Identity::ChainedTokenCredential::Sources{
                                 std::make_shared<Azure::Identity::EnvironmentCredential>(),
@@ -71,9 +75,10 @@ ConfigurationsComponent core::getConfigurationsComponent() {
                         }
                 );
 
+                BOOST_LOG_TRIVIAL(trace) << "receiving key-vault_url from env-vars.";
                 auto key_vault_url = std::getenv("AZURE_KEYVAULT_URL");
                 auto client = new SecretClient(key_vault_url, credential);
                 return client;
             })
-            .bind<Configurations, ConfigurationsImpl>();
+            .bind<Configurations, ConfigurationsAzureImpl>();
 }

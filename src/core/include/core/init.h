@@ -95,6 +95,19 @@ Components funcName()
 using $Tasks = $Exported<std::vector<shared_ptr<core::Task>>>; \
 EXPORT_MODULE(getStreamObtainerTasks, $Tasks, __VA_ARGS__)
 
+#define TASKS_PROVIDER_ARG_NAME_(r, token, i, elm) t##i
+#define TASKS_PROVIDER_PARAM_NAME(r, token, i, elm)  BOOST_PP_COMMA_IF(i) shared_ptr<elm> TASKS_PROVIDER_ARG_NAME_(r, token, i, elm)
+#define TASKS_PROVIDER_PARAMS(...) BOOST_PP_SEQ_FOR_EACH_I(TASKS_PROVIDER_PARAM_NAME, _, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+#define TASKS_PROVIDER_ARG_NAME(r, token, i, elm) BOOST_PP_COMMA_IF(i) TASKS_PROVIDER_ARG_NAME_(r, token, i, elm)
+#define TASKS_PROVIDER_ARGS(...) BOOST_PP_SEQ_FOR_EACH_I(TASKS_PROVIDER_ARG_NAME, _, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+/// since fruit does not provide multi-binding dependency injection, tasks vector has to be registered explicitly.
+#define MAKE_TASKS_PROVIDER(...)                                                             \
+[](TASKS_PROVIDER_PARAMS(__VA_ARGS__)) {                                                     \
+auto v = std::vector<shared_ptr<core::Task>> {TASKS_PROVIDER_ARGS(__VA_ARGS__)};             \
+return v;                                                                                    \
+}
+
 #define shared_factory(x) std::function<shared_ptr<x>()>
 #define unique_factory(x) std::function<unique_ptr<x>()>
 #define unique_factory_p(x, ...) std::function<unique_ptr<x>(__VA_ARGS__)>

@@ -14,7 +14,7 @@ find_package(azure-identity-cpp CONFIG REQUIRED)
 find_package(azure-security-keyvault-secrets-cpp CONFIG REQUIRED)
 
 SET(private_headers
-        interfaces/channel_holder.h
+
 
         impl/amqp.h
         impl/amqp/channel_holder_impl.h
@@ -29,19 +29,31 @@ SET(private_headers
         impl/communication/publish/publisher_factory.h
 
 
-        interfaces/amqp/connection.h
-        interfaces/amqp/io_context.h
-
-        impl/configuration_impl.h
         impl/io_context_impl.h
         impl/gui_handler_impl.h
 
-        impl/retry/retry_policy_impl.h)
+        impl/retry/retry_policy_impl.h
+        )
+
+set(configurations_srcs
+        impl/configurations/configurations_local_impl.h
+        impl/configurations/configurations_local_impl.cpp
+        )
+
+if(CORE_USE_AZURE_KEYVAULT)
+set(configurations_srcs
+        impl/configurations/configurations_azure_impl.h
+        impl/configurations/configurations_azure_impl.cpp
+)
+endif()
 
 add_library(
         core
         core.cpp
         msgpacker.cpp
+
+        ${configurations_srcs}
+
 
         impl/communication/publish/publisher.cpp
         impl/communication/publish/publisher_factory.cpp
@@ -61,7 +73,6 @@ add_library(
         impl/amqp/amqp_io_runner_impl.cpp
         impl/amqp/amqp_connection_impl.cpp
 
-        impl/configurations_impl.cpp
         impl/gui_handler_impl.cpp
 
         impl/io_context_impl.cpp
@@ -69,7 +80,7 @@ add_library(
         task.cpp
 
         ${private_headers}
-        impl/retry/retry_policy_impl.cpp standalone.cpp impl/retry/retry.cpp)
+        impl/retry/retry_policy_impl.cpp standalone.cpp impl/retry/retry.cpp impl/configurations/configurations_local_impl.cpp)
 
 target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets)
 

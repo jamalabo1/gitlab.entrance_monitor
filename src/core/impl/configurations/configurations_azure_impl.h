@@ -2,8 +2,8 @@
 // Created by jamal on 23/08/2022.
 //
 
-#ifndef ENTRANCE_MONITOR_V2_CONFIGURATION_IMPL_H
-#define ENTRANCE_MONITOR_V2_CONFIGURATION_IMPL_H
+#ifndef ENTRANCE_MONITOR_V2_CONFIGURATION_AZURE_IMPL_H
+#define ENTRANCE_MONITOR_V2_CONFIGURATION_AZURE_IMPL_H
 
 
 #include <core/configurations.h>
@@ -11,7 +11,7 @@
 
 namespace core::impl {
 
-    class ConfigurationsImpl : public Configurations {
+    class ConfigurationsAzureImpl : public Configurations {
 
     private:
         Azure::Security::KeyVault::Secrets::SecretClient *m_secretsClient;
@@ -26,10 +26,10 @@ namespace core::impl {
         std::string get_value_from_key(const std::string &key) override;
 
     public:
-        INJECT(ConfigurationsImpl(Azure::Security::KeyVault::Secrets::SecretClient * client));
+        INJECT(ConfigurationsAzureImpl(Azure::Security::KeyVault::Secrets::SecretClient * client));
 
     };
 
 }
 
-#endif //ENTRANCE_MONITOR_V2_CONFIGURATION_IMPL_H
+#endif //ENTRANCE_MONITOR_V2_CONFIGURATION_AZURE_IMPL_H
