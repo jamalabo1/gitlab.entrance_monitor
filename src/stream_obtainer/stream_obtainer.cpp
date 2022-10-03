@@ -15,10 +15,11 @@ using core::Service;
 
 
 stream_obtainer::StreamObtainer::StreamObtainer(const std::vector<shared_ptr<core::Task>> &tasks) {
-    tasks_ = tasks;
+    registerTasks(tasks);
 }
 
 int stream_obtainer::StreamObtainer::setup() {
+    // no setup is required for stream obtainer.
     return 0;
 }
 

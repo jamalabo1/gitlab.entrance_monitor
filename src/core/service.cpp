@@ -8,8 +8,9 @@ void core::Service::registerTask(shared_ptr<core::Task> task) {
     tasks_.emplace_back(task);
 }
 
-void core::Service::registerTasks(std::vector<shared_ptr<Task>> &tasks) {
+void core::Service::registerTasks(const std::vector<shared_ptr<Task>> &tasks) {
 //    tasks_.(tasks);
+    tasks_ = tasks;
 }
 
 core::health::Status core::Service::health_check() const  {

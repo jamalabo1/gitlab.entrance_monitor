@@ -44,7 +44,7 @@ namespace core {
 
 
         // set up the task. this method purpose is to tell the caller how to execute the task
-        virtual RunOptions setup(shared_ptr<IoContext>, shared_ptr<core::CancellationToken>);
+        virtual RunOptions setup(shared_ptr<core::IoContext>, shared_ptr<core::CancellationToken>);
 
         // configure the task, this is almost like a constructor job, but it's move here to enable faster object creation
         // so that the DI can create the objects faster (faster startup time).
