@@ -41,7 +41,7 @@ protected:
 public:
 
         // setup function, called to coordinate the handling of tasks.
-        virtual int setup() = 0;
+        virtual int setup();
 
         // default health check.
         health::Status health_check() const override;

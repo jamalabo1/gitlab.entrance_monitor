@@ -14,8 +14,6 @@ namespace stream_obtainer {
     public:
         INJECT(StreamObtainer(const std::vector<shared_ptr<core::Task>>& ));
 
-        int setup() override;
-
         ~StreamObtainer();
     };
 

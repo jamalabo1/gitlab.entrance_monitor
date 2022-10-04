@@ -97,7 +97,7 @@ Components funcName()
 
 #define EXPORT_TASKS_MODULE(funcName, ...)          \
 using $Tasks = $Exported<std::vector<shared_ptr<core::Task>>>; \
-EXPORT_MODULE(getStreamObtainerTasks, $Tasks, __VA_ARGS__)
+EXPORT_MODULE(funcName, $Tasks, __VA_ARGS__)
 
 #define TASKS_PROVIDER_ARG_NAME_(r, token, i, elm) t##i
 #define TASKS_PROVIDER_PARAM_NAME(r, token, i, elm)  BOOST_PP_COMMA_IF(i) shared_ptr<elm> TASKS_PROVIDER_ARG_NAME_(r, token, i, elm)

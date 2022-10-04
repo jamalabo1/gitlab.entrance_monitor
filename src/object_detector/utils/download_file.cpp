@@ -47,13 +47,9 @@ vector<uint8_t> read_file(const fs::path &path) {
 
     BOOST_LOG_TRIVIAL(trace) << "file was read successfully with size " << buffer.size();
     return buffer;
-//    if ()
-//    {
-    /* worked! */
-//    }
 }
 
-vector<uint8_t> download_file_from_url(const string &url) {
+vector<uint8_t> object_detector::utils::download_file_from_url(const string &url) {
     BOOST_LOG_TRIVIAL(debug) << "downloading file from url " << url;
 
     auto u_path = fs::path(url);

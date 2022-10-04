@@ -20,3 +20,7 @@ core::health::Status core::Service::health_check() const  {
 const std::vector<shared_ptr<core::Task>> &core::Service::getTasks() const {
     return tasks_;
 }
+
+int core::Service::setup() {
+    return 0;
+}

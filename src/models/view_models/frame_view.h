@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+namespace views {
+
 struct FrameView : core::View {
     FrameView() = default;
 
@@ -23,5 +25,6 @@ struct FrameView : core::View {
 
     pack_items(frame_data, timestamp, extension)
 };
+}
 
 #endif //ENTRANCE_MONITOR_V2_FRAMEVIEW_H

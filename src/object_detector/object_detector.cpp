@@ -2,37 +2,24 @@
 // Created by jamal on 03/07/2022.
 //
 
-#include <object_detector/object_detector.h>
-#include <frame_message_handler.h>
-#include <utils/service.h>
+#include "object_detector/object_detector.h"
 
-using namespace fruit;
-using namespace core;
-using namespace core::amqp;
+#include "tasks.h"
 
+using fruit::createComponent;
+using core::getCoreComponents;
 
-ObjectDetector::ObjectDetector(core::communication::consume::Consumer *consumer, core::communication::consume::ConsumerMessageHandler *handler,
-                               core::IoRunner *io_runner) : Service(io_runner), consumer(consumer),
-                                                            handler(handler) {
+using object_detector::tasks::getObjectDetectorTasks;
 
+object_detector::ObjectDetectorService::ObjectDetectorService(const std::vector<shared_ptr<core::Task>> &tasks) {
+    registerTasks(tasks);
 }
 
-int ObjectDetector::setup() {
+object_detector::ObjectDetectorService::~ObjectDetectorService() = default;
 
-    ArgsTable args = {
-            {"x-max-length", 5} // MAX ACCUMULATIVE QUEUE SIZE IS 5,
-            // This ~means the max latency in the _queue is 5 frames.
-    };
-
-    CREATE_CONSUMER_SERVICE_RUNNER("frames.{1}", args, true);
-
-    return run();
-}
-
-
-ObjectDetectorComponent getObjectDetectorComponent() {
+object_detector::ObjectDetectorComponent object_detector::getObjectDetectorComponent() {
     return createComponent()
-            .install(getCoreComponents)
-            .install(getFrameMessageHandlerComponent)
-            .addMultibinding<Service, ObjectDetector>();
+    .install(getObjectDetectorTasks)
+    .install(getCoreComponents)
+    .addMultibinding<core::Service, ObjectDetectorService>();
 }
