@@ -22,4 +22,9 @@ COPY --from=builder /home/project/build /home/project/build
 ARG PROJECT_TARGET
 ARG CMAKE_PROJECT_TARGET
 
-ENTRYPOINT "/home/project/build/src/${PROJECT_TARGET}/${CMAKE_PROJECT_TARGET}"
+WORKDIR /home/project/build/src/${PROJECT_TARGET}
+
+
+RUN chmod +x /${CMAKE_PROJECT_TARGET}
+
+ENTRYPOINT "${CMAKE_PROJECT_TARGET}"
