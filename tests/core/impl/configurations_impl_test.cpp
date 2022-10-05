@@ -3,7 +3,7 @@
 //
 #include <gtest/gtest.h>
 
-#include "configuration_impl.h"
+#include "configurations/configurations_local_impl.h"
 
 namespace {
 

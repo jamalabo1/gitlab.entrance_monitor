@@ -9,6 +9,7 @@ using namespace std;
 using namespace cv;
 using namespace core::msgpacker;
 
+using views::FrameView;
 
 Mat core::msgpacker::unpack_frame_mat(const string &body) {
     FrameView view = unpack_frame(body);

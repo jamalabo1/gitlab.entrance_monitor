@@ -2,10 +2,14 @@
 #include <core/standalone.h>
 
 using namespace fruit;
-using namespace core;
+using core::IoContext;
+using core::getCoreComponents;
+using core::getConfigurationsComponent;
+using stream_obtainer::getStreamObtainerComponent;
 
-Component<StreamObtainer> getRootComponent() {
+Component<core::IoContext> getRootComponent() {
     return createComponent()
+            .install(getCoreComponents)
             .install(getConfigurationsComponent)
             .install(getStreamObtainerComponent);
 }

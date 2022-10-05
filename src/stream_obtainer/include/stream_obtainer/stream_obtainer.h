@@ -7,21 +7,20 @@
 
 #include <core/core.h>
 
-class StreamObtainer : public core::Service {
-private:
-    core::communication::publish::PublisherFactory *publisher_factory;
-    core::Configurations *configs;
-public:
-    INJECT(StreamObtainer(core::communication::publish::PublisherFactory * publisher_factory, core::IoRunner * io_runner, core::Configurations * configurations));
+namespace stream_obtainer {
 
-    int setup() override;
+    class StreamObtainer : public core::Service {
 
-    ~StreamObtainer();
-};
+    public:
+        INJECT(StreamObtainer(const std::vector<shared_ptr<core::Task>>& ));
 
-using StreamObtainerComponent = fruit::Component<RequiredComponents, StreamObtainer>;
+        ~StreamObtainer();
+    };
 
-StreamObtainerComponent getStreamObtainerComponent();
+    using $StreamObtainer = $Exported<StreamObtainer>;
+    using StreamObtainerComponent = $StreamObtainer::PureComponent;
+    StreamObtainerComponent getStreamObtainerComponent();
+}
 
 
 #endif //ENTRANCE_MONITOR_V2_STREAM_OBTAINER_H

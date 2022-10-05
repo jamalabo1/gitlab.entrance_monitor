@@ -7,23 +7,20 @@
 
 #include <core/core.h>
 
-class ObjectDetector : public core::Service {
-private:
-    core::communication::consume::Consumer *consumer;
-    core::communication::consume::ConsumerMessageHandler *handler;
+namespace object_detector {
 
+class ObjectDetectorService : public core::Service {
 public:
-    INJECT(ObjectDetector(core::communication::consume::Consumer * consumer,
-                          core::communication::consume::ConsumerMessageHandler * handler,
-                          core::IoRunner* io_runner));
+    INJECT(ObjectDetectorService(const std::vector<shared_ptr<core::Task>>& ));
 
-
-    int setup() override;
+    ~ObjectDetectorService();
 };
 
 
-using ObjectDetectorComponent = fruit::Component<RequiredComponents, ObjectDetector>;
+    using $ObjectDetector = $Exported<ObjectDetectorService>;
+    using ObjectDetectorComponent = $ObjectDetector::PureComponent;
 
-ObjectDetectorComponent getObjectDetectorComponent();
+    ObjectDetectorComponent getObjectDetectorComponent();
+}
 
 #endif //ENTRANCE_MONITOR_V2_OBJECT_DETECTOR_H

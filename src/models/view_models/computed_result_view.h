@@ -7,6 +7,8 @@
 
 #include <core/view.h>
 
+namespace views {
+
 class ComputedResultView : public core::View {
 
 public:
@@ -21,5 +23,6 @@ public:
 
     pack_items(isBlocking)
 };
+}
 
 #endif //ENTRANCE_MONITOR_V2_COMPUTED_RESULT_VIEW_H
