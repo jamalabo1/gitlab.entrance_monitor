@@ -71,7 +71,7 @@ object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTas
     consumer_->consume(*consume_options_);
 }
 
-#define MULTIPLE_GENERATE_NEQUAL(v) v != 2 && v != 7
+#define MULTIPLE_GENERATE_NEQUAL(v) v != 2 && (v) != 7
 
 void object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()(
         const consume::ConsumerMessage::ptr_t &envelope) const {

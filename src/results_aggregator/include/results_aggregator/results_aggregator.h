@@ -7,35 +7,19 @@
 
 #include <core/core.h>
 
-#include "aggregator.h"
+namespace results_aggregator {
 
 class ResultsAggregatorService : public core::Service {
-private:
-    core::communication::consume::Consumer *consumer;
-    core::communication::consume::ConsumerMessageHandler *handler;
-    unique_ptr<core::communication::publish::Publisher> publisher;
-    Aggregator *aggregator;
-
 public:
-    INJECT(ResultsAggregatorService(
-            core::communication::consume::Consumer * consumer,
-            core::communication::consume::ConsumerMessageHandler * handler,
-            core::communication::publish::PublisherFactory * publisher_factory,
-            core::IoRunner * io_runner,
-            Aggregator * aggregator
-    )
-    );
+    INJECT(ResultsAggregatorService(const std::vector<shared_ptr<core::Task>>& ));
 
-
-    int setup() override;
-
-protected:
-    void graph_computation();
+    ~ResultsAggregatorService();
 };
 
-using ResultAggregatorServiceComponent = fruit::Component<RequiredComponents, ResultsAggregatorService>;
-
+using $ResultsAggregatorService = $Exported<ResultsAggregatorService>;
+using ResultAggregatorServiceComponent = $ResultsAggregatorService::PureComponent;
 ResultAggregatorServiceComponent getResultsAggregatorServiceComponent();
 
+}
 
 #endif //ENTRANCE_MONITOR_V2_RESULTS_AGGREGATOR_H

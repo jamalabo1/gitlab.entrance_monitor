@@ -19,7 +19,7 @@ object_detector::ObjectDetectorService::~ObjectDetectorService() = default;
 
 object_detector::ObjectDetectorComponent object_detector::getObjectDetectorComponent() {
     return createComponent()
-    .install(getObjectDetectorTasks)
-    .install(getCoreComponents)
-    .addMultibinding<core::Service, ObjectDetectorService>();
+            .install(getObjectDetectorTasks)
+            .install(getCoreComponents)
+            .addMultibinding<core::Service, ObjectDetectorService>();
 }
