@@ -7,25 +7,21 @@
 
 #include <core/core.h>
 
+namespace blocking_computation {
 
 class BlockingComputationService : public core::Service {
-private:
-    core::communication::consume::ConsumerMessageHandler *handler;
-    core::communication::consume::Consumer *consumer;
-
 public:
 
-    INJECT(BlockingComputationService(core::communication::consume::ConsumerMessageHandler * ,
-                                      core::communication::consume::Consumer * , core::IoRunner * ));
-
-
-    int setup() override;
+    INJECT(BlockingComputationService(
+                   const std::vector<shared_ptr<core::Task>>&
+            ));
 };
 
 
-using BlockingComputationComponent = fruit::Component<RequiredComponents, BlockingComputationService>;
-
-BlockingComputationComponent getBlockingComputationComponent();
+    using $BlockingComputation = $Exported<BlockingComputationService>;
+    using BlockingComputationComponent = $BlockingComputation::PureComponent;
+    BlockingComputationComponent getBlockingComputationComponent();
+}
 
 
 #endif //ENTRANCE_MONITOR_V2_BLOCKING_COMPUTATION_H

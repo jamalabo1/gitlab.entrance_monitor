@@ -7,8 +7,8 @@
 
 #include <core/task.h>
 
-namespace blockage_computation::tasks {
-    CORE_DEFINE_TASK_DEFAULT(BlockageComputation, ComputeBlockageTask);
+namespace blocking_computation::tasks {
+    CORE_DEFINE_TASK_DEFAULT(BlockingComputation, ComputeBlockageTask);
 }
 
 #endif //ENTRANCE_MONITOR_V2_COMPUTE_BLOCKAGE_TASK_H

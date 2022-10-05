@@ -3,6 +3,7 @@
 //
 #include <core/standalone.h>
 #include <core/cancellation_token.h>
+#include <boost/thread.hpp>
 
 void core::init_service_runner() {
 #ifdef WIN32

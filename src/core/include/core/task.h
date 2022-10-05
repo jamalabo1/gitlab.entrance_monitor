@@ -18,6 +18,12 @@ using $##task_name = $Exported<task_name>; \
 using task_name##Component = $##task_name::Component<__VA_ARGS__>; \
 task_name##Component get##ServiceName##task_name()
 
+#define CORE_TASK_CREATE_COMPONENT(TaskName)                    \
+fruit::createComponent()                                 \
+.bind<TaskName, impl::TaskName##Impl>()                         \
+.addMultibinding<core::Task, impl::TaskName##Impl>()
+
+
 #define CORE_TASK_RUN_OPTIONS_ONE_TIME RunOptions{.executor=[](auto cb) {cb();}}
 
 namespace core {

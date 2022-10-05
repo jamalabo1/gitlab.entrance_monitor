@@ -7,8 +7,6 @@
 
 #include <core/init.h>
 #include <core/logging.h>
-#include <boost/asio.hpp>
-#include <boost/thread.hpp>
 
 #include <core/service.h>
 #include <core/io_context.h>

@@ -8,9 +8,11 @@
 
 using namespace fruit;
 using namespace core;
+using blocking_computation::getBlockingComputationComponent;
 
-Component<BlockingComputationService> getRootComponent() {
+Component<IoContext> getRootComponent() {
     return createComponent()
+            .install(getCoreComponents)
             .install(getConfigurationsComponent)
             .install(getBlockingComputationComponent);
 }
