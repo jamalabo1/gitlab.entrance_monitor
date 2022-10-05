@@ -19,7 +19,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: | 
-            echo 'export PROJECT_TARGET="${TARGET/-/_}" >> $BASH_ENV
+            echo 'export PROJECT_TARGET="${TARGET/-/_}"' >> $BASH_ENV
       - run:
           name: Build Docker image
           command: |
