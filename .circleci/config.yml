@@ -12,7 +12,7 @@ jobs:
       target:
         type: string
     environment:
-      TARGET: <<pipeline.target>>
+      TARGET: <<parameters.target>>
     steps:
       - checkout
       - docker/install-docker-tools
