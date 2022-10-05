@@ -21,7 +21,7 @@ jobs:
           command: |
             docker build                                                           
             --build-arg                                                            
-            CMAKE_PROJECT_TARGET=<< parameters.target >                            
+            CMAKE_PROJECT_TARGET=<< parameters.target >>                          
             --build-arg
             PROJECT_TARGET=<< parameters.target >>_standalone                      
             -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
