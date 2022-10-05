@@ -25,6 +25,8 @@ using cv::Size;
 using utils::reference_time::getCurrentTimestamp;
 using utils::mat::mat_to_encoded_vector;
 
+using views::FrameView;
+
 stream_obtainer::tasks::impl::PublishStreamTaskImpl::PublishStreamTaskImpl(FramesQueue * framesQueue, PublisherFactory * publisherFactory) : queue_(framesQueue), publisher_factory_(publisherFactory) {
 
 }

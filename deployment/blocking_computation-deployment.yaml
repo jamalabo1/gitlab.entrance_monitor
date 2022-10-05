@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blocking-computation
+  name: blocking_computation
   namespace: entrance-monitor
 spec:
   replicas: 3

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: results-aggregator
+  name: results_aggregator
   namespace: entrance-monitor
 spec:
   replicas: 1
