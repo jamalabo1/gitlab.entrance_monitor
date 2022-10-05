@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blocking-computation
+  name: results-aggregator
   namespace: entrance-monitor
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: blocking-computation
+      app: results-aggregator
   template:
     metadata:
       labels:
-        app: blocking-computation
+        app: results-aggregator
     spec:
       nodeSelector:
         kubernetes.io/os: linux
+
       containers:
-        - name: blocking-computation
-          image: emregistery.azurecr.io/entrance_monitor:blocking-computation
+        - name: results-aggregator
+          image: emregistery.azurecr.io/entrance_monitor:results_aggregator
           imagePullPolicy: Always
           ports: []
           env:

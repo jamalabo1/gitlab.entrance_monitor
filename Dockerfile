@@ -5,10 +5,11 @@ WORKDIR /home/project
 COPY . ./
 RUN  cmake  \
      -G Ninja \
-     -D CMAKE_BUILD_TYPE=Debug \
      -D VCPKG_VERBOSE=ON \
-     -D AZURE_SDK_DISABLE_AUTO_VCPKG=ON \
+     -D CMAKE_BUILD_TYPE=Debug \
      -D CMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake \
+     -D AZURE_SDK_DISABLE_AUTO_VCPKG=ON \
+     -D CORE_USE_AZURE_KEYVAULT=ON \
      -B /home/project/build
 
 ARG CMAKE_PROJECT_TARGET

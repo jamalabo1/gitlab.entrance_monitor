@@ -17,7 +17,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: stream-obtainer
-          image: emregistery.azurecr.io/entrance_monitor:stream-obtainer
+          image: emregistery.azurecr.io/entrance_monitor:stream_obtainer
           imagePullPolicy: Always
           ports: []
           env:

@@ -18,7 +18,7 @@ spec:
 
       containers:
         - name: object-detector
-          image: emregistery.azurecr.io/entrance_monitor:object-detector
+          image: emregistery.azurecr.io/entrance_monitor:object_detector
           imagePullPolicy: Always
           ports: []
           env:
