@@ -19,11 +19,12 @@ jobs:
           name: Build Docker image
 
           command: |
-            docker build                                                           \
-            --build-arg                                                            \
-            CMAKE_PROJECT_TARGET=<< parameters.target >                            \
-            PROJECT_TARGET=<< parameters.target >>_standalone                      \
-            -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .   
+            docker build                                                           
+            --build-arg                                                            
+            CMAKE_PROJECT_TARGET=<< parameters.target >                            
+            --build-arg
+            PROJECT_TARGET=<< parameters.target >>_standalone                      
+            -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
       - run:
           name: Push Docker image
           command: |
