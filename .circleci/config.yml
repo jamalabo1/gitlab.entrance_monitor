@@ -19,7 +19,11 @@ jobs:
           name: Build Docker image
 
           command: |
-            docker build --build-arg PROJECT_TARGET=<< parameters.target >> -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
+            docker build 
+            --build-arg  
+            CMAKE_PROJECT_TARGET=<< parameters.target >>
+            PROJECT_TARGET=<< parameters.target >>_standalone
+            -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
       - run:
           name: Push Docker image
           command: |
@@ -60,7 +64,7 @@ workflows:
           context: entrance-monitor
           matrix:
             parameters:
-              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]
+              target: [ "stream_obtainer", "object_detector", "blocking_computation", "results_aggregator" ]
       - create-deployment:
           cluster-name: entrance-monitor-cluster
           requires:
@@ -69,4 +73,4 @@ workflows:
           context: entrance-monitor
           matrix:
             parameters:
-              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]
+              target: [ "stream_obtainer", "object_detector", "blocking_computation", "results_aggregator" ]
