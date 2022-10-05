@@ -1,24 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: object_detector
+  name: blocking-computation
   namespace: entrance-monitor
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: object-detector
+      app: blocking-computation
   template:
     metadata:
       labels:
-        app: object-detector
+        app: blocking-computation
     spec:
       nodeSelector:
         kubernetes.io/os: linux
-
       containers:
-        - name: object-detector
-          image: emregistery.azurecr.io/entrance_monitor:object_detector
+        - name: blocking-computation
+          image: emregistery.azurecr.io/entrance_monitor:blocking-computation
           imagePullPolicy: Always
           ports: []
           env:

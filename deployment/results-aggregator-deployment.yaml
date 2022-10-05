@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: results_aggregator
+  name: results-aggregator
   namespace: entrance-monitor
 spec:
   replicas: 1
@@ -18,7 +18,7 @@ spec:
 
       containers:
         - name: results-aggregator
-          image: emregistery.azurecr.io/entrance_monitor:results_aggregator
+          image: emregistery.azurecr.io/entrance_monitor:results-aggregator
           imagePullPolicy: Always
           ports: []
           env:

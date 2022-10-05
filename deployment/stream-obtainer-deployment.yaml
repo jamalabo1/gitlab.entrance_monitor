@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blocking_computation
+  name: stream-obtainer
   namespace: entrance-monitor
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: blocking-computation
+      app: stream-obtainer
   template:
     metadata:
       labels:
-        app: blocking-computation
+        app: stream-obtainer
     spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-        - name: blocking-computation
-          image: emregistery.azurecr.io/entrance_monitor:blocking_computation
+        - name: stream-obtainer
+          image: emregistery.azurecr.io/entrance_monitor:stream-obtainer
           imagePullPolicy: Always
           ports: []
           env:
@@ -48,3 +48,4 @@ spec:
             limits:
               cpu: '256'
               memory: 11400G
+

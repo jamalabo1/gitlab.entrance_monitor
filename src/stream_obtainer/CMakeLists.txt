@@ -37,7 +37,7 @@ add_executable(stream_obtainer_standalone main.cpp)
 
 target_link_libraries(stream_obtainer_standalone stream_obtainer_lib core)
 
-copy_required_file(stream_obtainer_standalone configs.local.json)
+#copy_required_file(stream_obtainer_standalone configs.local.json)
 
 install_project_binaries(stream_obtainer_standalone)
 expose_target(stream_obtainer stream-obtainer)

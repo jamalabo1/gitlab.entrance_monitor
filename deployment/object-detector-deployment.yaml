@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stream_obtainer
+  name: object-detector
   namespace: entrance-monitor
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: stream-obtainer
+      app: object-detector
   template:
     metadata:
       labels:
-        app: stream-obtainer
+        app: object-detector
     spec:
       nodeSelector:
         kubernetes.io/os: linux
+
       containers:
-        - name: stream-obtainer
-          image: emregistery.azurecr.io/entrance_monitor:stream_obtainer
+        - name: object-detector
+          image: emregistery.azurecr.io/entrance_monitor:object-detector
           imagePullPolicy: Always
           ports: []
           env:
@@ -48,4 +49,3 @@ spec:
             limits:
               cpu: '256'
               memory: 11400G
-
