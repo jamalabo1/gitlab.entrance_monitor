@@ -5,8 +5,11 @@
 #ifndef ENTRANCE_MONITOR_V2_AGGREGATOR_IMPL_H
 #define ENTRANCE_MONITOR_V2_AGGREGATOR_IMPL_H
 
+#include "aggregator.h"
 #include <atomic>
-#include "results_aggregator/aggregator.h"
+
+namespace results_aggregator::impl {
+
 
 class AggregatorImpl : public Aggregator {
 
@@ -25,6 +28,7 @@ public:
     double aggregate() override;
 
 };
+}
 
 
 #endif //ENTRANCE_MONITOR_V2_AGGREGATOR_IMPL_H

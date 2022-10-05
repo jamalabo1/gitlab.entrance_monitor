@@ -15,12 +15,12 @@
 #include <core/ptrs.h>
 #include <core/gui_handler.h>
 #include <core/logging.h>
-#include <core/io_runner.h>
+#include <core/io_context.h>
 #include <core/communication.h>
-
+#include <core/retry.h>
 
 namespace core {
-    EXPORT_MODULE(getCoreComponents, $IoRunner, $GUIHandler, amqp::$Components, communication::$Components);
+    EXPORT_MODULE(getCoreComponents, $IoContext, $GUIHandler, amqp::$Components, communication::$Components, retry::$Components);
 }
 
 #endif //ENTRANCE_MONITOR_V2_CORE_H

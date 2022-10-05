@@ -7,7 +7,10 @@
 
 #include <core/init.h>
 #include <core/logging.h>
-#include <boost/asio.hpp>
+
+#include <core/service.h>
+#include <core/io_context.h>
+
 
 #ifdef WIN32
 
@@ -16,43 +19,27 @@
 #endif
 
 
-void init_service_runner() {
 
-#ifdef WIN32
-    // The following sets the appropriate flags to prevent system to go into sleep mode.
-    SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_AWAYMODE_REQUIRED);
-#endif
-
-    BOOST_LOG_TRIVIAL(info) << "initiation service runner";
-
-#if APP_DEBUG
-    boost::log::core::get()->set_filter
-            (
-                    boost::log::trivial::severity >= boost::log::trivial::trace
-            );
-#endif
+namespace core {
+    void init_service_runner();
+    ///
+    /// \param io_context io context for running services on (post)
+    /// \param services services which have tasks to be ran
+    /// \return -1
+    int run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services);
 }
 
-#define BUILD_STANDALONE_FROM_SERVICE(getRootComponent) int main() { \
-init_service_runner();\
-fruit::Injector injector(getRootComponent);                          \
-BOOST_LOG_TRIVIAL(info) << "Running as standalone"; \
-BOOST_LOG_TRIVIAL(trace) << "getting `Service` from injector"; \
-const std::vector<TaskService *> &services = injector.getMultibindings<TaskService>(); \
-BOOST_LOG_TRIVIAL(trace) << "creating thread pool with size " << services.size(); \
-boost::asio::thread_pool pool(services.size()); \
-for (const auto &service: services) { \
-BOOST_LOG_TRIVIAL(trace) << "posting service to thread pool"; \
-boost::asio::post(pool, [&service] {                                 \
-service->setup();                                                      \
-BOOST_LOG_TRIVIAL(trace) << "service runner finished"; \
-}); \
-}\
-BOOST_LOG_TRIVIAL(trace) << "joining pool threads"; \
-pool.join();                                                         \
-BOOST_LOG_TRIVIAL(trace) << "thread pool finished"; \
-return -1; \
-}\
+#define BUILD_STANDALONE_FROM_SERVICE(component)                                             \
+int main() {                                                                                 \
+fruit::Injector injector(component);                                                         \
+BOOST_LOG_TRIVIAL(info) << "initiation service runner";                                      \
+core::init_service_runner();                                                                 \
+BOOST_LOG_TRIVIAL(info) << "Running as standalone";                                          \
+auto io_context = injector.get<shared_ptr<core::IoContext>>();                               \
+BOOST_LOG_TRIVIAL(trace) << "getting `Service`(s) from injector";                            \
+const std::vector<core::Service *> &services = injector.getMultibindings<core::Service>();   \
+core::run_services(io_context, services);                                                    \
+}
 
 
 #endif //ENTRANCE_MONITOR_V2_CORE_STANDALONE_H

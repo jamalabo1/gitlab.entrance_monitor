@@ -5,12 +5,15 @@
 #include <core/standalone.h>
 #include <results_aggregator/results_aggregator.h>
 
-using namespace fruit;
+using fruit::createComponent;
+using fruit::Component;
+
 using namespace core;
+using results_aggregator::getResultsAggregatorServiceComponent;
 
-
-Component<ResultsAggregatorService> getRootComponent() {
+Component<IoContext> getRootComponent() {
     return createComponent()
+            .install(getCoreComponents)
             .install(getConfigurationsComponent)
             .install(getResultsAggregatorServiceComponent);
 }
