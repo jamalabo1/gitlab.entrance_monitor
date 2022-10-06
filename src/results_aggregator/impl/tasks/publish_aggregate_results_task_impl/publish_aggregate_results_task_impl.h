@@ -17,7 +17,9 @@ namespace results_aggregator::tasks::impl {
 
         shared_ptr<Aggregator> aggregator_;
 
-        unique_ptr<boost::asio::steady_timer> timer_;
+        shared_ptr<boost::asio::io_service> io_service_;
+        shared_ptr<boost::asio::deadline_timer> timer_;
+
     public:
         INJECT(PublishAggregateResultsTaskImpl(
                 shared_ptr<core::communication::publish::PublisherFactory>,

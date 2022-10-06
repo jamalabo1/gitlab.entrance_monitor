@@ -46,7 +46,7 @@ namespace blocking_computation::tasks::impl {
         };
         // set up the consume options here.
         consume_options_ = make_unique<ConsumeOptions>(
-                shared_from_this(),
+                this,
                 token,
                 "detections.{1}",
                 args,

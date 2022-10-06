@@ -55,7 +55,7 @@ object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTas
     };
     // set up the consume options here.
     consume_options_ = make_unique<consume::ConsumeOptions>(
-            shared_from_this(),
+            this,
             token,
             "frames.{1}",
             args,

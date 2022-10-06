@@ -12,8 +12,8 @@
 namespace results_aggregator::tasks::impl {
     class AggregateBlockingResultsTaskImpl :
             public AggregateBlockingResultsTask,
-            public core::communication::consume::ConsumerMessageHandler,
-            std::enable_shared_from_this<AggregateBlockingResultsTaskImpl> {
+            public core::communication::consume::ConsumerMessageHandler
+             {
     private:
         unique_ptr<core::communication::consume::ConsumeOptions> consume_options_;
         shared_ptr<core::communication::consume::Consumer> consumer_;

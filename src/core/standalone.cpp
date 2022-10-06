@@ -54,10 +54,14 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
                     // get runtime options for the task.
                     auto options = task->setup(io_context, token);
 
-                    // execute the task.
+                    // execute the task, this call must be blocking or non-dependent on options
+                    // because they are freed after the execution complete.
+                    // only `task` lives.
                     options.executor([task] {
                             task->operator()();
                     });
+
+                    BOOST_LOG_TRIVIAL(trace)<< "execution of task: " << typeid(task).name()  << " has completed";
                 });
             }
         });

@@ -13,7 +13,8 @@
 
 
 #define CORE_DEFINE_TASK_DEFAULT(ServiceName, task_name, ...) \
-class task_name : public core::Task {}; \
+class task_name : public core::Task,                          \
+public std::enable_shared_from_this<task_name> {}; \
 using $##task_name = $Exported<task_name>; \
 using task_name##Component = $##task_name::Component<__VA_ARGS__>; \
 task_name##Component get##ServiceName##task_name()
@@ -24,7 +25,7 @@ fruit::createComponent()                                 \
 .addMultibinding<core::Task, impl::TaskName##Impl>()
 
 
-#define CORE_TASK_RUN_OPTIONS_ONE_TIME RunOptions{.executor=[](auto cb) {cb();}}
+#define CORE_TASK_RUN_OPTIONS_ONE_TIME RunOptions{[](auto cb) {cb();}}
 
 namespace core {
 
@@ -48,8 +49,8 @@ namespace core {
 
             Executor executor;
 
+            RunOptions(Executor executor) : executor(std::move(executor)){}
         };
-
 
         // set up the task. this method purpose is to tell the caller how to execute the task
         virtual RunOptions setup(shared_ptr<core::IoContext>, shared_ptr<core::CancellationToken>);
@@ -66,9 +67,28 @@ namespace core {
 
         /// health check function for periodic check.
         health::Status health_check() const override;
-
-
     };
 
+
+//class TimedExecutor : public Task::RunOptions::Executor {
+//
+//private:
+//    shared_ptr<boost::asio::steady_timer> timer_;
+//    std::chrono::duration<uint64_t> duration_;
+//
+//public:
+//
+//    TimedExecutor(shared_ptr<boost::asio::steady_timer> timer, std::chrono::duration<uint64_t> duration) : timer_(timer), duration_(duration) {
+//
+//    }
+//
+//    void operator()(Task::RunOptions::ExecutorCallback cb) {
+//        cb();
+//        timer_->expires_from_now(duration_);
+//        timer_->async_wait([this, cb](auto ec) {
+//           this->operator()(cb);
+//        });
+//    }
+//};
 }
 #endif //ENTRANCE_MONITOR_V2_CORE_TASK_H

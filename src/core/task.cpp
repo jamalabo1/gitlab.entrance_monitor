@@ -19,7 +19,7 @@ core::Task::RunOptions core::Task::setup(shared_ptr<IoContext> ctx, shared_ptr<c
        }
     };
     return {
-        .executor = default_executor
+        default_executor
     };
 }
 

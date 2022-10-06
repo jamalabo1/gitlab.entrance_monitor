@@ -24,9 +24,14 @@ results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::AggregateBloc
 core::Task::RunOptions
 results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::setup(shared_ptr<core::IoContext> ctx,
                                                                          shared_ptr<core::CancellationToken> token) {
+
+    BOOST_LOG_TRIVIAL(debug)<<"[AggregateBlockingResultsTaskImpl::setup]: setting up task";
+//    auto bptr = shared_from_this();
+//    auto ptr = std::static_pointer_cast<AggregateBlockingResultsTaskImpl>(bptr);
+
     // set up the consume options here.
     consume_options_ = make_unique<consume::ConsumeOptions>(
-            shared_from_this(),
+            this,
             token,
             "blocking.{1}"
     );
@@ -35,6 +40,7 @@ results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::setup(shared_
 }
 
 core::Task::TaskResult results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::operator()() {
+    BOOST_LOG_TRIVIAL(debug)<<"[AggregateBlockingResultsTaskImpl::operator()()]: starting consume operation";
     consumer_->consume(*consume_options_);
 }
 
