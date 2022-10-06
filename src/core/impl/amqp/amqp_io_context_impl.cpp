@@ -10,15 +10,18 @@ using namespace core::amqp;
 using namespace core::amqp::impl;
 
 
-AmqpIoContextImpl::AmqpIoContextImpl() {
-    service = make_shared<io_context>(4);
+AmqpIoContextImpl::AmqpIoContextImpl(shared_ptr<core::IoContext> ctx) : ctx_(ctx) {
+
 }
 
 shared_ptr<io_context> AmqpIoContextImpl::get_service() {
-    return service;
+    return ctx_->get_context();
 }
+
+
 
 AmqpIoContextComponent core::amqp::getAmqpIoContextComponent() {
     return fruit::createComponent()
+            .install(core::getIoContextComponent)
             .bind<AmqpIoContext, AmqpIoContextImpl>();
 }

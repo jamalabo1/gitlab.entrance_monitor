@@ -10,6 +10,10 @@ using namespace core::amqp::impl;
 
 ChannelHolderImpl::ChannelHolderImpl(AmqpConnection *connection) {
     channel = connection->create_channel();
+    channel->onError([](auto err){
+        BOOST_LOG_TRIVIAL(fatal) << "error at channel: " << err;
+    });
+
 }
 
 shared_ptr<AMQP::Channel> ChannelHolderImpl::operator*() const {

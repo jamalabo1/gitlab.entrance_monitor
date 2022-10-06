@@ -7,9 +7,6 @@
 using namespace core::amqp;
 using namespace core::amqp::impl;
 
-
-
-
 AmqpIoRunnerImpl::AmqpIoRunnerImpl(AmqpIoContext *context) : context(context) {
 
 }
