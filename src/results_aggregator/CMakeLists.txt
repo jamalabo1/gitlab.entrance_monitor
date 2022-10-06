@@ -46,4 +46,4 @@ target_link_libraries(
 
 install_project_binaries(results_aggregator_standalone)
 
-copy_required_file(results_aggregator_standalone configs.local.json)
+#copy_required_file(results_aggregator_standalone configs.local.json)
