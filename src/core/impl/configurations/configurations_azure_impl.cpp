@@ -10,7 +10,7 @@
 #include <azure/identity.hpp>
 
 
-#define ENABLE_EGARLY_LOAD_SECRETS
+#define ENABLE_EGARLY_LOAD_SECRETS true
 // lock_guard macro
 #define LOCK_GUARD(x)  lock_guard guard(x);
 
@@ -21,7 +21,7 @@ using namespace core::impl;
 
 ConfigurationsAzureImpl::ConfigurationsAzureImpl(SecretClient *client) : m_secretsClient(client) {
 
-#ifdef ENABLE_EGARLY_LOAD_SECRETS
+#if ENABLE_EGARLY_LOAD_SECRETS
 
     for (auto props = m_secretsClient->GetPropertiesOfSecrets(); props.HasPage(); props.MoveToNextPage()) {
         for (const auto &secret: props.Items) {
@@ -39,7 +39,7 @@ ConfigurationsAzureImpl::ConfigurationsAzureImpl(SecretClient *client) : m_secre
 std::string ConfigurationsAzureImpl::get_value_from_key(const std::string &key) {
 
     // if a cached value of the key exists, then return the value.
-    if (m_cacheMap.find(key) == m_cacheMap.end()) {
+    if (!m_cacheMap.empty() && m_cacheMap.find(key) == m_cacheMap.end()) {
         // acquire a mutex for the map to access and read the value.
         LOCK_GUARD(m_cacheMapMutex);
         return m_cacheMap[key];
@@ -77,6 +77,7 @@ ConfigurationsComponent core::getConfigurationsComponent() {
 
                 BOOST_LOG_TRIVIAL(trace) << "receiving key-vault_url from env-vars.";
                 auto key_vault_url = std::getenv("AZURE_KEYVAULT_URL");
+                BOOST_LOG_TRIVIAL(trace) << "key-vault-url = " << key_vault_url;
                 auto client = new SecretClient(key_vault_url, credential);
                 return client;
             })

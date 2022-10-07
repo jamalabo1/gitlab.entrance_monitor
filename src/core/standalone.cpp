@@ -20,6 +20,15 @@ void core::init_service_runner() {
             );
 #endif
 }
+void core::runner(fruit::Injector<IoContext>& injector) {
+    BOOST_LOG_TRIVIAL(info) << "initiation service runner";
+    core::init_service_runner();
+    BOOST_LOG_TRIVIAL(info) << "Running as standalone";
+    auto io_context = injector.get<shared_ptr<core::IoContext>>();
+    BOOST_LOG_TRIVIAL(trace) << "getting `Service`(s) from injector";
+    const std::vector<core::Service *> &services = injector.getMultibindings<core::Service>();
+    core::run_services(io_context, services);
+}
 
 int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services) {
     auto post = [&]( std::function<void()>&& func) {
