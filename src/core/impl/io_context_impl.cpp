@@ -6,7 +6,7 @@
 using fruit::createComponent;
 
 core::impl::IoContextImpl::IoContextImpl() {
-    ctx_ = make_shared<boost::asio::io_context>();
+    ctx_ = make_shared<boost::asio::io_context>(BOOST_ASIO_CONCURRENCY_HINT_SAFE);
 }
 
 

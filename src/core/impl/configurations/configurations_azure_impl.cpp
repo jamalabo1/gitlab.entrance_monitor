@@ -22,7 +22,7 @@ using namespace core::impl;
 ConfigurationsAzureImpl::ConfigurationsAzureImpl(SecretClient *client) : m_secretsClient(client) {
 
 #if ENABLE_EGARLY_LOAD_SECRETS
-
+    BOOST_LOG_TRIVIAL(trace) << "loading secrets from key-vault";
     for (auto props = m_secretsClient->GetPropertiesOfSecrets(); props.HasPage(); props.MoveToNextPage()) {
         for (const auto &secret: props.Items) {
             KeyVaultSecret c_secret = m_secretsClient->GetSecret(secret.Name).Value;
@@ -31,6 +31,7 @@ ConfigurationsAzureImpl::ConfigurationsAzureImpl(SecretClient *client) : m_secre
             }
         }
     }
+    BOOST_LOG_TRIVIAL(trace) << "finished secrets from key-vault";
 
 #endif
 }
@@ -39,12 +40,13 @@ ConfigurationsAzureImpl::ConfigurationsAzureImpl(SecretClient *client) : m_secre
 std::string ConfigurationsAzureImpl::get_value_from_key(const std::string &key) {
 
     // if a cached value of the key exists, then return the value.
-    if (!m_cacheMap.empty() && m_cacheMap.find(key) == m_cacheMap.end()) {
+    if (m_cacheMap.find(key) != m_cacheMap.end()) {
         // acquire a mutex for the map to access and read the value.
         LOCK_GUARD(m_cacheMapMutex);
         return m_cacheMap[key];
     }
 
+    BOOST_LOG_TRIVIAL(trace) << "getting secret (" << key << ") from key-vault";
     // get the key value from the key-vault.
     auto keyVal = m_secretsClient->GetSecret(key);
 
