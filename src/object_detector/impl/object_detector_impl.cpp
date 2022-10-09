@@ -30,7 +30,7 @@ object_detector::impl::DetectorImpl::DetectorImpl(core::Configurations *configur
     BOOST_LOG_TRIVIAL(trace) << "initiating model preparation";
     // let the `prepare_model` sync,
     // so that if the preparation model failed while loading the modules it's not continued.
-    prepare_model();
+    //prepare_model();
 }
 
 DetectionResult object_detector::impl::DetectorImpl::detect_objects(const Mat &frame) {

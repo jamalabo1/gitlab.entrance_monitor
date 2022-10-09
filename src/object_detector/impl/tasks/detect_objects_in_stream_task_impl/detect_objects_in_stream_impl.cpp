@@ -75,7 +75,7 @@ object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTas
 
 void object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()(
         const consume::ConsumerMessage::ptr_t &envelope) const {
-
+return;
 //    static const vector<int> allowed_class_ids = {2, 7};
 
     auto frameView = unpack<FrameView>(envelope);
