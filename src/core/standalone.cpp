@@ -47,9 +47,12 @@ void core::runner(fruit::Injector<IoContext>& injector) {
 }
 
 int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services) {
+
     auto post = [&]( std::function<void()>&& func) {
         boost::asio::post(GET_BOOST_IO_CONTEXT(io_context), [func](){
-            func();
+            DEFINE_STACK_TRACKED_CALL({
+                                          func();
+                                      })
         });
     };
 

@@ -10,7 +10,9 @@
 
 #include <core/service.h>
 #include <core/io_context.h>
+#include <boost/stacktrace.hpp>
 
+#include <iostream>
 
 #ifdef WIN32
 
@@ -30,13 +32,19 @@ namespace core {
     int run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services);
 }
 
+#define DEFINE_STACK_TRACKED_CALL(Block)  \
+try Block \
+catch(...) {                                      \
+    BOOST_LOG_TRIVIAL(fatal) << "an error has occurred at the application";                   \
+    std::cout << boost::stacktrace::stacktrace() << std::endl;                     \
+}
+
 #define BUILD_STANDALONE_FROM_SERVICE(component)                                             \
 int main() {                                                                                 \
+DEFINE_STACK_TRACKED_CALL({ \
 BOOST_LOG_TRIVIAL(info) << "creating services injector"; \
-std::thread t([&]() {                                                                       \
 fruit::Injector injector(component);                                                         \
 core::runner(injector);                                                              \
-});                                                                                           \
-t.join(); \
+})\
 }
 #endif //ENTRANCE_MONITOR_V2_CORE_STANDALONE_H

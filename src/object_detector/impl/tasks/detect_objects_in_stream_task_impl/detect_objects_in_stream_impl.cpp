@@ -68,6 +68,7 @@ object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTas
 
 core::Task::TaskResult
 object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()() {
+    throw std::invalid_argument( "received negative value" );
     consumer_->consume(*consume_options_);
 }
 

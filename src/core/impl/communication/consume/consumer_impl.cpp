@@ -34,7 +34,7 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
 
         {
             auto handlerMessage = ConsumerMessageImpl::Create(&message);
-            (*options.handler)(handlerMessage);
+            (options.handler)->operator()(handlerMessage);
         }
 
         // acknowledge the message
