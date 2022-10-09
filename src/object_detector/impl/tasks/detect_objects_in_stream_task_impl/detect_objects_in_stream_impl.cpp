@@ -28,9 +28,9 @@ using views::DetectionResultView;
 
 
 object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::DetectObjectsInStreamTaskImpl(
-        const shared_ptr<object_detector::Detector> detector,
-        const shared_ptr<consume::Consumer> consumer,
-        const shared_ptr<publish::PublisherFactory> publisher_factory
+         shared_ptr<object_detector::Detector> detector,
+         shared_ptr<consume::Consumer> consumer,
+         shared_ptr<publish::PublisherFactory> publisher_factory
          ) : consumer_(consumer), detector_(detector), publisher_factory_(publisher_factory), consume_options_(nullptr)  {
 
 }

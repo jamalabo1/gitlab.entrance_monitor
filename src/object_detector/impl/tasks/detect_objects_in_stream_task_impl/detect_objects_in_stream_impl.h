@@ -28,9 +28,9 @@ namespace object_detector::tasks::detect_objects_in_stream::impl {
 
     public:
         INJECT(DetectObjectsInStreamTaskImpl(
-                const shared_ptr<object_detector::Detector>,
-                const shared_ptr<core::communication::consume::Consumer>,
-                const shared_ptr<core::communication::publish::PublisherFactory>
+                 shared_ptr<object_detector::Detector>,
+                 shared_ptr<core::communication::consume::Consumer>,
+                 shared_ptr<core::communication::publish::PublisherFactory>
         ));
 
         RunOptions setup(shared_ptr<core::IoContext> ptr, shared_ptr<core::CancellationToken> sharedPtr) override;
