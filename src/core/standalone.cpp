@@ -55,7 +55,8 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
                                       })
         });
     };
-
+    
+/*
     for (const auto &service: services) {
         post([&post, &io_context, service]() {
             BOOST_LOG_TRIVIAL(debug) << "setting up service: " << typeid(service).name();
@@ -100,6 +101,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
             }
         });
     }
+*/
 
     boost::thread_group pool;
     auto hc = boost::thread::hardware_concurrency();
