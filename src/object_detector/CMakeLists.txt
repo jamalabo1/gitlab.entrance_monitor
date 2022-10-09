@@ -60,4 +60,6 @@ target_link_libraries(
 
 install_project_binaries(object_detector_standalone)
 
-copy_required_file(object_detector_standalone configs.local.json)
+if(PROJECT_IS_LOCAL)
+    copy_required_file(object_detector_standalone configs.local.json)
+ENDIF()

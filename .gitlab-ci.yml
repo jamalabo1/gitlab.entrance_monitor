@@ -18,6 +18,8 @@ before_script:
 
 build-image:
   stage: build
+  only:
+    - merge_requests
   script:
     - docker build --pull --target=builder --build-arg CMAKE_PROJECT_TARGET=$PROJECT_TARGET --build-arg PROJECT_TARGET=$PROJECT_TARGET -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
@@ -27,6 +29,8 @@ build-image:
 
 test-project:
   stage: test
+  only:
+    - merge_requests
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker run $CONTAINER_TEST_IMAGE /home/project/build/tests/entrance_monitor_tests_exc
