@@ -55,8 +55,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
                                       })
         });
     };
-    
-/*
+
     for (const auto &service: services) {
         post([&post, &io_context, service]() {
             BOOST_LOG_TRIVIAL(debug) << "setting up service: " << typeid(service).name();
@@ -68,6 +67,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
 
             BOOST_LOG_TRIVIAL(debug) << "looping over service tasks";
             // loop over tasks
+            /*
             for (const auto &task: tasks) {
 
                 // post each task to the io_context.
@@ -99,9 +99,9 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
                     BOOST_LOG_TRIVIAL(trace)<< "execution of task: " << task_name  << " has completed";
                 });
             }
+      */
         });
     }
-*/
 
     boost::thread_group pool;
     auto hc = boost::thread::hardware_concurrency();
