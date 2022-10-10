@@ -79,7 +79,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
         BOOST_LOG_TRIVIAL(debug) << "configuring task: " << task_name;
         // configure the task.
         bool result = task->configure();
-                    /*
+                    BOOST_LOG_TRIVIAL(debug) << "task (" << task_name <<  ") configure returned : " << result;
 
         if(!result) {
             // TODO: handle the failing of the task (e.g., re-schedule executing (retry-policy)).
@@ -89,6 +89,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
         // get runtime options for the task.
         auto options = task->setup(io_context, token);
 
+                    /*
         BOOST_LOG_TRIVIAL(debug) << "executing task: " << task_name;
         // execute the task, this call must be blocking or non-dependent on options
         // because they are freed after the execution complete.
