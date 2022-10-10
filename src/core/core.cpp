@@ -4,14 +4,19 @@
 
 #include <core/core.h>
 
-using namespace core;
-using namespace core::amqp;
-using namespace core::communication;
+using fruit::createComponent;
+
+using core::getGUIHandlerComponent;
+using core::getIoContextComponent;
+using core::amqp::getAmqpComponents;
+using core::communication::getCommunicationComponents;
+using core::retry::getRetryComponents;
 
 core::Components core::getCoreComponents() {
-    return fruit::createComponent()
+    return createComponent()
             .install(getGUIHandlerComponent)
-            .install(getIoRunnerComponent)
+            .install(getIoContextComponent)
             .install(getCommunicationComponents)
-            .install(getAmqpComponents);
+            .install(getAmqpComponents)
+            .install(getRetryComponents);
 }

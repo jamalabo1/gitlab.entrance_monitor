@@ -11,19 +11,20 @@ jobs:
     parameters:
       target:
         type: string
+    environment:
+      TARGET: <<parameters.target>>
     steps:
       - checkout
       - docker/install-docker-tools
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          command: | 
+            echo 'export PROJECT_TARGET="${TARGET/-/_}"' >> $BASH_ENV
       - run:
           name: Build Docker image
-
           command: |
-            docker build 
-            --build-arg  
-            CMAKE_PROJECT_TARGET=<< parameters.target >>
-            PROJECT_TARGET=<< parameters.target >>_standalone
-            -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
+            docker build --build-arg CMAKE_PROJECT_TARGET=${PROJECT_TARGET}_standalone --build-arg PROJECT_TARGET=${PROJECT_TARGET} -t emregistery.azurecr.io/entrance_monitor:<< parameters.target >> .
       - run:
           name: Push Docker image
           command: |
@@ -64,7 +65,7 @@ workflows:
           context: entrance-monitor
           matrix:
             parameters:
-              target: [ "stream_obtainer", "object_detector", "blocking_computation", "results_aggregator" ]
+              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]
       - create-deployment:
           cluster-name: entrance-monitor-cluster
           requires:
@@ -73,4 +74,4 @@ workflows:
           context: entrance-monitor
           matrix:
             parameters:
-              target: [ "stream_obtainer", "object_detector", "blocking_computation", "results_aggregator" ]
+              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]

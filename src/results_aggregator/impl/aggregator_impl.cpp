@@ -2,26 +2,21 @@
 // Created by jamal on 13/08/2022.
 //
 
-#include <core/logging.h>
 #include "aggregator_impl.h"
+
+#include <core/logging.h>
 #include <cmath>
 
 using namespace std;
 
-AggregatorImpl::AggregatorImpl() = default;
+results_aggregator::impl::AggregatorImpl::AggregatorImpl() = default;
 
-AggregatorComponent getAggregatorComponent() {
-    return fruit::createComponent()
-            .bind<Aggregator, AggregatorImpl>();
-}
-
-
-void AggregatorImpl::add(uint64_t x, int y) {
+void results_aggregator::impl::AggregatorImpl::add(uint64_t x, int y) {
     a_sum += x * y;
     b_sum += x;
 }
 
-double AggregatorImpl::aggregate() {
+double results_aggregator::impl::AggregatorImpl::aggregate() {
     if(b_sum == 0) return 0;
     double avg = double(a_sum) / double(b_sum);
     BOOST_LOG_TRIVIAL(trace) << "avg: " << to_string(avg);
@@ -30,7 +25,12 @@ double AggregatorImpl::aggregate() {
     return avg;
 }
 
-void AggregatorImpl::reset() {
+void results_aggregator::impl::AggregatorImpl::reset() {
     a_sum = 0;
     b_sum = 0;
+}
+
+results_aggregator::AggregatorComponent results_aggregator::getAggregatorComponent() {
+    return fruit::createComponent()
+            .bind<Aggregator, impl::AggregatorImpl>();
 }

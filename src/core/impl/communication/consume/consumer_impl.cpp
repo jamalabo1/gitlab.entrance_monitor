@@ -34,7 +34,7 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
 
         {
             auto handlerMessage = ConsumerMessageImpl::Create(&message);
-            (*options.handler)(handlerMessage);
+            (options.handler)->operator()(handlerMessage);
         }
 
         // acknowledge the message
@@ -53,6 +53,7 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
             c->setQos(1);
         }
 
+        BOOST_LOG_TRIVIAL(trace) << "calling consume on holder";
         c->consume(queue_name)
                 .onReceived(messageCb)
                 .onSuccess(startCb)
@@ -73,7 +74,7 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
     }
 
     CCD(channel)->declareQueue(d_queue_name, queue_flags, to_table(options.args))
-            .onSuccess([&, exchange_name](const std::string &queue_name, uint32_t messagecount, uint32_t consumercount) {
+            .onSuccess([&, setup_consumer, exchange_name](const std::string &queue_name, uint32_t messagecount, uint32_t consumercount) {
 
                 BOOST_LOG_TRIVIAL(trace) << "declared exchange " << exchange_name << " with queue " << queue_name;
 
@@ -90,6 +91,10 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
             .onError([](auto err) {
                 BOOST_LOG_TRIVIAL(fatal) << "error at declareQueue";
             });
+}
+
+ConsumerImpl::ConsumerImpl(unique_factory(amqp::ChannelHolder) channel_factory) {
+    channel = channel_factory();
 }
 
 ConsumerComponent core::communication::consume::getCommunicationConsumeConsumerComponent() {
