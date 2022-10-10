@@ -84,3 +84,12 @@ macro(enable_global_testing_target)
 #
 #    gtest_discover_tests(${exc_target_name}) # integration with CTest
 endmacro()
+
+macro(copy_required_file target file)
+    add_custom_command(
+            TARGET ${target} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            "${PROJECT_SOURCE_DIR}/${file}"
+            $<TARGET_FILE_DIR:${target}>
+    )
+endmacro()

@@ -3,11 +3,8 @@ ARG UBUNTU="20.04"
 
 FROM jamalabo1/entrance_monitor:thirdparty_bundler as thirdparty_bundler
 FROM jamalabo1/entrance_monitor:gpu-opencv as gpu_opencv
-#FROM danger89/cmake:4.4 as project_builder
 FROM nvidia/cuda:${CUDA_VERSION}-cudnn8-devel-ubuntu${UBUNTU}
 ENV DEBIAN_FRONTEND=noninteractive
-
-#COPY --from=gpu_opencv /usr/lib/x86_64-linux-gnu/lib*.so /usr/lib/x86_64-linux-gnu/
 
 RUN apt-get update && apt-get install -y --no-install-recommends  \
     build-essential \

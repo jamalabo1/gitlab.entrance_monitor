@@ -7,7 +7,9 @@
 
 #include <cstdint>
 
-// TODO: implement a function with attention to zone(s).
-uint64_t getCurrentTimestamp();
+namespace utils::reference_time {
+    // TODO: implement a function with attention to zone(s).
+    uint64_t getCurrentTimestamp();
+}
 
 #endif //ENTRANCE_MONITOR_V2_REFERENCE_TIME_H

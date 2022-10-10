@@ -1,4 +1,3 @@
-
 FROM jamalabo1/entrance_monitor:builder as builder
 RUN mkdir /home/project
 WORKDIR /home/project
@@ -24,6 +23,9 @@ ARG PROJECT_TARGET
 ARG CMAKE_PROJECT_TARGET
 
 WORKDIR /home/project/build/src/${PROJECT_TARGET}
-#ENV PATH="/home/project/build/src/$(echo $ENV_PROJECT_TARGET | tr '-' '_'):${PATH}"
-#ENTRYPOINT "/home/project/build/src/$(echo $ENV_PROJECT_TARGET | tr '-' '_')/"
-ENTRYPOINT "${CMAKE_PROJECT_TARGET}"
+
+
+RUN chmod +x ${CMAKE_PROJECT_TARGET}
+
+ENV CMAKE_PROJECT_TARGET=${CMAKE_PROJECT_TARGET}
+ENTRYPOINT "./${CMAKE_PROJECT_TARGET}"

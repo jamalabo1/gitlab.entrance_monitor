@@ -43,9 +43,9 @@ namespace core::msgpacker {
 
     cv::Mat unpack_frame_mat(const std::string &);
 
-    cv::Mat unpack_frame_mat(const FrameView &);
+    cv::Mat unpack_frame_mat(const views::FrameView &);
 
-    FrameView unpack_frame(const std::string &);
+    views::FrameView unpack_frame(const std::string &);
 }
 
 

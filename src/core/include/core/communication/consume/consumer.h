@@ -18,7 +18,7 @@ namespace core::communication::consume {
     struct ConsumeOptions {
 
         ConsumeOptions(ConsumerMessageHandler* handler,
-                       CancellationToken &token, std::string exchange_name, amqp::ArgsTable args = {}, bool is_work_queue=false) :
+                       shared_ptr<CancellationToken> token, std::string exchange_name, amqp::ArgsTable args = {}, bool is_work_queue=false) :
                 handler(handler),
                 token(token),
                 exchange_name(std::move(exchange_name)),
@@ -28,8 +28,10 @@ namespace core::communication::consume {
 
         std::string exchange_name;
         amqp::ArgsTable args;
-        CancellationToken &token;
+        shared_ptr<CancellationToken> token;
         ConsumerMessageHandler* handler;
+
+        //        shared_ptr<ConsumerMessageHandler> handler;
         bool is_work_queue;
     };
 

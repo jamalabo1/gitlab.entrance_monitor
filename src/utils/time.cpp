@@ -8,7 +8,7 @@
 using namespace std::chrono;
 
 
-uint64_t getCurrentTimestamp() {
+uint64_t utils::reference_time::getCurrentTimestamp() {
 
     system_clock::time_point tp = system_clock::now();
     system_clock::duration dtn = tp.time_since_epoch();

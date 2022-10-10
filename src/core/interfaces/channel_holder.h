@@ -38,7 +38,11 @@ namespace core::amqp {
 
     };
 
-    using $Channel = $Exported<ChannelHolder, std::function<std::unique_ptr<ChannelHolder>()>>;
+//    using Factory = std::function<std::unique_ptr<ChannelHolder>()>;
+
+    using Factory = unique_factory(ChannelHolder);
+
+    using $Channel = $Exported<ChannelHolder, Factory>;
 
     using AmqpChannelComponent = $Channel::PureComponent;
 

@@ -7,6 +7,7 @@
 
 #include <core/view.h>
 
+namespace views {
 class BlockingResultView : core::View {
 public:
     bool result;
@@ -19,5 +20,6 @@ public:
 
     pack_items(result, frame_timestamp);
 };
+}
 
 #endif //ENTRANCE_MONITOR_V2_BLOCKING_RESULT_VIEW_H

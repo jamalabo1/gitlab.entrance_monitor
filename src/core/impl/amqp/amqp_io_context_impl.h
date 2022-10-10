@@ -7,14 +7,15 @@
 
 #include "amqp/io_context.h"
 #include <core/init.h>
+#include <core/io_context.h>
 
 namespace core::amqp::impl {
 
     class AmqpIoContextImpl : public AmqpIoContext {
     private:
-        shared_ptr<boost::asio::io_context> service;
+        shared_ptr<core::IoContext> ctx_;
     public:
-        INJECT(AmqpIoContextImpl());
+        INJECT(AmqpIoContextImpl(shared_ptr<core::IoContext>));
 
         shared_ptr<boost::asio::io_context> get_service() override;
 
