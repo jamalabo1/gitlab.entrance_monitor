@@ -13,9 +13,7 @@ namespace core::communication::consume::impl {
     class ConsumerImpl : public Consumer {
 
     public:
-        INJECT(ConsumerImpl(unique_factory(amqp::ChannelHolder) channel_factory)) {
-            this->channel = channel_factory();
-        }
+        INJECT(ConsumerImpl(unique_factory(amqp::ChannelHolder) channel_factory));
 
         void consume(const ConsumeOptions &) override;
 

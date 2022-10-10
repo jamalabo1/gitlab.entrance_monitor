@@ -47,6 +47,7 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
 
 
     BOOST_LOG_TRIVIAL(trace) << "consume operation called";
+    return;
 
     auto setup_consumer = [=](std::string queue_name) {
         if(options.is_work_queue) {
@@ -90,6 +91,10 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
             .onError([](auto err) {
                 BOOST_LOG_TRIVIAL(fatal) << "error at declareQueue";
             });
+}
+
+ConsumerImpl::ConsumerImpl(unique_factory(amqp::ChannelHolder) channel_factory) {
+    channel = channel_factory();
 }
 
 ConsumerComponent core::communication::consume::getCommunicationConsumeConsumerComponent() {
