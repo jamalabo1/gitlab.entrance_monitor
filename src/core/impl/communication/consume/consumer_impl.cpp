@@ -54,10 +54,10 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
         }
 
         BOOST_LOG_TRIVIAL(trace) << "calling consume on holder";
-//        c->consume(queue_name)
-//                .onReceived(messageCb)
-//                .onSuccess(startCb)
-//                .onError(errorCb);
+        c->consume(queue_name)
+                .onReceived(messageCb)
+                .onSuccess(startCb)
+                .onError(errorCb);
     };
 
     std::string exchange_name = options.exchange_name;
