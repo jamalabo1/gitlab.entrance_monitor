@@ -65,7 +65,7 @@ workflows:
           context: entrance-monitor
           matrix:
             parameters:
-              target: [  "object-detector" ]
+              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]
       - create-deployment:
           cluster-name: entrance-monitor-cluster
           requires:
@@ -74,4 +74,4 @@ workflows:
           context: entrance-monitor
           matrix:
             parameters:
-              target: [ "object-detector" ]
+              target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]

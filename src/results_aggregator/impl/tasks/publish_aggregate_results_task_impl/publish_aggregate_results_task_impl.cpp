@@ -26,30 +26,30 @@ results_aggregator::tasks::impl::PublishAggregateResultsTaskImpl::setup(shared_p
 
     token_ = std::move(token);
 
-    io_service_ = make_shared<boost::asio::io_service>();
-    auto timer_schedule = boost::posix_time::seconds(20);
-    timer_ = make_shared<boost::asio::deadline_timer>(*io_service_);
+//    io_service_ = make_shared<boost::asio::io_service>();
+//    auto timer_schedule = boost::posix_time::seconds(20);
+//    timer_ = make_shared<boost::asio::deadline_timer>(*io_service_);
 
     auto default_executor = [&](const RunOptions::ExecutorCallback& cb) {
-        timer_->expires_from_now(timer_schedule);
-        timer_->async_wait([](const boost::system::error_code&) {
-            BOOST_LOG_TRIVIAL(fatal) << "not-fatal";
-        });
-        io_service_->run();
+//        timer_->expires_from_now(timer_schedule);
+//        timer_->async_wait([](const boost::system::error_code&) {
+//            BOOST_LOG_TRIVIAL(fatal) << "not-fatal";
+//        });
+//        io_service_->run();
         // the default execution strategy is to loop until the operation is requested to cancel.
-//        auto timer_schedule = boost::posix_time::seconds(5);
-//
-//        boost::asio::deadline_timer timer(GET_BOOST_IO_CONTEXT(ctx));
-//
-//        timer.expires_from_now(timer_schedule);
-//        while(token_->isActive()) {
-//            BOOST_LOG_TRIVIAL(trace) << "waiting for timer.";
-//            timer.wait();
-//            BOOST_LOG_TRIVIAL(trace) << "finished waiting for timer.";
-//            cb();
-//            BOOST_LOG_TRIVIAL(trace) << "callback has been executed.";
-//            timer.expires_from_now(timer_schedule);
-//        }
+        auto timer_schedule = boost::posix_time::seconds(5);
+
+        boost::asio::deadline_timer timer(GET_BOOST_IO_CONTEXT(ctx));
+
+        timer.expires_from_now(timer_schedule);
+        while(token_->isActive()) {
+            BOOST_LOG_TRIVIAL(trace) << "waiting for timer.";
+            timer.wait();
+            BOOST_LOG_TRIVIAL(trace) << "finished waiting for timer.";
+            cb();
+            BOOST_LOG_TRIVIAL(trace) << "callback has been executed.";
+            timer.expires_from_now(timer_schedule);
+        }
     };
     return {
         default_executor
