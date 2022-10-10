@@ -47,17 +47,17 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
 
 
     BOOST_LOG_TRIVIAL(trace) << "consume operation called";
-    return;
 
     auto setup_consumer = [=](std::string queue_name) {
         if(options.is_work_queue) {
             c->setQos(1);
         }
 
-        c->consume(queue_name)
-                .onReceived(messageCb)
-                .onSuccess(startCb)
-                .onError(errorCb);
+        BOOST_LOG_TRIVIAL(trace) << "calling consume on holder";
+//        c->consume(queue_name)
+//                .onReceived(messageCb)
+//                .onSuccess(startCb)
+//                .onError(errorCb);
     };
 
     std::string exchange_name = options.exchange_name;
@@ -74,7 +74,7 @@ void ConsumerImpl::consume(const ConsumeOptions& options) {
     }
 
     CCD(channel)->declareQueue(d_queue_name, queue_flags, to_table(options.args))
-            .onSuccess([&, exchange_name](const std::string &queue_name, uint32_t messagecount, uint32_t consumercount) {
+            .onSuccess([&, setup_consumer, exchange_name](const std::string &queue_name, uint32_t messagecount, uint32_t consumercount) {
 
                 BOOST_LOG_TRIVIAL(trace) << "declared exchange " << exchange_name << " with queue " << queue_name;
 
