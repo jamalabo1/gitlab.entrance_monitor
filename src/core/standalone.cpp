@@ -72,7 +72,6 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
                 // post each task to the io_context.
                 post([&io_context, task]() {
                     auto task_name = typeid(*task).name();
-                    /*
 
         // subscribe sub-token to the main token.
         auto token = make_shared<CancellationToken>();
@@ -80,6 +79,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
         BOOST_LOG_TRIVIAL(debug) << "configuring task: " << task_name;
         // configure the task.
         bool result = task->configure();
+                    /*
 
         if(!result) {
             // TODO: handle the failing of the task (e.g., re-schedule executing (retry-policy)).
