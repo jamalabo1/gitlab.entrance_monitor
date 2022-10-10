@@ -68,7 +68,8 @@ object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTas
 
 core::Task::TaskResult
 object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()() {
-    consumer_->consume(*consume_options_);
+    BOOST_LOG_TRIVIAL(trace)<< "consume_options_== null?" << (consume_options_ == nullptr);
+    //consumer_->consume(*consume_options_);
 }
 
 #define MULTIPLE_GENERATE_NEQUAL(v) v != 2 && (v) != 7
