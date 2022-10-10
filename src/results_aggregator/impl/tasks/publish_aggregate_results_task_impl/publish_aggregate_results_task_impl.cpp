@@ -30,7 +30,7 @@ results_aggregator::tasks::impl::PublishAggregateResultsTaskImpl::setup(shared_p
 //    auto timer_schedule = boost::posix_time::seconds(20);
 //    timer_ = make_shared<boost::asio::deadline_timer>(*io_service_);
 
-    auto default_executor = [&](const RunOptions::ExecutorCallback& cb) {
+    auto default_executor = [=](const RunOptions::ExecutorCallback& cb) {
 //        timer_->expires_from_now(timer_schedule);
 //        timer_->async_wait([](const boost::system::error_code&) {
 //            BOOST_LOG_TRIVIAL(fatal) << "not-fatal";
