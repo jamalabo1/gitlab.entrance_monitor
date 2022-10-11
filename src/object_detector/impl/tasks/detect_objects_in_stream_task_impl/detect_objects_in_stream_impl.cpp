@@ -68,7 +68,7 @@ object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTas
 
 core::Task::TaskResult
 object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()() {
-    BOOST_LOG_TRIVIAL(trace)<< "consume_options_== null?" << (consume_options_ == nullptr);
+    BOOST_LOG_TRIVIAL(trace)<< "consume_options_== null ? " << (consume_options_ == nullptr);
     consumer_->consume(*consume_options_);
 }
 
