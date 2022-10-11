@@ -95,7 +95,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
         // only `task` lives.
         options.executor([task, task_name] {
             BOOST_LOG_TRIVIAL(debug) << "executing task: " << task_name;
-               task->operator()();
+            task->operator()();
         });
 
                     BOOST_LOG_TRIVIAL(trace)<< "execution of task: " << task_name  << " has completed";
