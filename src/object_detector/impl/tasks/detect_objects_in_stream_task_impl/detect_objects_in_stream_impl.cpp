@@ -87,6 +87,9 @@ void object_detector::tasks::detect_objects_in_stream::impl::DetectObjectsInStre
 
     auto result = detector_->detect_objects(frame);
 
+    BOOST_LOG_TRIVIAL(trace) << "detected " << result.ids.size() << " objects in frame with id " << string(frameView.id);
+
+
     vector<DetectionResultObjectView> object_views;
 
     for (size_t i = 0; i < result.confidences.size(); i++) {
