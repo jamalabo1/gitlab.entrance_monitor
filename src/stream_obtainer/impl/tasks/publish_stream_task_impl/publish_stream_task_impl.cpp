@@ -38,6 +38,7 @@ bool stream_obtainer::tasks::impl::PublishStreamTaskImpl::configure() {
     // TODO: check if the publisher was created successfully. if not report.
     // create rabbitmq channel & connection
     publisher_ = publisher_factory_->create_publisher("frames.{1}");
+    return publisher_ != nullptr;
 }
 
 core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::operator()() {

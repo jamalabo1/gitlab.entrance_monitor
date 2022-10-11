@@ -28,7 +28,7 @@ void PublisherImpl::publish_message(const std::vector<uint8_t> &data) const {
 
     bool result = CCD(channel)->publish(exchange_name, "", sdata);
 
-    BOOST_LOG_TRIVIAL(trace) << "publishing message resulted in :" << result;
+    BOOST_LOG_TRIVIAL(trace) << "publishing message to `" << exchange_name << "` resulted in :" << result;
 }
 
 PublisherComponent core::communication::publish::getCommunicationPublisherComponent() {
