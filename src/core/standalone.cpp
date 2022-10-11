@@ -4,11 +4,6 @@
 #include <core/standalone.h>
 #include <core/cancellation_token.h>
 #include <boost/thread.hpp>
-#include <utils/reference_time.h>
-
-//#include <boost/log/utility/setup/console.hpp>
-//#include <boost/log/keywords/time_based_rotation.hpp>
-//#include <iostream>
 
 void core::init_service_runner() {
 #ifdef WIN32
@@ -17,24 +12,16 @@ void core::init_service_runner() {
     SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_AWAYMODE_REQUIRED);
 #endif
 
-//    auto psink = boost::log::add_console_log();
-//    psink->locked_backend()->auto_flush(true);
-//
-//    boost::log::add_console_log(boost::log::keywords::auto_flush = true);
-//    boost::log::add_console_log(std::cout,
-//                                boost::log::keywords::auto_flush = true,
-////            boost::log::keywords::time_based_rotation = boost::log::sinks::file::rotation_at_time_point(0, 0, 0),
-//            boost::log::keywords::format = "[%TimeStamp%]: %Message%"
-//
-//                                        );
-
 #if APP_DEBUG
     boost::log::core::get()->set_filter
             (
                     boost::log::trivial::severity >= boost::log::trivial::trace
             );
 #endif
+
 }
+
+
 void core::runner(fruit::Injector<IoContext>& injector) {
     BOOST_LOG_TRIVIAL(info) << "initiation service runner";
     core::init_service_runner();
@@ -114,8 +101,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
 
     BOOST_LOG_TRIVIAL(debug) << "joining all threads (" << hc << ") for io_context.";
     pool.join_all();
-auto t = utils::reference_time::getCurrentTimestamp();
-    BOOST_LOG_TRIVIAL(debug) << "threads finished joining at " << t;
+    BOOST_LOG_TRIVIAL(debug) << "threads finished joining at ";
 
     return -1;
 }

@@ -13,9 +13,10 @@ using namespace core::communication::publish;
 using namespace core::communication::publish::impl;
 
 
-PublisherFactoryImpl::PublisherFactoryImpl(amqp::ChannelHolder *channel,
+PublisherFactoryImpl::PublisherFactoryImpl(unique_factory(amqp::ChannelHolder) channel_factory,
                                            PublisherFactoryImpl::publisher_factory_t &publisher_factory)
-        : m_channel(channel), m_publisher_factory(publisher_factory) {
+        :  m_publisher_factory(publisher_factory) {
+    m_channel = channel_factory();
 }
 
 /***

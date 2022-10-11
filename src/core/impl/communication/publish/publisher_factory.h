@@ -18,11 +18,11 @@ namespace core::communication::publish::impl {
         using publisher_factory_t = std::function<std::unique_ptr<Publisher>(std::string)>;
 
     private:
-        amqp::ChannelHolder *m_channel;
+        unique_ptr<amqp::ChannelHolder> m_channel;
         const publisher_factory_t &m_publisher_factory;
     public:
 
-        INJECT(PublisherFactoryImpl(amqp::ChannelHolder * channel, publisher_factory_t & publisher_factory));
+        INJECT(PublisherFactoryImpl(unique_factory(amqp::ChannelHolder), publisher_factory_t & publisher_factory));
 
 
         std::unique_ptr<Publisher> create_publisher(const std::string &exchange_name, amqp::ArgsTable args) const override;

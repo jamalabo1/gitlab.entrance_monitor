@@ -8,7 +8,7 @@ using fruit::createComponent;
 
 using core::getGUIHandlerComponent;
 using core::getIoContextComponent;
-using core::amqp::getAmqpComponents;
+//using core::amqp::getAmqpComponents;
 using core::communication::getCommunicationComponents;
 using core::retry::getRetryComponents;
 
@@ -17,6 +17,6 @@ core::Components core::getCoreComponents() {
             .install(getGUIHandlerComponent)
             .install(getIoContextComponent)
             .install(getCommunicationComponents)
-            .install(getAmqpComponents)
+//            .install(getAmqpComponents)
             .install(getRetryComponents);
 }

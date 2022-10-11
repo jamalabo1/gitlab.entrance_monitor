@@ -19,7 +19,6 @@ SET(private_headers
         impl/amqp.h
         impl/amqp/channel_holder_impl.h
         impl/amqp/amqp_io_context_impl.h
-        impl/amqp/amqp_io_runner_impl.h
         impl/amqp/amqp_connection_impl.h
 
         impl/communication/consume/consumer_impl.h
@@ -70,7 +69,6 @@ add_library(
         impl/amqp/amqp.cpp
         impl/amqp/channel_holder_impl.cpp
         impl/amqp/amqp_io_context_impl.cpp
-        impl/amqp/amqp_io_runner_impl.cpp
         impl/amqp/amqp_connection_impl.cpp
 
         impl/gui_handler_impl.cpp
