@@ -10,10 +10,10 @@ using namespace core::amqp;
 using namespace core::communication::publish;
 using namespace core::communication::publish::impl;
 
-PublisherImpl::PublisherImpl(ASSISTED(std::string) exchange_name, ChannelHolder *channel) : channel(channel),
-                                                                                            exchange_name(
-                                                                                                    std::move(
-                                                                                                            exchange_name)) {}
+PublisherImpl::PublisherImpl(ASSISTED(std::string) exchange_name, unique_factory(amqp::ChannelHolder) channel_factory) :
+exchange_name(std::move(exchange_name)) {
+    channel = channel_factory();
+}
 
 void PublisherImpl::publish_message(const std::vector<uint8_t> &data) const {
 //    shared_ptr<BasicMessage> message = make_shared<BasicMessage>(data);
