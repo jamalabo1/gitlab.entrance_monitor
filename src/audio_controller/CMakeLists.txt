@@ -6,33 +6,41 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(private_headers
 
-        impl/blockage_result_message_handler.h
+#        impl/blockage_result_message_handler.h
+
+        impl/tasks/manage_speaker_audio_task_impl/manage_speaker_audio_task_impl.h
+
         impl/sound_controller.h
-        impl/sound_controller_impl.h
+        impl/sound_controller/sound_controller_impl.h
         )
 
-set(controller_sources)
+set(controller_sources )
 if (WIN32)
-    list(APPEND private_headers "impl/win32/sound_controller_win32_impl.h")
-    list(APPEND controller_sources "impl/win32/sound_controller_win32_impl.cpp")
+    list(APPEND private_headers "impl/sound_controller/win32/sound_controller_win32_impl.h")
+    list(APPEND controller_sources "impl/sound_controller/win32/sound_controller_win32_impl.cpp")
 else ()
-    list(APPEND private_headers "impl/linux/sound_controller_linux_impl.h")
-    list(APPEND controller_sources "impl/linux/sound_controller_linux_impl.cpp")
+    list(APPEND private_headers "impl/sound_controller/linux/sound_controller_linux_impl.h")
+    list(APPEND controller_sources "impl/sound_controller/linux/sound_controller_linux_impl.cpp")
 endif ()
 
 add_library(
         audio_controller_lib
         audio_controller.cpp
-        impl/blockage_result_message_handler.cpp
-        ${private_headers}
+
+#        impl/blockage_result_message_handler.cpp
+        impl/tasks/manage_speaker_audio_task_impl/manage_speaker_audio_task_impl.cpp
+
         ${controller_sources}
-)
+
+        ${private_headers}
+        impl/tasks/tasks.cpp)
 
 
 target_include_directories(
         audio_controller_lib
         PRIVATE
         impl
+        interfaces
         PUBLIC
         include
 )

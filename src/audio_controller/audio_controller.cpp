@@ -1,32 +1,25 @@
 //
 // Created by jamal on 14/08/2022.
 //
-#include "blockage_result_message_handler.h"
-#include <audio_controller/audio_controller.h>
-#include <utils/service.h>
-#include <core/amqp/connection_factory.h>
+#include "audio_controller/audio_controller.h"
+#include "tasks.h"
 
-using namespace fruit;
-using namespace core;
+namespace audio_controller {
 
-AudioControllerService::AudioControllerService(core::communication::consume::ConsumerMessageHandler *handler,
-                                               core::communication::consume::Consumer *consumer,
-                                               core::IoRunner *io_runner) : Service(io_runner), handler(handler),
-                                                                            consumer(consumer) {
+    using core::getCoreComponents;
+    using core::Service;
+    using tasks::getAudioControllerTasks;
 
-}
-
-int AudioControllerService::setup() {
-
-    CREATE_CONSUMER_SERVICE_RUNNER("results.{1}");
-
-    return run();
-}
-
+    AudioControllerService::AudioControllerService(const std::vector <shared_ptr<core::Task>> &tasks) {
+        registerTasks(tasks);
+    }
 
 AudioControllerServiceComponent getAudioControllerServiceComponent() {
-    return createComponent()
-            .install(getBlockageResultMessageHandlerComponent)
+    return fruit::createComponent()
+            .install(getAudioControllerTasks)
             .install(getCoreComponents)
             .addMultibinding<Service, AudioControllerService>();
 }
+
+}
+

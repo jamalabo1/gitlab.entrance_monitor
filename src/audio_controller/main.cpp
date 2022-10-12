@@ -8,8 +8,11 @@
 using namespace core;
 using namespace fruit;
 
-Component<AudioControllerService> getRootComponent() {
+using audio_controller::getAudioControllerServiceComponent;
+
+Component<IoContext> getRootComponent() {
     return createComponent()
+            .install(getCoreComponents)
             .install(getConfigurationsComponent)
             .install(getAudioControllerServiceComponent);
 }

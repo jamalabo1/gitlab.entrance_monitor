@@ -7,7 +7,7 @@
 
 #ifdef WIN32
 #include "win32/sound_controller_win32_impl.h"
-#elif
+#else
 #include "linux/sound_controller_linux_impl.h"
 #endif
 

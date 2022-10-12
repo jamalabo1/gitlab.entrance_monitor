@@ -1,4 +1,4 @@
-//
+ //
 // Created by jamal on 14/08/2022.
 //
 
@@ -8,27 +8,26 @@
 
 #include <core/core.h>
 
+
+namespace audio_controller {
+
+
 class AudioControllerService : public core::Service {
-private:
-    core::communication::consume::ConsumerMessageHandler *handler;
-    core::communication::consume::Consumer *consumer;
-
-
 public:
 
     INJECT(AudioControllerService(
-            core::communication::consume::ConsumerMessageHandler *,
-            core::communication::consume::Consumer * ,
-            core::IoRunner *
-    ));
+            const std::vector<shared_ptr<core::Task>>&
+            ));
 
-    int setup() override;
 };
 
-using AudioControllerServiceComponent = fruit::Component<RequiredComponents, AudioControllerService>;
 
+using $AudioController = $Exported<AudioControllerService>;
 
+using AudioControllerServiceComponent = $AudioController::PureComponent;
 AudioControllerServiceComponent getAudioControllerServiceComponent();
+
+}
 
 
 #endif //ENTRANCE_MONITOR_V2_AUDIO_CONTROLLER_H

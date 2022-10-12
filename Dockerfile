@@ -5,7 +5,7 @@ COPY . ./
 RUN  cmake  \
      -G Ninja \
      -D VCPKG_VERBOSE=ON \
-     -D CMAKE_BUILD_TYPE=Debug \
+     -D CMAKE_BUILD_TYPE=Release \
      -D CMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake \
      -D AZURE_SDK_DISABLE_AUTO_VCPKG=ON \
      -D CORE_USE_AZURE_KEYVAULT=ON \
