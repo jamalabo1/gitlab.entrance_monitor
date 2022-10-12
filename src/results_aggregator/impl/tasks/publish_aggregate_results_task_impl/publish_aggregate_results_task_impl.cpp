@@ -58,6 +58,7 @@ results_aggregator::tasks::impl::PublishAggregateResultsTaskImpl::setup(shared_p
 
 bool results_aggregator::tasks::impl::PublishAggregateResultsTaskImpl::configure() {
     publisher_ = publisher_factory_->create_publisher("results.{1}");
+    return publisher_ != nullptr;
 }
 
 core::Task::TaskResult results_aggregator::tasks::impl::PublishAggregateResultsTaskImpl::operator()() {
