@@ -42,6 +42,7 @@ results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::setup(shared_
 core::Task::TaskResult results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::operator()() {
     BOOST_LOG_TRIVIAL(debug)<<"[AggregateBlockingResultsTaskImpl::operator()()]: starting consume operation";
     consumer_->consume(*consume_options_);
+    return TaskResult{};
 }
 
 void results_aggregator::tasks::impl::AggregateBlockingResultsTaskImpl::operator()(

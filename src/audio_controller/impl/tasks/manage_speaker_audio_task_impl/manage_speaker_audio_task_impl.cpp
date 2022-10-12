@@ -46,6 +46,8 @@ ManageSpeakerAudioTaskImpl::ManageSpeakerAudioTaskImpl(
 
         core::Task::TaskResult ManageSpeakerAudioTaskImpl::operator()() {
             consumer_->consume(*consume_options_);
+            return TaskResult{};
+
         }
 
         void ManageSpeakerAudioTaskImpl::operator()(

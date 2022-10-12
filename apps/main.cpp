@@ -63,10 +63,10 @@ int main() {
     vector<ComponentFunc> components;
 
     compose_components(
-            getStreamObtainerComponent,
-            getObjectDetectorComponent,
-            getBlockingComputationComponent,
-            getResultsAggregatorServiceComponent
+            stream_obtainer::getStreamObtainerComponent,
+            object_detector::getObjectDetectorComponent,
+            blocking_computation::getBlockingComputationComponent,
+            results_aggregator::getResultsAggregatorServiceComponent
     );
 
     boost::asio::thread_pool pool(components.size());

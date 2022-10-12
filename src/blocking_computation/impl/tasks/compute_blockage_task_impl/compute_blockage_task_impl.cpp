@@ -64,6 +64,7 @@ namespace blocking_computation::tasks::impl {
 
     core::Task::TaskResult ComputeBlockageTaskImpl::operator()() {
         consumer_->consume(*consume_options_);
+        return TaskResult{};
     }
 
     void ComputeBlockageTaskImpl::operator()(

@@ -12,12 +12,18 @@ void core::init_service_runner() {
     SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_AWAYMODE_REQUIRED);
 #endif
 
-#if APP_DEBUG
+
+
     boost::log::core::get()->set_filter
             (
-                    boost::log::trivial::severity >= boost::log::trivial::trace
-            );
+                    boost::log::trivial::severity >=
+#if APP_DEBUG
+                    boost::log::trivial::trace
+#else
+                    boost::log::trivial::info
 #endif
+                    );
+
 
 }
 
@@ -66,7 +72,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
         BOOST_LOG_TRIVIAL(debug) << "configuring task: " << task_name;
         // configure the task.
         bool result = task->configure();
-                    BOOST_LOG_TRIVIAL(debug) << "task (" << task_name <<  ") configure returned : " << result;
+        BOOST_LOG_TRIVIAL(debug) << "task (" << task_name <<  ") configure returned : " << result;
 
         if(!result) {
             // TODO: handle the failing of the task (e.g., re-schedule executing (retry-policy)).
@@ -81,7 +87,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
         // because they are freed after the execution complete.
         // only `task` lives.
         options.executor([task, task_name] {
-//            BOOST_LOG_TRIVIAL(debug) << "executing task: " << task_name;
+           //BOOST_LOG_TRIVIAL(info) << "is task " << task_name << " empty? == " << (task.get() == nullptr);
             task->operator()();
         });
 
@@ -97,7 +103,7 @@ int core::run_services(shared_ptr<core::IoContext> io_context, const std::vector
     BOOST_LOG_TRIVIAL(trace) << "device hardware concurrency: " << hc;
 
     for (auto i = 0u; i<hc; ++i)
-        pool.create_thread([&] {io_context->run(); });
+        pool.create_thread([&] { io_context->run(); });
 
     BOOST_LOG_TRIVIAL(debug) << "joining all threads (" << hc << ") for io_context.";
     pool.join_all();

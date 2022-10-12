@@ -65,6 +65,7 @@ core::Task::TaskResult results_aggregator::tasks::impl::PublishAggregateResultsT
     ComputedResultView view(result > 0.5);
 
     publisher_->publish(view);
+    return TaskResult{};
 }
 
 results_aggregator::tasks::PublishAggregateResultsTaskComponent results_aggregator::tasks::getResultsAggregatorPublishAggregateResultsTask() {

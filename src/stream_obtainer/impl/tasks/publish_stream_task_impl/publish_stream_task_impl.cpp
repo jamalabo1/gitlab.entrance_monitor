@@ -78,6 +78,7 @@ core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::oper
         float fps = queue_->getFPS();
         BOOST_LOG_TRIVIAL(trace) << "queue_ fps: " << fps;
     }
+    return TaskResult{};
 }
 
 

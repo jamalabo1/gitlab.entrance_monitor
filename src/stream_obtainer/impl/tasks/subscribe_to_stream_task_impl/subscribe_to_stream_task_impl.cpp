@@ -65,6 +65,8 @@ core::Task::TaskResult stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::
             // this ensures that if the grabbed condition is met, the `retry_handler` is not triggered.
             retry_policy_->ping();
         }
+
+        return TaskResult{};
 }
 
 bool stream_obtainer::tasks::impl::SubscribeToStreamTaskImpl::retry_handler() {
