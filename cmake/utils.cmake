@@ -1,7 +1,9 @@
 macro(install_project_binaries target)
     # mySharedLib myStaticLib
     install(TARGETS ${target}
-            RUNTIME DESTINATION bin)
+            DESTINATION bin
+            COMPONENT ${target}
+            )
 endmacro()
 
 # a macro for creating a test target, link a supplied target to a executable with gtest, and link the target to test (core_tests target wants to test core target)
