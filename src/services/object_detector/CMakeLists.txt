@@ -44,8 +44,6 @@ target_link_libraries(
         object_detector_lib
         PRIVATE
         ${CURL_LIBRARIES}
-        PUBLIC
-        core
 )
 
 add_executable(
@@ -60,6 +58,4 @@ target_link_libraries(
 
 install_project_binaries(object_detector_standalone)
 
-if(PROJECT_IS_LOCAL)
-    copy_required_file(object_detector_standalone configs.local.json)
-ENDIF()
+copy_local_file(object_detector_standalone configs.local.json)

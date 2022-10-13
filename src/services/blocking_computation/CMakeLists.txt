@@ -13,6 +13,7 @@ set(private_headers
         utils/match_to_shape.h
         utils/compare_contours_area.h
         utils/compute_intersection.h
+
         )
 
 add_library(
@@ -25,6 +26,7 @@ add_library(
         utils/match_to_shape.cpp
         utils/compare_contours_area.cpp
         utils/compute_intersection.cpp
+
         ${private_headers}
 )
 

@@ -14,6 +14,5 @@ include(utils)
 create_global_testing_target(entrance_monitor_tests main.cpp) # create a global target for sub-tests to link their test library to
 
 add_subdirectory(core)
-add_subdirectory(utils)
 
 enable_global_testing_target() # enable this target by linking the global target to an executable (order is important, for the global test target to populate it's self)

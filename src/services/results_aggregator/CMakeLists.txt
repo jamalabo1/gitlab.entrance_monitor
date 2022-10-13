@@ -14,6 +14,7 @@ set(private_headers
 add_library(
         results_aggregator_lib
         results_aggregator.cpp
+
         impl/aggregator_impl.cpp
 
         impl/tasks/tasks.cpp
@@ -46,4 +47,4 @@ target_link_libraries(
 
 install_project_binaries(results_aggregator_standalone)
 
-#copy_required_file(results_aggregator_standalone configs.local.json)
+copy_local_file(results_aggregator_standalone configs.local.json)

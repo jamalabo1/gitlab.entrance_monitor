@@ -14,14 +14,16 @@ set(
 
 add_library(
         stream_obtainer_lib
+        stream_obtainer.cpp
 
+        impl/frames_queue_impl.cpp
+
+        impl/tasks/tasks.cpp
         impl/tasks/subscribe_to_stream_task_impl/subscribe_to_stream_task_impl.cpp
         impl/tasks/publish_stream_task_impl/publish_stream_task_impl.cpp
 
-        stream_obtainer.cpp
-
         ${impl_headers}
-        impl/tasks/tasks.cpp impl/frames_queue_impl.cpp)
+)
 
 target_include_directories(
         stream_obtainer_lib
@@ -33,13 +35,13 @@ target_include_directories(
 )
 
 
-add_executable(stream_obtainer_standalone main.cpp)
+add_executable(
+        stream_obtainer_standalone
+        main.cpp
+)
 
 target_link_libraries(stream_obtainer_standalone stream_obtainer_lib core)
 
-if(PROJECT_IS_LOCAL)
-    copy_required_file(stream_obtainer_standalone configs.local.json)
-ENDIF()
-
 install_project_binaries(stream_obtainer_standalone)
-expose_target(stream_obtainer stream-obtainer)
+
+copy_local_file(stream_obtainer_standalone configs.local.json)
