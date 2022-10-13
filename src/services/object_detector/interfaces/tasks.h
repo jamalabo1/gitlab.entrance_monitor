@@ -10,7 +10,7 @@
 #include "tasks/detect_objects_in_stream_task.h"
 
 namespace object_detector::tasks {
-    EXPORT_TASKS_MODULE(getObjectDetectorTasks, detect_objects_in_stream::$DetectObjectsInStreamTask);
+    EXPORT_TASKS_MODULE(getObjectDetectorTasks, $DetectObjectsInStreamTask);
 }
 
 #endif //ENTRANCE_MONITOR_V2_OBJECT_DETECTOR_TASKS_H

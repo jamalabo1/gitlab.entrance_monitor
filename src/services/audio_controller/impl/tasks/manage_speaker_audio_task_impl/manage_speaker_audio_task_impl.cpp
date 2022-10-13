@@ -20,15 +20,14 @@ namespace audio_controller::tasks {
 
         using views::BlockingResultView;
 
-ManageSpeakerAudioTaskImpl::ManageSpeakerAudioTaskImpl(
-         shared_ptr<Consumer> consumer,
-         shared_ptr<SoundController> sound_controller) :consumer_(consumer),
-                 sound_controller_(sound_controller),
-                                                          consume_options_(nullptr) {
+        ManageSpeakerAudioTaskImpl::ManageSpeakerAudioTaskImpl(
+                shared_ptr<Consumer> consumer,
+                shared_ptr<SoundController> sound_controller) : consumer_(consumer),
+                                                                sound_controller_(sound_controller),
+                                                                consume_options_(nullptr) {
 
 
-}
-
+        }
 
 
         core::Task::RunOptions
@@ -70,8 +69,8 @@ ManageSpeakerAudioTaskImpl::ManageSpeakerAudioTaskImpl(
 
     ManageSpeakerAudioTaskComponent getAudioControllerManageSpeakerAudioTask() {
         return CORE_TASK_CREATE_COMPONENT(ManageSpeakerAudioTask)
-            .install(getSoundControllerComponent)
-            .install(getCommunicationConsumeComponents);
+                .install(getSoundControllerComponent)
+                .install(getCommunicationConsumeComponents);
     }
 
 }

@@ -3,24 +3,30 @@
 //
 #include <core/service.h>
 
+namespace core {
 
-void core::Service::registerTask(shared_ptr<core::Task> task) {
-    tasks_.emplace_back(task);
-}
+    void Service::registerTask(shared_ptr<Task> task) {
+        tasks_.emplace_back(task);
+    }
 
-void core::Service::registerTasks(const std::vector<shared_ptr<Task>> &tasks) {
-//    tasks_.(tasks);
-    tasks_ = tasks;
-}
+    void Service::registerTasks(const std::vector<shared_ptr<Task>> &tasks) {
+        tasks_ = tasks;
+    }
 
-core::health::Status core::Service::health_check() const  {
-    return health::Status::Ok;
-}
+    health::Status Service::health_check() const {
+        return health::Status::Ok;
+    }
 
-const std::vector<shared_ptr<core::Task>> &core::Service::getTasks() const {
-    return tasks_;
-}
+    const std::vector<shared_ptr<Task>> &Service::getTasks() const {
+        return tasks_;
+    }
 
-int core::Service::setup() {
-    return 0;
+    int Service::setup() {
+        return 0;
+    }
+
+    std::string Service::name() const {
+        return typeid(this).name();
+    }
+
 }

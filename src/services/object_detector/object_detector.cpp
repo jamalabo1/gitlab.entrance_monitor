@@ -6,20 +6,24 @@
 
 #include "tasks.h"
 
-using fruit::createComponent;
-using core::getCoreComponents;
 
-using object_detector::tasks::getObjectDetectorTasks;
+namespace object_detector {
 
-object_detector::ObjectDetectorService::ObjectDetectorService(const std::vector<shared_ptr<core::Task>> &tasks) {
-    registerTasks(tasks);
-}
+    using fruit::createComponent;
+    using core::getCoreComponents;
+    using tasks::getObjectDetectorTasks;
 
-object_detector::ObjectDetectorService::~ObjectDetectorService() = default;
+    ObjectDetectorService::ObjectDetectorService(const std::vector<shared_ptr<core::Task>> &tasks) {
+        registerTasks(tasks);
+    }
 
-object_detector::ObjectDetectorComponent object_detector::getObjectDetectorComponent() {
-    return createComponent()
-            .install(getObjectDetectorTasks)
-            .install(getCoreComponents)
-            .addMultibinding<core::Service, ObjectDetectorService>();
+    ObjectDetectorService::~ObjectDetectorService() = default;
+
+    ObjectDetectorComponent getObjectDetectorComponent() {
+        return createComponent()
+                .install(getObjectDetectorTasks)
+                .install(getCoreComponents)
+                .addMultibinding<core::Service, ObjectDetectorService>();
+    }
+
 }

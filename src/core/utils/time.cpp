@@ -5,15 +5,16 @@
 #include <utils/reference_time.h>
 #include <chrono>
 
-using namespace std::chrono;
+namespace utils::reference_time {
+    using namespace std::chrono;
 
+    uint64_t getCurrentTimestamp() {
 
-uint64_t utils::reference_time::getCurrentTimestamp() {
+        system_clock::time_point tp = system_clock::now();
+        system_clock::duration dtn = tp.time_since_epoch();
 
-    system_clock::time_point tp = system_clock::now();
-    system_clock::duration dtn = tp.time_since_epoch();
+        uint64_t m = duration_cast<milliseconds>(dtn).count();
 
-    uint64_t m = duration_cast<milliseconds>(dtn).count();
-
-    return m;
+        return m;
+    }
 }

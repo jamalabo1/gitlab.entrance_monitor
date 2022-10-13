@@ -4,19 +4,19 @@
 
 #include <core/core.h>
 
-using fruit::createComponent;
 
-using core::getGUIHandlerComponent;
-using core::getIoContextComponent;
-//using core::amqp::getAmqpComponents;
-using core::communication::getCommunicationComponents;
-using core::retry::getRetryComponents;
+namespace core {
+    using fruit::createComponent;
+    using retry::getRetryComponents;
+    using communication::getCommunicationComponents;
 
-core::Components core::getCoreComponents() {
-    return createComponent()
-            .install(getGUIHandlerComponent)
-            .install(getIoContextComponent)
-            .install(getCommunicationComponents)
-//            .install(getAmqpComponents)
-            .install(getRetryComponents);
+
+    Components getCoreComponents() {
+        return createComponent()
+                .install(getGUIHandlerComponent)
+                .install(getIoContextComponent)
+                .install(getCommunicationComponents)
+                .install(getRetryComponents);
+    }
+
 }

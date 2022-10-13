@@ -11,12 +11,11 @@
 
 #include "detector.h"
 
-namespace object_detector::tasks::detect_objects_in_stream::impl {
+namespace object_detector::tasks::impl {
 
     class DetectObjectsInStreamTaskImpl :
             public DetectObjectsInStreamTask,
-            public core::communication::consume::ConsumerMessageHandler,
-            public std::enable_shared_from_this<DetectObjectsInStreamTaskImpl> {
+            public core::communication::consume::ConsumerMessageHandler {
     private:
         shared_ptr<core::communication::consume::Consumer> consumer_;
         unique_ptr<core::communication::consume::ConsumeOptions> consume_options_;
@@ -28,9 +27,9 @@ namespace object_detector::tasks::detect_objects_in_stream::impl {
 
     public:
         INJECT(DetectObjectsInStreamTaskImpl(
-                 shared_ptr<object_detector::Detector>,
-                 shared_ptr<core::communication::consume::Consumer>,
-                 shared_ptr<core::communication::publish::PublisherFactory>
+                shared_ptr<object_detector::Detector>,
+                shared_ptr<core::communication::consume::Consumer>,
+                shared_ptr<core::communication::publish::PublisherFactory>
         ));
 
         RunOptions setup(shared_ptr<core::IoContext> ptr, shared_ptr<core::CancellationToken> sharedPtr) override;

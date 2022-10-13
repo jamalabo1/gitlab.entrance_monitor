@@ -5,16 +5,14 @@
 #include <core/ptrs.h>
 #include <core/logging.h>
 
-using namespace std;
-using namespace core::communication::publish;
+namespace core::communication::publish {
+    using std::vector;
 
+    void Publisher::publish(const vector <uint8_t> &data) const {
+        BOOST_LOG_TRIVIAL(trace) << "publishing message from publisher";
 
-void Publisher::publish(const vector<uint8_t> &data) const {
-//    const string s(data.begin(), data.end());
+        publish_message(data);
 
-    BOOST_LOG_TRIVIAL(trace) << "publishing message from publisher";
-
-    publish_message(data);
-
-    BOOST_LOG_TRIVIAL(trace) << "message was publisher successfully";
+        BOOST_LOG_TRIVIAL(trace) << "message was publisher successfully";
+    }
 }

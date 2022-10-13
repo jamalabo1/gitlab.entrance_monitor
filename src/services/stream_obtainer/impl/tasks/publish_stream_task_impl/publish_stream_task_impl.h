@@ -12,13 +12,13 @@
 namespace stream_obtainer::tasks::impl {
     class PublishStreamTaskImpl : public PublishStreamTask {
     private:
-        FramesQueue* queue_;
-        core::communication::publish::PublisherFactory* publisher_factory_;
+        FramesQueue *queue_;
+        core::communication::publish::PublisherFactory *publisher_factory_;
         unique_ptr<core::communication::publish::Publisher> publisher_;
 
     public:
 
-        INJECT(PublishStreamTaskImpl(FramesQueue*, core::communication::publish::PublisherFactory*));
+        INJECT(PublishStreamTaskImpl(FramesQueue * , core::communication::publish::PublisherFactory * ));
 
         bool configure() override;
 

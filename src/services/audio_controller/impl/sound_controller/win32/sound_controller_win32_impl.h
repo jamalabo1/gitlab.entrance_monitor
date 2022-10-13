@@ -17,7 +17,7 @@ private:
 
     shared_ptr<std::wstring> alert_sound_file;
 
-    IAudioEndpointVolume* endpointVolume;
+    IAudioEndpointVolume *endpointVolume;
 
     float defaultVolumeDb;
     float currentVolumeDb;
@@ -32,6 +32,7 @@ private:
 public:
 
     INJECT(SoundControllerWIN32Impl(core::Configurations * configs));
+
     ~SoundControllerWIN32Impl();
 
     void play() override;

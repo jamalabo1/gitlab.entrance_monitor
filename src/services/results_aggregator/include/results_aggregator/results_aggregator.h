@@ -9,16 +9,17 @@
 
 namespace results_aggregator {
 
-class ResultsAggregatorService : public core::Service {
-public:
-    INJECT(ResultsAggregatorService(const std::vector<shared_ptr<core::Task>>& ));
+    class ResultsAggregatorService : public core::Service {
+    public:
+        INJECT(ResultsAggregatorService(const std::vector<shared_ptr<core::Task>>& ));
 
-    ~ResultsAggregatorService();
-};
+        ~ResultsAggregatorService();
+    };
 
-using $ResultsAggregatorService = $Exported<ResultsAggregatorService>;
-using ResultAggregatorServiceComponent = $ResultsAggregatorService::PureComponent;
-ResultAggregatorServiceComponent getResultsAggregatorServiceComponent();
+    using $ResultsAggregatorService = $Exported<ResultsAggregatorService>;
+    using ResultAggregatorServiceComponent = $ResultsAggregatorService::PureComponent;
+
+    ResultAggregatorServiceComponent getResultsAggregatorServiceComponent();
 
 }
 

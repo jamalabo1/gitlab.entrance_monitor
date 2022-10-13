@@ -21,10 +21,10 @@ namespace core {
 /***
  * tasks service is class for manging services in project_runner, or standalone.
  * */
-class Service : public health::ICheckable {
-private:
-    std::vector<shared_ptr<Task>> tasks_;
-protected:
+    class Service : public health::ICheckable {
+    private:
+        std::vector<shared_ptr<Task>> tasks_;
+    protected:
         shared_ptr<IoContext> ctx_;
 //        shared_ptr<boost::asio::thread_pool> pool;
 //        IoRunner* io_runner;
@@ -38,7 +38,7 @@ protected:
         /// \param io_runner io runner is a class given to the task service to operate tasks on.
 //        explicit Service(core::IoRunner* io_runner);
 //        void registerTask(core::Task& task);
-public:
+    public:
 
         // setup function, called to coordinate the handling of tasks.
         virtual int setup();
@@ -46,8 +46,9 @@ public:
         // default health check.
         health::Status health_check() const override;
 
+        virtual const std::vector<shared_ptr<Task>> &getTasks() const;
 
-        virtual const std::vector<shared_ptr<Task>>& getTasks() const;
+        virtual std::string name() const;
     };
 
 }

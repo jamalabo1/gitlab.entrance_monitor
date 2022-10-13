@@ -9,12 +9,12 @@
 
 namespace object_detector {
 
-class ObjectDetectorService : public core::Service {
-public:
-    INJECT(ObjectDetectorService(const std::vector<shared_ptr<core::Task>>& ));
+    class ObjectDetectorService : public core::Service {
+    public:
+        INJECT(ObjectDetectorService(const std::vector<shared_ptr<core::Task>>& ));
 
-    ~ObjectDetectorService();
-};
+        ~ObjectDetectorService();
+    };
 
 
     using $ObjectDetector = $Exported<ObjectDetectorService>;

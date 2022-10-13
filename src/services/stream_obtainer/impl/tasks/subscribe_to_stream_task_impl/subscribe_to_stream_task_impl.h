@@ -13,7 +13,7 @@
 namespace stream_obtainer::tasks::impl {
     class SubscribeToStreamTaskImpl : public SubscribeToStreamTask {
     private:
-        FramesQueue* queue_;
+        FramesQueue *queue_;
         unique_ptr<cv::VideoCapture> cap_;
         std::string stream_url_;
         unique_ptr<core::retry::RetryPolicy> retry_policy_;
@@ -21,15 +21,16 @@ namespace stream_obtainer::tasks::impl {
         std::mutex cap_lock;
     public:
 
-        INJECT(SubscribeToStreamTaskImpl(core::Configurations*, FramesQueue*, core::retry::Factory));
+        INJECT(SubscribeToStreamTaskImpl(core::Configurations * , FramesQueue * , const core::retry::RetryPolicyFactory&));
 
         bool configure() override;
 
         TaskResult operator()() override;
 
 
-       bool retry_handler();
-       void retry_stop_handler();
+        bool retry_handler();
+
+        void retry_stop_handler();
 
     };
 }

@@ -1,4 +1,4 @@
- //
+//
 // Created by jamal on 14/08/2022.
 //
 
@@ -12,20 +12,21 @@
 namespace audio_controller {
 
 
-class AudioControllerService : public core::Service {
-public:
+    class AudioControllerService : public core::Service {
+    public:
 
-    INJECT(AudioControllerService(
-            const std::vector<shared_ptr<core::Task>>&
-            ));
+        INJECT(AudioControllerService(
+                       const std::vector<shared_ptr<core::Task>>&
+               ));
 
-};
+    };
 
 
-using $AudioController = $Exported<AudioControllerService>;
+    using $AudioController = $Exported<AudioControllerService>;
 
-using AudioControllerServiceComponent = $AudioController::PureComponent;
-AudioControllerServiceComponent getAudioControllerServiceComponent();
+    using AudioControllerServiceComponent = $AudioController::PureComponent;
+
+    AudioControllerServiceComponent getAudioControllerServiceComponent();
 
 }
 

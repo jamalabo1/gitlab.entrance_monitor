@@ -1,6 +1,8 @@
-function(install_project_binaries target)
-    #    install_amqpclient_binaries(${target})
-endfunction()
+macro(install_project_binaries target)
+    # mySharedLib myStaticLib
+    install(TARGETS ${target}
+            RUNTIME DESTINATION bin)
+endmacro()
 
 # a macro for creating a test target, link a supplied target to a executable with gtest, and link the target to test (core_tests target wants to test core target)
 # this implies that a library target staffing ${test_target_prefix}_tests exists.

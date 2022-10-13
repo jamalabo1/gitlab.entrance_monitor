@@ -52,7 +52,7 @@ SoundControllerWIN32Impl::SoundControllerWIN32Impl(Configurations *configs) {
     auto path = std::filesystem::absolute(configs->get("alert-sound-file"));
     std::wstring path_str_local = path.wstring();
 
-    shared_ptr<std::wstring> path_str = make_shared<std::wstring>(path_str_local);
+    shared_ptr <std::wstring> path_str = make_shared<std::wstring>(path_str_local);
 
     BOOST_LOG_TRIVIAL(debug) << "audio_sound_file absolute path is: " << path;
 
@@ -62,7 +62,7 @@ SoundControllerWIN32Impl::SoundControllerWIN32Impl(Configurations *configs) {
     HRESULT hr;
     IMMDeviceEnumerator *deviceEnumerator = NULL;
     hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator),
-                          (LPVOID *) &deviceEnumerator);
+                          (LPVOID * ) & deviceEnumerator);
     IMMDevice *defaultDevice = NULL;
 
     hr = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
@@ -76,7 +76,7 @@ SoundControllerWIN32Impl::SoundControllerWIN32Impl(Configurations *configs) {
 
     IAudioEndpointVolume *endpointVolume = NULL;
     hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, NULL,
-                                 (LPVOID *) &endpointVolume);
+                                 (LPVOID * ) & endpointVolume);
     defaultDevice->Release();
     defaultDevice = NULL;
 

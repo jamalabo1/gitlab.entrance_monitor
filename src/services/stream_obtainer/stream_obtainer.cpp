@@ -8,21 +8,25 @@
 
 #include "tasks.h"
 
-using fruit::createComponent;
-using core::getCoreComponents;
-using core::Service;
 
-using stream_obtainer::tasks::getStreamObtainerTasks;
+namespace stream_obtainer {
 
-stream_obtainer::StreamObtainer::StreamObtainer(const std::vector<shared_ptr<core::Task>> &tasks) {
-    registerTasks(tasks);
-}
+    using fruit::createComponent;
+    using core::getCoreComponents;
+    using core::Service;
 
-stream_obtainer::StreamObtainer::~StreamObtainer() = default;
+    using tasks::getStreamObtainerTasks;
 
-stream_obtainer::StreamObtainerComponent stream_obtainer::getStreamObtainerComponent() {
-    return createComponent()
-            .install(getStreamObtainerTasks)
-            .install(getCoreComponents)
-            .addMultibinding<Service, StreamObtainer>();
+    StreamObtainer::StreamObtainer(const std::vector<shared_ptr<core::Task>> &tasks) {
+        registerTasks(tasks);
+    }
+
+    StreamObtainer::~StreamObtainer() = default;
+
+    StreamObtainerComponent getStreamObtainerComponent() {
+        return createComponent()
+                .install(getStreamObtainerTasks)
+                .install(getCoreComponents)
+                .addMultibinding<Service, StreamObtainer>();
+    }
 }

@@ -10,16 +10,16 @@ namespace audio_controller {
     using core::Service;
     using tasks::getAudioControllerTasks;
 
-    AudioControllerService::AudioControllerService(const std::vector <shared_ptr<core::Task>> &tasks) {
+    AudioControllerService::AudioControllerService(const std::vector<shared_ptr<core::Task>> &tasks) {
         registerTasks(tasks);
     }
 
-AudioControllerServiceComponent getAudioControllerServiceComponent() {
-    return fruit::createComponent()
-            .install(getAudioControllerTasks)
-            .install(getCoreComponents)
-            .addMultibinding<Service, AudioControllerService>();
-}
+    AudioControllerServiceComponent getAudioControllerServiceComponent() {
+        return fruit::createComponent()
+                .install(getAudioControllerTasks)
+                .install(getCoreComponents)
+                .addMultibinding<Service, AudioControllerService>();
+    }
 
 }
 

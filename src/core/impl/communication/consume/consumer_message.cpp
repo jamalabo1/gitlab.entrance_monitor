@@ -3,12 +3,14 @@
 //
 #include "consumer_message.h"
 
-using namespace core::communication::consume::impl;
+namespace core::communication::consume::impl {
 
-std::string ConsumerMessageImpl::Body() {
-    const char *data = envelope->body();
-    uint64_t size = envelope->bodySize();
+    std::string ConsumerMessageImpl::Body() {
+        const char *data = envelope->body();
+        uint64_t size = envelope->bodySize();
 
-    return {data, size};
+        return {data, size};
+    }
+
 }
 

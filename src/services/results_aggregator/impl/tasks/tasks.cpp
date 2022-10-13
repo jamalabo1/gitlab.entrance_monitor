@@ -4,12 +4,11 @@
 
 #include "tasks.h"
 
-using fruit::createComponent;
 
-results_aggregator::tasks::Components results_aggregator::tasks::getResultsAggregatorTasks() {
-    return createComponent()
-            .registerProvider(MAKE_TASKS_PROVIDER(AggregateBlockingResultsTask, PublishAggregateResultsTask))
-            .install(getAggregatorComponent)
-            .install(getResultsAggregatorAggregateBlockingResultsTask)
-            .install(getResultsAggregatorPublishAggregateResultsTask);
+namespace results_aggregator::tasks {
+
+    Components getResultsAggregatorTasks() {
+        return CORE_TASKS_CREATE_COMPONENT(ResultsAggregator, AggregateBlockingResultsTask, PublishAggregateResultsTask)
+                .install(getAggregatorComponent);
+    }
 }

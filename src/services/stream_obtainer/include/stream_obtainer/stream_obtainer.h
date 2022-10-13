@@ -19,6 +19,7 @@ namespace stream_obtainer {
 
     using $StreamObtainer = $Exported<StreamObtainer>;
     using StreamObtainerComponent = $StreamObtainer::PureComponent;
+
     StreamObtainerComponent getStreamObtainerComponent();
 }
 

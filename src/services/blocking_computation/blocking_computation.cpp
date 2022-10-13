@@ -18,13 +18,12 @@ namespace blocking_computation {
         registerTasks(tasks);
     }
 
-BlockingComputationComponent getBlockingComputationComponent() {
-    return createComponent()
-            .install(getCoreComponents)
-            .install(getBlockingComputationTasks)
-            .addMultibinding<Service, BlockingComputationService>();
-}
-
+    BlockingComputationComponent getBlockingComputationComponent() {
+        return createComponent()
+                .install(getCoreComponents)
+                .install(getBlockingComputationTasks)
+                .addMultibinding<Service, BlockingComputationService>();
+    }
 
 
 }

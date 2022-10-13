@@ -3,10 +3,10 @@
 //
 #include "tasks.h"
 
-using fruit::createComponent;
+namespace object_detector::tasks {
 
-object_detector::tasks::Components object_detector::tasks::getObjectDetectorTasks() {
-    return createComponent()
-            .registerProvider(MAKE_TASKS_PROVIDER(detect_objects_in_stream::DetectObjectsInStreamTask))
-            .install(detect_objects_in_stream::getObjectDetectorDetectObjectsInStreamTask);
+    Components getObjectDetectorTasks() {
+        return CORE_TASKS_CREATE_COMPONENT(ObjectDetector, DetectObjectsInStreamTask);
+    }
+
 }

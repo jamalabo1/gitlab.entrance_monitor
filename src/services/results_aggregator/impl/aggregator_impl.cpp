@@ -9,28 +9,36 @@
 
 using namespace std;
 
-results_aggregator::impl::AggregatorImpl::AggregatorImpl() = default;
+namespace results_aggregator {
 
-void results_aggregator::impl::AggregatorImpl::add(uint64_t x, int y) {
-    a_sum += x * y;
-    b_sum += x;
-}
+    namespace impl {
 
-double results_aggregator::impl::AggregatorImpl::aggregate() {
-    if(b_sum == 0) return 0;
-    double avg = double(a_sum) / double(b_sum);
-    BOOST_LOG_TRIVIAL(trace) << "avg: " << to_string(avg);
-    reset();
-    if(isnan(avg)) return 0;
-    return avg;
-}
+        AggregatorImpl::AggregatorImpl() = default;
 
-void results_aggregator::impl::AggregatorImpl::reset() {
-    a_sum = 0;
-    b_sum = 0;
-}
+        void AggregatorImpl::add(uint64_t x, int y) {
+            a_sum += x * y;
+            b_sum += x;
+        }
 
-results_aggregator::AggregatorComponent results_aggregator::getAggregatorComponent() {
-    return fruit::createComponent()
-            .bind<Aggregator, impl::AggregatorImpl>();
-}
+        double AggregatorImpl::aggregate() {
+            if (b_sum == 0) return 0;
+            double avg = double(a_sum) / double(b_sum);
+            BOOST_LOG_TRIVIAL(trace) << "avg: " << to_string(avg);
+            reset();
+            if (isnan(avg)) return 0;
+            return avg;
+        }
+
+        void AggregatorImpl::reset() {
+            a_sum = 0;
+            b_sum = 0;
+        }
+
+    }
+
+    AggregatorComponent getAggregatorComponent() {
+        return fruit::createComponent()
+                .bind<Aggregator, impl::AggregatorImpl>();
+    }
+
+};

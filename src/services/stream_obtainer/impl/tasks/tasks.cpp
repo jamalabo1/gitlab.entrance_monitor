@@ -3,16 +3,11 @@
 //
 #include "tasks.h"
 
-using fruit::createComponent;
-using stream_obtainer::tasks::getStreamObtainerPublishStreamTask;
-using stream_obtainer::tasks::getStreamObtainerSubscribeToStreamTask;
+namespace stream_obtainer::tasks {
 
-using stream_obtainer::tasks::Components;
+    Components getStreamObtainerTasks() {
+        return CORE_TASKS_CREATE_COMPONENT(StreamObtainer, PublishStreamTask, SubscribeToStreamTask)
+                .install(getFramesQueueComponent);
+    }
 
-Components stream_obtainer::tasks::getStreamObtainerTasks() {
-    return createComponent()
-    .registerProvider(MAKE_TASKS_PROVIDER(tasks::PublishStreamTask, tasks::SubscribeToStreamTask))
-    .install(getFramesQueueComponent)
-    .install(getStreamObtainerPublishStreamTask)
-    .install(getStreamObtainerSubscribeToStreamTask);
 }

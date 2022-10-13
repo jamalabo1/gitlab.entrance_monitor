@@ -5,19 +5,24 @@
 
 #include "tasks.h"
 
-using core::getCoreComponents;
-using results_aggregator::tasks::getResultsAggregatorTasks;
 
-results_aggregator::ResultsAggregatorService::ResultsAggregatorService
-(const std::vector<shared_ptr<core::Task>> & tasks) {
-    registerTasks(tasks);
+namespace results_aggregator {
+
+    using core::getCoreComponents;
+    using tasks::getResultsAggregatorTasks;
+
+    ResultsAggregatorService::ResultsAggregatorService
+            (const std::vector<shared_ptr<core::Task>> &tasks) {
+        registerTasks(tasks);
+    }
+
+    ResultsAggregatorService::~ResultsAggregatorService() = default;
+
+    ResultAggregatorServiceComponent getResultsAggregatorServiceComponent() {
+        return fruit::createComponent()
+                .install(getResultsAggregatorTasks)
+                .install(getCoreComponents)
+                .addMultibinding<core::Service, ResultsAggregatorService>();
+    }
 }
 
-results_aggregator::ResultsAggregatorService::~ResultsAggregatorService() = default;
-
-results_aggregator::ResultAggregatorServiceComponent results_aggregator::getResultsAggregatorServiceComponent() {
-    return fruit::createComponent()
-            .install(getResultsAggregatorTasks)
-            .install(getCoreComponents)
-            .addMultibinding<core::Service, ResultsAggregatorService>();
-}

@@ -10,82 +10,84 @@
 
 #include <view_models/frame_view.h>
 
-using fruit::createComponent;
-using core::Task;
-using core::communication::publish::getCommunicationPublishComponents;
-using stream_obtainer::tasks::PublishStreamTaskComponent;
 
-using stream_obtainer::FramesQueue;
-using core::communication::publish::PublisherFactory;
-using core::communication::publish::Publisher;
+namespace stream_obtainer::tasks {
 
-using std::string;
-using cv::Mat;
-using cv::Size;
-using utils::reference_time::getCurrentTimestamp;
-using utils::mat::mat_to_encoded_vector;
+    using core::communication::publish::getCommunicationPublishComponents;
 
-using views::FrameView;
+    namespace impl {
 
-stream_obtainer::tasks::impl::PublishStreamTaskImpl::PublishStreamTaskImpl(FramesQueue * framesQueue, PublisherFactory * publisherFactory) : queue_(framesQueue), publisher_factory_(publisherFactory) {
+        using core::communication::publish::PublisherFactory;
+        using core::communication::publish::Publisher;
 
-}
+        using std::string;
+        using cv::Mat;
+        using cv::Size;
+        using utils::reference_time::getCurrentTimestamp;
+        using utils::mat::mat_to_encoded_vector;
 
-bool stream_obtainer::tasks::impl::PublishStreamTaskImpl::configure() {
-    BOOST_LOG_TRIVIAL(debug) << "[PublishStreamTaskImpl::configure]: configuring task";
+        using views::FrameView;
 
-    BOOST_LOG_TRIVIAL(trace) << "creating publisher from factory";
-    // TODO: check if the publisher was created successfully. if not report.
-    // create rabbitmq channel & connection
-    publisher_ = publisher_factory_->create_publisher("frames.{1}");
-    return publisher_ != nullptr;
-}
+        PublishStreamTaskImpl::PublishStreamTaskImpl(FramesQueue *framesQueue,
+                                                     PublisherFactory *publisherFactory)
+                : queue_(framesQueue), publisher_factory_(publisherFactory) {
 
-core::Task::TaskResult stream_obtainer::tasks::impl::PublishStreamTaskImpl::operator()() {
-
-    // TODO: override the setup method to change the executor so it calls the task handle only when the queue is not empty.
-
-
-//    BOOST_LOG_TRIVIAL(trace) << "setting up stream publisher";
-    while (!queue_->empty()) {
-        BOOST_LOG_TRIVIAL(trace) << "receiving frame from fpsQueue";
-        Mat frame = queue_->get();
-
-        if (frame.empty()) {
-            BOOST_LOG_TRIVIAL(trace) << "skipping empty frame";
-            continue;
         }
 
-        cv::Mat resizedFrame;
-        if (frame.size().width > 1920) {
-            BOOST_LOG_TRIVIAL(trace) << "resizing frame";
-            Size dsize(416, 416);
-            resize(frame, resizedFrame, dsize);
-        } else {
-            resizedFrame = frame;
+        bool PublishStreamTaskImpl::configure() {
+            BOOST_LOG_TRIVIAL(debug) << "[PublishStreamTaskImpl::configure]: configuring task";
+
+            BOOST_LOG_TRIVIAL(trace) << "creating publisher from factory";
+            // TODO: check if the publisher was created successfully. if not report.
+            // create rabbitmq channel & connection
+            publisher_ = publisher_factory_->create_publisher("frames.{1}");
+            return publisher_ != nullptr;
         }
 
-        uint64_t currentTimestamp = getCurrentTimestamp();
+        core::Task::TaskResult PublishStreamTaskImpl::operator()() {
+            // TODO: override the setup method to change the executor so it calls the task handle only when the queue is not empty.
 
-        BOOST_LOG_TRIVIAL(trace) << "creating frame view";
-        auto frameView = FrameView(mat_to_encoded_vector(resizedFrame), currentTimestamp);
+            while (!queue_->empty()) {
+                BOOST_LOG_TRIVIAL(trace) << "receiving frame from fpsQueue";
+                Mat frame = queue_->get();
 
-        BOOST_LOG_TRIVIAL(trace) << "publishing frame with id " << string(frameView.id);
-        publisher_->publish(
-                frameView
-        );
+                if (frame.empty()) {
+                    BOOST_LOG_TRIVIAL(trace) << "skipping empty frame";
+                    continue;
+                }
 
-        float fps = queue_->getFPS();
-        BOOST_LOG_TRIVIAL(trace) << "queue_ fps: " << fps;
+                cv::Mat resizedFrame;
+                if (frame.size().width > 1920) {
+                    BOOST_LOG_TRIVIAL(trace) << "resizing frame";
+                    Size dsize(416, 416);
+                    resize(frame, resizedFrame, dsize);
+                } else {
+                    resizedFrame = frame;
+                }
+
+                uint64_t currentTimestamp = getCurrentTimestamp();
+
+                BOOST_LOG_TRIVIAL(trace) << "creating frame view";
+                auto frameView = FrameView(mat_to_encoded_vector(resizedFrame), currentTimestamp);
+
+                BOOST_LOG_TRIVIAL(trace) << "publishing frame with id " << string(frameView.id);
+                publisher_->publish(
+                        frameView
+                );
+
+                float fps = queue_->getFPS();
+                BOOST_LOG_TRIVIAL(trace) << "queue_ fps: " << fps;
+            }
+
+            return TaskResult{};
+        }
+
     }
-    return TaskResult{};
+
+    PublishStreamTaskComponent getStreamObtainerPublishStreamTask() {
+        return CORE_TASK_CREATE_COMPONENT(PublishStreamTask)
+                .install(getCommunicationPublishComponents);
+    }
+
 }
 
-
-
-PublishStreamTaskComponent stream_obtainer::tasks::getStreamObtainerPublishStreamTask() {
-    return createComponent()
-            .install(getCommunicationPublishComponents)
-            .bind<PublishStreamTask, impl::PublishStreamTaskImpl>()
-            .addMultibinding<core::Task, impl::PublishStreamTaskImpl>();
-}

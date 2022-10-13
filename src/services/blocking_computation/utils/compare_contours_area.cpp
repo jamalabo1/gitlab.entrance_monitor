@@ -11,10 +11,10 @@ namespace blocking_computation::utils {
     using cv::contourArea;
     using cv::Point;
 
-bool compareContoursArea(const vector<Point> &c1, const vector<Point> &c2) {
-    double a = fabs(contourArea(c1));
-    double b = fabs(contourArea(c2));
-    return (a > b);
-}
+    bool compareContoursArea(const vector<Point> &c1, const vector<Point> &c2) {
+        double a = fabs(contourArea(c1));
+        double b = fabs(contourArea(c2));
+        return (a > b);
+    }
 
 }

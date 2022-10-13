@@ -21,7 +21,6 @@ packer(id, __VA_ARGS__);                                     \
 namespace core {
 
 
-
     static auto uuid_generator = boost::uuids::random_generator();
 
 
@@ -38,10 +37,12 @@ namespace core {
         ViewId(std::string id) {
             this->id = std::move(id);
         }
-        operator std::string ()  {
+
+        operator std::string() {
             return this->id;
         }
-        ~ViewId()=default;
+
+        ~ViewId() = default;
 
         // TODO: fix pack_items is override when used.
         pack_items(id);
@@ -52,7 +53,8 @@ namespace core {
         ViewId id;
 
         View() = default;
-        ~View()= default;
+
+        ~View() = default;
     };
 }
 #endif //ENTRANCE_MONITOR_V2_VIEW_H

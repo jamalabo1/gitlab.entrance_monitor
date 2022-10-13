@@ -9,18 +9,23 @@
 #include <vector>
 #include <opencv2/core.hpp>
 
-class DetectionResult {
-public:
+namespace object_detector {
 
-    std::vector<cv::Rect> boxes;
-    std::vector<int> ids;
-    std::vector<float> confidences;
+    class DetectionResult {
+    public:
 
-    DetectionResult(std::vector<int> ids, std::vector<cv::Rect> boxes,
-                    std::vector<float> confidences) : ids(std::move(ids)),
-                                                      boxes(std::move(boxes)),
-                                                      confidences(std::move(confidences)) {}
+        std::vector<cv::Rect> boxes;
+        std::vector<int> ids;
+        std::vector<float> confidences;
 
-};
+        DetectionResult(std::vector<int> ids, std::vector<cv::Rect> boxes,
+                        std::vector<float> confidences) : ids(std::move(ids)),
+                                                          boxes(std::move(boxes)),
+                                                          confidences(std::move(confidences)) {}
+
+    };
+
+}
+
 
 #endif //ENTRANCE_MONITOR_V2_DETECTION_RESULT_H

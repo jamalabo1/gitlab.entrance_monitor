@@ -9,20 +9,20 @@
 
 namespace views {
 
-class ComputedResultView : public core::View {
+    class ComputedResultView : public core::View {
 
-public:
+    public:
 //    core::ViewId objectId;
 
-    bool isBlocking;
+        bool isBlocking;
 
-    ComputedResultView() = default;
+        ComputedResultView() = default;
 
-    explicit ComputedResultView(bool isBlocking) : isBlocking(isBlocking) {}
+        explicit ComputedResultView(bool isBlocking) : isBlocking(isBlocking) {}
 
 
-    pack_items(isBlocking)
-};
+        pack_items(isBlocking)
+    };
 }
 
 #endif //ENTRANCE_MONITOR_V2_COMPUTED_RESULT_VIEW_H

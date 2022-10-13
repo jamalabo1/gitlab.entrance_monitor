@@ -11,30 +11,31 @@ namespace core::amqp {
     namespace impl {
 
 
+        ChannelHolderImpl::ChannelHolderImpl(unique_factory(AmqpConnection) connection_factory) {
+            // create a connection for this channel (thread)
+            connection_ = connection_factory();
 
-ChannelHolderImpl::ChannelHolderImpl(unique_factory(AmqpConnection) connection_factory)   {
-    // create a connection for this channel (thread)
-    connection_ = connection_factory();
+            channel_ = connection_->create_channel();
+            channel_->onError([](auto err) {
+                BOOST_LOG_TRIVIAL(fatal) << "error at channel: " << err << " at time "
+                                         << utils::reference_time::getCurrentTimestamp();
+            });
+        }
 
-    channel_ = connection_->create_channel();
-    channel_->onError([](auto err){
-        BOOST_LOG_TRIVIAL(fatal) << "error at channel: " << err << " at time " << utils::reference_time::getCurrentTimestamp();
-    });
-}
+        shared_ptr<AMQP::Channel> ChannelHolderImpl::operator*() const {
+            return channel_;
+        }
 
-shared_ptr<AMQP::Channel> ChannelHolderImpl::operator*() const {
-    return channel_;
-}
-
-shared_ptr<AMQP::Channel> ChannelHolderImpl::operator->() const {
-    return this->operator*();
-}
+        shared_ptr<AMQP::Channel> ChannelHolderImpl::operator->() const {
+            return this->operator*();
+        }
 
     }
-AmqpChannelComponent getAmqpChannelComponent() {
-    return fruit::createComponent()
-            .install(getAmqpIoContextComponent)
-            .install(getAmqpConnectionComponent)
-            .bind<ChannelHolder, impl::ChannelHolderImpl>();
+
+    AmqpChannelComponent getAmqpChannelComponent() {
+        return fruit::createComponent()
+                .install(getAmqpIoContextComponent)
+                .install(getAmqpConnectionComponent)
+                .bind<ChannelHolder, impl::ChannelHolderImpl>();
+    }
 }
- }

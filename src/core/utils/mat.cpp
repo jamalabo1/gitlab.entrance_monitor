@@ -5,11 +5,15 @@
 
 #include <opencv2/imgcodecs.hpp>
 
-using namespace std;
-using cv::Mat;
 
-vector<uint8_t> utils::mat::mat_to_encoded_vector( const Mat &mat, const string &ext) {
-    vector<uint8_t> v;
-    imencode("." + ext, mat, v);
-    return v;
+namespace utils::mat {
+    using cv::Mat;
+    using std::string;
+    using std::vector;
+
+    vector<uint8_t> mat_to_encoded_vector(const Mat &mat, const string &ext) {
+        vector<uint8_t> v;
+        imencode("." + ext, mat, v);
+        return v;
+    }
 }

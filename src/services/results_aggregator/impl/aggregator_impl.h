@@ -11,23 +11,23 @@
 namespace results_aggregator::impl {
 
 
-class AggregatorImpl : public Aggregator {
+    class AggregatorImpl : public Aggregator {
 
-private:
-    std::atomic_uint64_t a_sum;
-    std::atomic_uint64_t b_sum;
+    private:
+        std::atomic_uint64_t a_sum;
+        std::atomic_uint64_t b_sum;
 
-    void reset();
+        void reset();
 
-public:
+    public:
 
-    INJECT(AggregatorImpl());
+        INJECT(AggregatorImpl());
 
-    void add(uint64_t x, int y) override;
+        void add(uint64_t x, int y) override;
 
-    double aggregate() override;
+        double aggregate() override;
 
-};
+    };
 }
 
 

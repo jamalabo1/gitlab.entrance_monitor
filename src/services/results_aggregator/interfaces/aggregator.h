@@ -6,21 +6,20 @@
 #define ENTRANCE_MONITOR_V2_RESULTS_AGGREGATOR_AGGREGATOR_H
 
 #include <core/init.h>
-//#include <cstdint>
-//#include <fruit/fruit.h>
 
 namespace results_aggregator {
 
-class Aggregator {
-public:
-    virtual void add(uint64_t x, int y) = 0;
+    class Aggregator {
+    public:
+        virtual void add(uint64_t x, int y) = 0;
 
-    virtual double aggregate() = 0;
-};
+        virtual double aggregate() = 0;
+    };
 
-using $Aggregator = $Exported<Aggregator>;
-using AggregatorComponent = $Aggregator::PureComponent;
-AggregatorComponent getAggregatorComponent();
+    using $Aggregator = $Exported<Aggregator>;
+    using AggregatorComponent = $Aggregator::PureComponent;
+
+    AggregatorComponent getAggregatorComponent();
 
 
 }

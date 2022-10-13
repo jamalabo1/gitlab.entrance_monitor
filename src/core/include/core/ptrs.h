@@ -6,25 +6,13 @@
 #define ENTRANCE_MONITOR_V2_PTRS_H
 
 #include <boost/shared_ptr.hpp>
-//#include <boost/move/unique_ptr.hpp>
 #include <memory>
 
-//template<class T> std::shared_ptr<T> to_std(const boost::shared_ptr<T> &p) {
-//    return std::shared_ptr<T>(p.get(), [p](...) mutable { p.reset(); });
-//}
-//
-//template<class T> boost::shared_ptr<T> to_boost(const std::shared_ptr<T> &p) {
-//    return boost::shared_ptr<T>(p.get(), [p](...) mutable { p.reset(); });
-//}
-
-//using boost::movelib::unique_ptr;
-//using boost::shared_ptr;
 using std::shared_ptr;
 using std::make_shared;
 
 using std::unique_ptr;
 using std::make_unique;
-
 
 
 namespace core {

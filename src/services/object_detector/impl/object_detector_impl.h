@@ -12,18 +12,18 @@
 
 namespace object_detector::impl {
 
-class DetectorImpl : public Detector {
-private:
-    void prepare_model();
+    class DetectorImpl : public Detector {
+    private:
+        void prepare_model();
 
-    core::Configurations *configs;
-    unique_ptr<cv::dnn::DetectionModel> detectionModel_;
+        core::Configurations *configs;
+        unique_ptr<cv::dnn::DetectionModel> detectionModel_;
 
-public:
-    INJECT(DetectorImpl(core::Configurations * configurations));
+    public:
+        INJECT(DetectorImpl(core::Configurations * configurations));
 
-    DetectionResult detect_objects(const cv::Mat &) override;
-};
+        DetectionResult detect_objects(const cv::Mat &) override;
+    };
 }
 
 

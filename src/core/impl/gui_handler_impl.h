@@ -14,10 +14,10 @@
 namespace core::impl {
     class GUIHandlerImpl : public GUIHandler {
     private:
-        GUIQueue* m_queue;
+        GUIQueue *m_queue;
 
     public:
-        INJECT(GUIHandlerImpl(GUIQueue*));
+        INJECT(GUIHandlerImpl(GUIQueue * ));
 
         void run() override;
 

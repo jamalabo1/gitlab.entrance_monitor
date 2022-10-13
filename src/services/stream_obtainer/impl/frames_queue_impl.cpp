@@ -3,12 +3,14 @@
 //
 #include "frames_queue.h"
 
-using fruit::createComponent;
-using stream_obtainer::FramesQueueComponent;
 
-FramesQueueComponent stream_obtainer::getFramesQueueComponent() {
-    return createComponent()
-    .registerProvider([]() {
-        return new FramesQueue();
-    });
+namespace stream_obtainer {
+    using fruit::createComponent;
+
+    FramesQueueComponent getFramesQueueComponent() {
+        return createComponent()
+                .registerProvider([]() {
+                    return new FramesQueue();
+                });
+    }
 }

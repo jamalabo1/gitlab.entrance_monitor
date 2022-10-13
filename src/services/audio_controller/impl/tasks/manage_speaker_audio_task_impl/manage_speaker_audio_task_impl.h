@@ -13,21 +13,20 @@
 
 namespace audio_controller::tasks::impl {
     class ManageSpeakerAudioTaskImpl :
-        public ManageSpeakerAudioTask,
-        public core::communication::consume::ConsumerMessageHandler
-    {
+            public ManageSpeakerAudioTask,
+            public core::communication::consume::ConsumerMessageHandler {
     private:
         shared_ptr<core::communication::consume::Consumer> consumer_;
         unique_ptr<core::communication::consume::ConsumeOptions> consume_options_;
 
         shared_ptr<SoundController> sound_controller_;
     public:
-            INJECT(
-                    ManageSpeakerAudioTaskImpl(
-                            shared_ptr<core::communication::consume::Consumer>,
-                            shared_ptr<SoundController>
-                            )
-                    );
+        INJECT(
+                ManageSpeakerAudioTaskImpl(
+                        shared_ptr<core::communication::consume::Consumer>,
+                        shared_ptr<SoundController>
+                )
+        );
 
         RunOptions setup(shared_ptr<core::IoContext>, shared_ptr<core::CancellationToken>) override;
 

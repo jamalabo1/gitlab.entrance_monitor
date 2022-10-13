@@ -9,17 +9,18 @@
 
 namespace blocking_computation {
 
-class BlockingComputationService : public core::Service {
-public:
+    class BlockingComputationService : public core::Service {
+    public:
 
-    INJECT(BlockingComputationService(
-                   const std::vector<shared_ptr<core::Task>>&
-            ));
-};
+        INJECT(BlockingComputationService(
+                       const std::vector<shared_ptr<core::Task>>&
+               ));
+    };
 
 
     using $BlockingComputation = $Exported<BlockingComputationService>;
     using BlockingComputationComponent = $BlockingComputation::PureComponent;
+
     BlockingComputationComponent getBlockingComputationComponent();
 }
 

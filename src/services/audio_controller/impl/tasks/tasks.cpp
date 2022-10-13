@@ -5,8 +5,6 @@
 
 namespace audio_controller::tasks {
     Components getAudioControllerTasks() {
-        return fruit::createComponent()
-                .registerProvider(MAKE_TASKS_PROVIDER(ManageSpeakerAudioTask))
-                .install(getAudioControllerManageSpeakerAudioTask);
+        return CORE_TASKS_CREATE_COMPONENT(AudioController, ManageSpeakerAudioTask);
     }
 }

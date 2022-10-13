@@ -10,83 +10,84 @@
 
 #include "is_cuda_available.h"
 
-using std::vector;
 
-using cv::Mat;
-using cv::Rect;
-using cv::Scalar;
-using cv::Size;
+namespace object_detector {
 
-using cv::dnn::Net;
-using cv::dnn::DetectionModel;
-using cv::dnn::readNetFromDarknet;
+    using fruit::createComponent;
 
-using object_detector::utils::is_cuda_available;
-using object_detector::utils::download_file_from_url;
+    namespace impl {
 
-using fruit::createComponent;
+        using std::vector;
 
-object_detector::impl::DetectorImpl::DetectorImpl(core::Configurations *configurations) : configs(configurations) {
-    BOOST_LOG_TRIVIAL(trace) << "initiating model preparation";
-    // let the `prepare_model` sync,
-    // so that if the preparation model failed while loading the modules it's not continued.
-    prepare_model();
-}
+        using cv::Mat;
+        using cv::Rect;
+        using cv::Scalar;
+        using cv::Size;
 
-DetectionResult object_detector::impl::DetectorImpl::detect_objects(const Mat &frame) {
-//    BOOST_LOG_TRIVIAL(trace) << "locking `detectionModel_` mutex";
-//    detection_model_mutex.lock();
+        using cv::dnn::Net;
+        using cv::dnn::DetectionModel;
+        using cv::dnn::readNetFromDarknet;
 
-    BOOST_LOG_TRIVIAL(trace) << "setting `detectionModel_` input params";
-    detectionModel_->setInputParams(1.0 / 255.0, Size(416, 416), Scalar(), true);
+        using utils::is_cuda_available;
+        using utils::download_file_from_url;
 
 
-    vector<int> classIds;
-    vector<Rect> boxes;
-    vector<float> confidences;
+        DetectorImpl::DetectorImpl(core::Configurations *configurations) : configs(configurations) {
+            BOOST_LOG_TRIVIAL(trace) << "initiating model preparation";
+            // let the `prepare_model` sync,
+            // so that if the preparation model failed while loading the modules it's not continued.
+            prepare_model();
+        }
 
-    BOOST_LOG_TRIVIAL(trace) << "detecting objects in `frame`";
-    detectionModel_->detect(frame,
-                            classIds,
-                            confidences,
-                            boxes,
-                            0.6,
-                            0.4
-    );
-//    BOOST_LOG_TRIVIAL(trace) << "unlocking `detectionModel_` mutex";
-//    detection_model_mutex.unlock();
+        DetectionResult DetectorImpl::detect_objects(const Mat &frame) {
+            BOOST_LOG_TRIVIAL(trace) << "setting `detectionModel_` input params";
+            detectionModel_->setInputParams(1.0 / 255.0, Size(416, 416), Scalar(), true);
 
-    return {classIds, boxes, confidences};
-}
 
-void object_detector::impl::DetectorImpl::prepare_model() {
-//    detection_model_mutex.lock();
-    BOOST_LOG_TRIVIAL(debug) << "initialing dnn::net reading from darknet";
+            vector<int> classIds;
+            vector<Rect> boxes;
+            vector<float> confidences;
 
-    auto cfgFile = download_file_from_url(configs->get("dnn-cfgFile"));
+            BOOST_LOG_TRIVIAL(trace) << "detecting objects in `frame`";
+            detectionModel_->detect(frame,
+                                    classIds,
+                                    confidences,
+                                    boxes,
+                                    0.6,
+                                    0.4
+            );
 
-    auto weightsFile = download_file_from_url(configs->get("dnn-weightsFile"));
+            return {classIds, boxes, confidences};
+        }
 
-    Net net = readNetFromDarknet(
-            cfgFile,
-            weightsFile
-    );
+        void DetectorImpl::prepare_model() {
+            BOOST_LOG_TRIVIAL(debug) << "initialing dnn::net reading from darknet";
 
-    // check if cuda is available, if so enable DNN with cuda.
-    if (is_cuda_available()) {
-        BOOST_LOG_TRIVIAL(trace) << "setting dnn::net preferable backend & target";
-        net.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
-        net.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA_FP16);
+            auto cfgFile = download_file_from_url(configs->get("dnn-cfgFile"));
+
+            auto weightsFile = download_file_from_url(configs->get("dnn-weightsFile"));
+
+            Net net = readNetFromDarknet(
+                    cfgFile,
+                    weightsFile
+            );
+
+            // check if cuda is available, if so enable DNN with cuda.
+            if (is_cuda_available()) {
+                BOOST_LOG_TRIVIAL(trace) << "setting dnn::net preferable backend & target";
+                net.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
+                net.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA_FP16);
+            }
+
+            BOOST_LOG_TRIVIAL(trace) << "creating detection model from net";
+            detectionModel_ = make_unique<DetectionModel>(net);
+        }
     }
 
-    BOOST_LOG_TRIVIAL(trace) << "creating detection model from net";
-    detectionModel_ = make_unique<DetectionModel>(net);
-//    BOOST_LOG_TRIVIAL(trace) << "unlocking detection model mutex";
-//    detection_model_mutex.unlock();
-}
 
+    DetectorComponent getDetectorComponent() {
+        return createComponent()
+                .bind<Detector, impl::DetectorImpl>();
+    }
 
-object_detector::DetectorComponent object_detector::getDetectorComponent() {
-    return createComponent()
-            .bind<Detector, impl::DetectorImpl>();
 }

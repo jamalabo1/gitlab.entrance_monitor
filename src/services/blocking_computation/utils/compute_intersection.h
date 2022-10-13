@@ -12,10 +12,10 @@
 
 namespace blocking_computation::utils {
     boost::optional<bool>
-            compute_intersection(const views::DetectionResultObjectView &detection_result_object,
-                                 cv::Size &frameDimension,
-                                 std::vector<cv::Point> &boundingPoints
-             );
+    compute_intersection(const views::DetectionResultObjectView &detection_result_object,
+                         cv::Size &frameDimension,
+                         std::vector<cv::Point> &boundingPoints
+    );
 }
 
 #endif //ENTRANCE_MONITOR_V2_COMPUTE_INTERSECTION_H

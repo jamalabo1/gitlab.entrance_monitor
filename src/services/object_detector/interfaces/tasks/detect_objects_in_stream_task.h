@@ -7,7 +7,7 @@
 
 #include <core/task.h>
 
-namespace object_detector::tasks::detect_objects_in_stream {
+namespace object_detector::tasks {
     CORE_DEFINE_TASK_DEFAULT(ObjectDetector, DetectObjectsInStreamTask);
 }
 

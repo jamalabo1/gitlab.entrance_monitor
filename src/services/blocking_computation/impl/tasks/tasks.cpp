@@ -4,11 +4,9 @@
 #include "tasks.h"
 
 namespace blocking_computation::tasks {
-    using fruit::createComponent;
 
     Components getBlockingComputationTasks() {
-        return createComponent()
-                .registerProvider(MAKE_TASKS_PROVIDER(ComputeBlockageTask))
-                .install(getBlockingComputationComputeBlockageTask);
+        return CORE_TASKS_CREATE_COMPONENT(BlockingComputation, ComputeBlockageTask);
     }
+
 }
