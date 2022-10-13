@@ -14,7 +14,7 @@ RUN  cmake \
 ARG CMAKE_PROJECT_TARGET
 
 RUN cmake --build /home/project/build --target $CMAKE_PROJECT_TARGET -j $(nproc)
-RUN cmake --install . --component $CMAKE_PROJECT_TARGET
+RUN cmake --install /home/project/build --component $CMAKE_PROJECT_TARGET
 
 
 FROM jamalabo1/entrance_monitor:runtime as runtime
