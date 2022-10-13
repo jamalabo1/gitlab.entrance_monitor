@@ -23,10 +23,8 @@ COPY --from=builder /home/project/build /home/project/build
 ARG PROJECT_TARGET
 ARG CMAKE_PROJECT_TARGET
 
-WORKDIR /usr/local/bin/${PROJECT_TARGET}
-
-
-RUN chmod +x ${CMAKE_PROJECT_TARGET}
+WORKDIR /usr/local/bin
 
 ENV CMAKE_PROJECT_TARGET=${CMAKE_PROJECT_TARGET}
+
 ENTRYPOINT "./${CMAKE_PROJECT_TARGET}"
