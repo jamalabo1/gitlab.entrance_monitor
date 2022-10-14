@@ -18,7 +18,7 @@ RUN cmake --install /home/project/build --component $CMAKE_PROJECT_TARGET
 
 
 FROM jamalabo1/entrance_monitor:runtime as runtime
-COPY --from=builder /home/project/build /home/project/build
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 ARG PROJECT_TARGET
 ARG CMAKE_PROJECT_TARGET
