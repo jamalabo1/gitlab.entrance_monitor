@@ -11,20 +11,17 @@
 #include <core/configurations.h>
 #include <core/queue_fps.h>
 #include <core/view.h>
-#include <core/task_service.h>
+#include <core/service.h>
 #include <core/ptrs.h>
 #include <core/gui_handler.h>
-#include <core/consumer_factory.h>
-#include <core/publisher_factory.h>
 #include <core/logging.h>
-#include <core/io_runner.h>
-
+#include <core/io_context.h>
+#include <core/communication.h>
+#include <core/retry.h>
 
 namespace core {
-
-    using CoreComponents = fruit::Component<RequiredComponents, core::consume::Consumer, core::publish::PublisherFactory, core::GUIHandler, core::amqp::AmqpIoRunner, core::IoRunner>;
-
-    CoreComponents getCoreComponents();
+    EXPORT_MODULE(getCoreComponents, $IoContext, $GUIHandler, /*amqp::$Components,*/ communication::$Components,
+                  retry::$Components);
 }
 
 #endif //ENTRANCE_MONITOR_V2_CORE_H

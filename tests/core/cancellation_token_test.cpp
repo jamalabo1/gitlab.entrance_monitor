@@ -31,7 +31,7 @@ namespace {
         EXPECT_TRUE(token.isCanceled());
     }
 
-    TEST_F(CancellationTokenTestFixture, CanellationTokenCanStopThread) {
+    TEST_F(CancellationTokenTestFixture, CancellationTokenCanStopThread) {
 
         core::CancellationToken token;
 

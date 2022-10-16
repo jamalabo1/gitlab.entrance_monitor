@@ -14,7 +14,7 @@ namespace core {
         std::atomic_bool token;
 
     public:
-        static bool default_state;
+        static constexpr bool default_state = true;
 
         CancellationToken() {
             token = default_state;
@@ -32,7 +32,6 @@ namespace core {
             return token;
         }
     };
-    bool CancellationToken::default_state = true;
 }
 
 #endif //ENTRANCE_MONITOR_V2_CANCELLATION_TOKEN_H

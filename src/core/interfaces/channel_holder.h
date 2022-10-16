@@ -8,6 +8,8 @@
 //#include <functional>
 #include <core/init.h>
 
+#include <boost/asio.hpp>
+
 #include <amqpcpp.h>
 
 // CCD = CORE CHANNEL DEFERRED
@@ -21,36 +23,19 @@ namespace core::amqp {
 
         virtual ~ChannelHolder() = default;
 
-        virtual shared_ptr <AMQP::Channel> operator*() const = 0;
+        virtual shared_ptr<AMQP::Channel> operator*() const = 0;
 
-        virtual shared_ptr <AMQP::Channel> operator->() const = 0;
+        virtual shared_ptr<AMQP::Channel> operator->() const = 0;
 
-//    virtual std::string BasicConsume(std::string) = 0;
-//
-//    virtual std::string BasicConsume(std::string, std::string) = 0;
-//
-//    virtual Envelope::ptr_t BasicConsumeMessage(std::string) = 0;
-
-//    virtual void BasicAck(const Envelope::ptr_t &) = 0;
-//
-//    virtual void DeclareExchange(std::string, std::string) = 0;
-//
-//    virtual void DeclareExchange(std::string, std::string, Table) = 0;
-//
-//    virtual void BasicPublish(std::string, std::string, shared_ptr<BasicMessage>) = 0;
-//
-//    virtual std::string DeclareQueue(std::string) = 0;
-//
-//    virtual void BindQueue(std::string, std::string) = 0;
-//
-//    virtual std::string DeclareQueue(const std::string &queue_name, bool passive,
-//                                     bool durable, bool exclusive, bool auto_delete,
-//                                     const Table &arguments) = 0;
     };
 
-    using AmqpComponent = fruit::Component<RequiredComponents, ChannelHolder, std::function<std::unique_ptr<ChannelHolder>()>>;
+    using Factory = unique_factory(ChannelHolder);
 
-    AmqpComponent getAmqpComponent();
+    using $Channel = $Exported<ChannelHolder, Factory>;
+
+    using AmqpChannelComponent = $Channel::PureComponent;
+
+    AmqpChannelComponent getAmqpChannelComponent();
 }
 
 #endif //ENTRANCE_MONITOR_V2_CHANNEL_HOLDER_H

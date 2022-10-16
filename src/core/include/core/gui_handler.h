@@ -54,7 +54,9 @@ namespace core {
         virtual void imshow(std::string windowName, cv::Mat &mat) = 0;
     };
 
-    using GUIHandlerComponent = fruit::Component<core::GUIQueue, core::GUIHandler>;
+    using $GUIHandler = $Exported<core::GUIQueue, core::GUIHandler>;
+
+    using GUIHandlerComponent = $GUIHandler::PureComponent;
 
     GUIHandlerComponent getGUIHandlerComponent();
 }

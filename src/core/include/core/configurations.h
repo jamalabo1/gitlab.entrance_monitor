@@ -11,7 +11,6 @@
 #include <sstream>
 
 #include <utility>
-#include <core/paths.h>
 
 namespace core {
 
@@ -42,6 +41,7 @@ namespace core {
     };
 
     using ConfigurationsComponent = fruit::Component<Configurations>;
+
     ConfigurationsComponent getConfigurationsComponent();
 }
 
