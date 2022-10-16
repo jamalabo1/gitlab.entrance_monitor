@@ -14,4 +14,5 @@ namespace core::amqp {
     AMQP::Table to_table(const ArgsTable &table);
 
 }
+
 #endif //ENTRANCE_MONITOR_V2_PRIVATE_AMQP_H

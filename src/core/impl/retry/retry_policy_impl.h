@@ -22,7 +22,9 @@ namespace core::retry::impl {
         void ping() override;
 
         void schedule_retry_handler();
+
         void retry_handler();
+
         void stop_stream_loop();
     };
 }

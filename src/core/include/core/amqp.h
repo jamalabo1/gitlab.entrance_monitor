@@ -7,7 +7,7 @@
 
 #include <map>
 #include <string>
-#include <core/amqp/amqp_io_runner.h>
+//#include <core/amqp/amqp_io_runner.h>
 
 
 namespace core::amqp {
@@ -31,7 +31,7 @@ namespace core::amqp {
     };
 
 
-    EXPORT_MODULE(getAmqpComponents, $AmqpIoRunner);
+//    EXPORT_MODULE(getAmqpComponents, $AmqpIoRunner);
 }
 
 #endif //ENTRANCE_MONITOR_V2_AMQP_H

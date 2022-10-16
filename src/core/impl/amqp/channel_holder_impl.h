@@ -8,7 +8,6 @@
 #include "amqp/connection.h"
 
 #include "channel_holder.h"
-#include <core/logging.h>
 
 #include <amqpcpp.h>
 
@@ -16,13 +15,16 @@ namespace core::amqp::impl {
 
     class ChannelHolderImpl : public ChannelHolder {
     private:
-        shared_ptr<AMQP::Channel> channel;
 
-        std::mutex channel_mutex;
+        unique_ptr<AmqpConnection> connection_;
 
+        shared_ptr<AMQP::Channel> channel_;
 
     public:
-        INJECT(ChannelHolderImpl(AmqpConnection * connection));
+
+        // since `AmqpConnection` does not support sharing object across multiple threads, each thread must have its
+        // connection, since each thread has its own channel, it has its own connection
+        INJECT(ChannelHolderImpl(unique_factory(AmqpConnection)));
 
         shared_ptr<AMQP::Channel> operator*() const override;
 
