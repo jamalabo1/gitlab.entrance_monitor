@@ -4,10 +4,10 @@
 
 #include <core/communication/publish.h>
 
-using namespace core::communication::publish;
-
-Components core::communication::publish::getCommunicationPublishComponents() {
-    return fruit::createComponent()
-            .install(getCommunicationPublisherFactoryComponent)
-            .install(getCommunicationPublisherComponent);
+namespace core::communication::publish {
+    Components getCommunicationPublishComponents() {
+        return fruit::createComponent()
+                .install(getCommunicationPublisherFactoryComponent)
+                .install(getCommunicationPublisherComponent);
+    }
 }

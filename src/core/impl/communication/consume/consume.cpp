@@ -3,11 +3,10 @@
 //
 #include <core/communication/consume.h>
 
-
-using namespace core::communication::consume;
-
-
-Components core::communication::consume::getCommunicationConsumeComponents() {
-    return fruit::createComponent()
-            .install(getCommunicationConsumeConsumerComponent);
+namespace core::communication::consume {
+    Components getCommunicationConsumeComponents() {
+        return fruit::createComponent()
+                .install(getCommunicationConsumeConsumerComponent);
+    }
 }
+

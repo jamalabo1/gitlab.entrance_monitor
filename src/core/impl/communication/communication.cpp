@@ -4,11 +4,10 @@
 #include <core/communication.h>
 
 
-using namespace core::communication;
-
-
-Components core::communication::getCommunicationComponents() {
-    return fruit::createComponent()
-            .install(publish::getCommunicationPublishComponents)
-            .install(consume::getCommunicationConsumeComponents);
+namespace core::communication {
+    Components getCommunicationComponents() {
+        return fruit::createComponent()
+                .install(publish::getCommunicationPublishComponents)
+                .install(consume::getCommunicationConsumeComponents);
+    }
 }

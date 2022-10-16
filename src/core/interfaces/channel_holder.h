@@ -27,18 +27,7 @@ namespace core::amqp {
 
         virtual shared_ptr<AMQP::Channel> operator->() const = 0;
 
-//        template <typename CompletionToken>
-//         boost::asio::async_result<boost::asio::decay<CompletionToken>,
-//        void(boost::system::error_code, size_t)
-//        >
-//        declareQueue(
-//                tcp::socket& s,
-//                const mutable_buffer& b,
-//                CompletionToken&& token) = 0;
-
     };
-
-//    using Factory = std::function<std::unique_ptr<ChannelHolder>()>;
 
     using Factory = unique_factory(ChannelHolder);
 

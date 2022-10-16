@@ -2,9 +2,9 @@ version: 2.1
 orbs:
   docker: circleci/docker@2.1.2
   azure-aks: circleci/azure-aks@0.3.0
-  kubernetes: circleci/kubernetes@0.4.0
+  kubernetes: circleci/kubernetes@1.3.1
 jobs:
-  build-image:
+  build:
     executor:
       name: docker/docker
       tag: "3.6"
@@ -60,16 +60,19 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      - build-image:
-          name: build-image-target_<< matrix.target >>
+      - build:
+          name: build_<< matrix.target >>
           context: entrance-monitor
+          filters:
+            branches:
+              only: /^(develop|production|hotfix|release).*$/ # TODO: split develop/production,hotfix/release environments
           matrix:
             parameters:
               target: [ "stream-obtainer", "object-detector", "blocking-computation", "results-aggregator" ]
       - create-deployment:
           cluster-name: entrance-monitor-cluster
           requires:
-              - build-image-target_<< matrix.target >>
+              - deploy_<< matrix.target >>
           resource-group: entrance-monitor
           context: entrance-monitor
           matrix:

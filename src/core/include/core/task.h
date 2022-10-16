@@ -11,10 +11,8 @@
 #include <boost/asio.hpp>
 
 
-
 #define CORE_DEFINE_TASK_DEFAULT(ServiceName, task_name, ...) \
-class task_name : public core::Task,                          \
-public std::enable_shared_from_this<task_name> {}; \
+class task_name : public core::Task {}; \
 using $##task_name = $Exported<task_name>; \
 using task_name##Component = $##task_name::Component<__VA_ARGS__>; \
 task_name##Component get##ServiceName##task_name()
@@ -23,6 +21,15 @@ task_name##Component get##ServiceName##task_name()
 fruit::createComponent()                                 \
 .bind<TaskName, impl::TaskName##Impl>()                         \
 .addMultibinding<core::Task, impl::TaskName##Impl>()
+
+#define CORE_TASKS_COMPONENT_ARG_NAME(r, token, i, elm) .install(BOOST_PP_CAT(get##token, elm))
+#define CORE_TASKS_COMPONENT_COMPONENTS(ServiceName, ...)\
+fruit::createComponent()                            \
+BOOST_PP_SEQ_FOR_EACH_I(CORE_TASKS_COMPONENT_ARG_NAME, ServiceName, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#define CORE_TASKS_CREATE_COMPONENT(ServiceName, ...) \
+CORE_TASKS_COMPONENT_COMPONENTS(ServiceName, __VA_ARGS__) \
+.registerProvider(MAKE_TASKS_PROVIDER(__VA_ARGS__))
 
 
 #define CORE_TASK_RUN_OPTIONS_ONE_TIME RunOptions{[](auto cb) {cb();}}
@@ -49,7 +56,7 @@ namespace core {
 
             Executor executor;
 
-            RunOptions(Executor executor) : executor(std::move(executor)){}
+            RunOptions(Executor executor) : executor(std::move(executor)) {}
         };
 
         // set up the task. this method purpose is to tell the caller how to execute the task
@@ -67,28 +74,8 @@ namespace core {
 
         /// health check function for periodic check.
         health::Status health_check() const override;
+
+        virtual std::string name() const;
     };
-
-
-//class TimedExecutor : public Task::RunOptions::Executor {
-//
-//private:
-//    shared_ptr<boost::asio::steady_timer> timer_;
-//    std::chrono::duration<uint64_t> duration_;
-//
-//public:
-//
-//    TimedExecutor(shared_ptr<boost::asio::steady_timer> timer, std::chrono::duration<uint64_t> duration) : timer_(timer), duration_(duration) {
-//
-//    }
-//
-//    void operator()(Task::RunOptions::ExecutorCallback cb) {
-//        cb();
-//        timer_->expires_from_now(duration_);
-//        timer_->async_wait([this, cb](auto ec) {
-//           this->operator()(cb);
-//        });
-//    }
-//};
 }
 #endif //ENTRANCE_MONITOR_V2_CORE_TASK_H

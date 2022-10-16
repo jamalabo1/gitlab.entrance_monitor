@@ -17,7 +17,7 @@ Table core::amqp::to_table(const ArgsTable &args_table) {
     return map;
 }
 
-Components core::amqp::getAmqpComponents() {
-    return fruit::createComponent()
-            .install(getAmqpIoRunnerComponent);
-}
+//Components core::amqp::getAmqpComponents() {
+//    return fruit::createComponent()
+//            .install(getAmqpIoRunnerComponent);
+//}

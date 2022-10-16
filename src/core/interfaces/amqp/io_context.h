@@ -6,7 +6,7 @@
 #define ENTRANCE_MONITOR_V2_AMQP_IO_CONTEXT_H
 
 #include <core/init.h>
-#include <boost/asio.hpp>
+#include <boost/asio/io_context.hpp>
 
 namespace core::amqp {
 

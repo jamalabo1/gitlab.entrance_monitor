@@ -28,10 +28,11 @@ namespace core::retry {
     };
 
 
-    using Factory = MakeUniqueFactoryP(RetryPolicy, RetryPolicy::Options);
-    using $RetryPolicy = $Exported<Factory>;
+    using RetryPolicyFactory = MakeUniqueFactoryP(RetryPolicy, RetryPolicy::Options);
+    using $RetryPolicy = $Exported<RetryPolicyFactory>;
 
     using RetryPolicyComponent = $RetryPolicy::Component<IoContext>;
+
     RetryPolicyComponent getRetryPolicyComponent();
 }
 

@@ -21,10 +21,11 @@
 #endif
 
 
-
 namespace core {
-    void runner(fruit::Injector<core::IoContext>&);
+    void runner(fruit::Injector<core::IoContext> &);
+
     void init_service_runner();
+
     ///
     /// \param io_context io context for running services on (post)
     /// \param services services which have tasks to be ran

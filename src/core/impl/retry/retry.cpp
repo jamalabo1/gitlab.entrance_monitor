@@ -3,12 +3,10 @@
 //
 #include <core/retry.h>
 
-using fruit::createComponent;
-using core::retry::Components;
-using core::retry::getRetryPolicyComponent;
-
-Components core::retry::getRetryComponents() {
-    return createComponent()
-        .install(getIoContextComponent)
-        .install(getRetryPolicyComponent);
+namespace core::retry {
+    Components getRetryComponents() {
+        return fruit::createComponent()
+                .install(getIoContextComponent)
+                .install(getRetryPolicyComponent);
+    }
 }
