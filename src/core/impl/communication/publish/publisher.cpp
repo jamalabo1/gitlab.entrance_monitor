@@ -8,7 +8,7 @@
 namespace core::communication::publish {
     using std::vector;
 
-    void Publisher::publish(const vector <uint8_t> &data) const {
+    void Publisher::publish(const vector<uint8_t> &data) const {
         BOOST_LOG_TRIVIAL(trace) << "publishing message from publisher";
 
         publish_message(data);

@@ -11,7 +11,7 @@ namespace core::communication::consume {
 
     class ConsumerMessage {
     public:
-        typedef shared_ptr <ConsumerMessage> ptr_t;
+        typedef shared_ptr<ConsumerMessage> ptr_t;
 
         virtual std::string Body() = 0;
     };

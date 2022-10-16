@@ -30,9 +30,9 @@ namespace core {
 //        IoRunner* io_runner;
 //        CancellationToken token;
 
-        virtual void registerTask(shared_ptr<Task> task);
+        void registerTask(shared_ptr<Task> task);
 
-        virtual void registerTasks(const std::vector<shared_ptr<Task>> &tasks);
+        void registerTasks(const std::vector<shared_ptr<Task>> &tasks);
 
         ///
         /// \param io_runner io runner is a class given to the task service to operate tasks on.

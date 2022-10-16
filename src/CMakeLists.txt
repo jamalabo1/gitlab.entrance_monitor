@@ -10,7 +10,7 @@ add_compile_definitions(BOOST_STACKTRACE_LINK BOOST_STACKTRACE_USE_BACKTRACE)
 find_package(Boost COMPONENTS REQUIRED
         log
         stacktrace_backtrace
-)
+        )
 find_package(Fruit REQUIRED)
 
 include_directories(${FRUIT_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})

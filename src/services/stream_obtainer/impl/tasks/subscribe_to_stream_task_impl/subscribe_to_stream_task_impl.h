@@ -21,7 +21,8 @@ namespace stream_obtainer::tasks::impl {
         std::mutex cap_lock;
     public:
 
-        INJECT(SubscribeToStreamTaskImpl(core::Configurations * , FramesQueue * , const core::retry::RetryPolicyFactory&));
+        INJECT(SubscribeToStreamTaskImpl(core::Configurations * ,
+                                         FramesQueue * , const core::retry::RetryPolicyFactory&));
 
         bool configure() override;
 

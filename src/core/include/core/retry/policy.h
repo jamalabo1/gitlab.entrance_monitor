@@ -32,6 +32,7 @@ namespace core::retry {
     using $RetryPolicy = $Exported<RetryPolicyFactory>;
 
     using RetryPolicyComponent = $RetryPolicy::Component<IoContext>;
+
     RetryPolicyComponent getRetryPolicyComponent();
 }
 

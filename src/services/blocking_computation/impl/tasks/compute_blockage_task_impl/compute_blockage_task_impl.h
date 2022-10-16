@@ -12,7 +12,7 @@
 namespace blocking_computation::tasks::impl {
 
     class ComputeBlockageTaskImpl : public ComputeBlockageTask,
-                                    public core::communication::consume::ConsumerMessageHandler{
+                                    public core::communication::consume::ConsumerMessageHandler {
     private:
         shared_ptr<core::communication::consume::Consumer> consumer_;
         unique_ptr<core::communication::consume::ConsumeOptions> consume_options_;

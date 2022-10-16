@@ -12,7 +12,7 @@ set(impl_headers
         impl/sound_controller/sound_controller_impl.h
         )
 
-set(controller_sources )
+set(controller_sources)
 if (WIN32)
     list(APPEND impl_headers "impl/sound_controller/win32/sound_controller_win32_impl.h")
     list(APPEND controller_sources "impl/sound_controller/win32/sound_controller_win32_impl.cpp")
@@ -48,13 +48,13 @@ add_executable(
         main.cpp
 )
 
-if(WIN32)
-target_compile_definitions(
-        audio_controller_lib
-        PUBLIC
-        UNICODE
-)
-endif()
+if (WIN32)
+    target_compile_definitions(
+            audio_controller_lib
+            PUBLIC
+            UNICODE
+    )
+endif ()
 
 target_link_libraries(
         audio_controller_standalone

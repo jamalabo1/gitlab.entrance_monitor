@@ -5,8 +5,10 @@
 
 #include "is_cuda_available.h"
 
-// checks if cuda is available on running host.
-bool object_detector::utils::is_cuda_available() noexcept {
-    // simple check, but is good enough?!
-    return cv::cuda::getCudaEnabledDeviceCount() > 0;
+namespace object_detector::utils {
+    // checks if cuda is available on running host.
+    bool is_cuda_available() noexcept {
+        // simple check, but is good enough?!
+        return cv::cuda::getCudaEnabledDeviceCount() > 0;
+    }
 }
