@@ -8,6 +8,8 @@
 
 #include <core/logging.h>
 
+#include <utils/worker.h>
+
 
 namespace core::communication::consume {
 
@@ -15,6 +17,10 @@ namespace core::communication::consume {
 
     namespace impl {
         using std::string;
+
+        uint8_t get_worker_qos() {
+            return utils::worker::get_cores();
+        }
 
         void ConsumerImpl::consume(const ConsumeOptions &options) {
 
@@ -52,7 +58,7 @@ namespace core::communication::consume {
 
             auto setup_consumer = [=](string queue_name) {
                 if (options.is_work_queue) {
-                    c->setQos(1);
+                    c->setQos(get_worker_qos());
                 }
 
                 BOOST_LOG_TRIVIAL(trace) << "calling consume on holder";

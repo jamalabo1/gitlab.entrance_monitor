@@ -4,6 +4,7 @@
 #include <core/standalone.h>
 #include <core/cancellation_token.h>
 #include <boost/thread.hpp>
+#include <utils/worker.h>
 
 namespace core {
     using std::vector;
@@ -101,7 +102,7 @@ namespace core {
         }
 
         boost::thread_group pool;
-        auto hc = boost::thread::hardware_concurrency();
+        auto hc = utils::worker::get_cores();
 
         BOOST_LOG_TRIVIAL(trace) << "device hardware concurrency: " << hc;
 

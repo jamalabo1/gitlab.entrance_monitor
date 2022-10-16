@@ -9,8 +9,6 @@ project(tests)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include(utils)
-
 create_global_testing_target(entrance_monitor_tests main.cpp) # create a global target for sub-tests to link their test library to
 
 add_subdirectory(core)

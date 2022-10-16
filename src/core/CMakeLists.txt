@@ -37,12 +37,13 @@ set(configurations_srcs
         impl/configurations/configurations_local_impl.cpp
         )
 
-if(CORE_USE_AZURE_KEYVAULT)
-set(configurations_srcs
-        impl/configurations/configurations_azure_impl.h
-        impl/configurations/configurations_azure_impl.cpp
-)
-endif()
+if (CORE_USE_AZURE_KEYVAULT)
+    message(STATUS "Using azure key-vault as configuration implementation")
+    set(configurations_srcs
+            impl/configurations/configurations_azure_impl.h
+            impl/configurations/configurations_azure_impl.cpp
+            )
+endif ()
 
 add_library(
         core
@@ -56,6 +57,7 @@ add_library(
 
         utils/mat.cpp
         utils/time.cpp
+        utils/worker.cpp
 
         impl/communication/publish/publisher.cpp
         impl/communication/publish/publisher_factory.cpp

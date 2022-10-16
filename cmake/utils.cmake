@@ -20,8 +20,8 @@ macro(create_testing_target test_target_prefix)
 
     target_link_libraries(${test_target} PUBLIC ${target_to_test})
 
-#    target_link_libraries (${test_target} PUBLIC $<TARGET_PROPERTY:${target_to_test},LINK_LIBRARIES> )
-    target_include_directories (${test_target} PUBLIC $<TARGET_PROPERTY:${target_to_test},private_include_directories>)
+    #    target_link_libraries (${test_target} PUBLIC $<TARGET_PROPERTY:${target_to_test},LINK_LIBRARIES> )
+    target_include_directories(${test_target} PUBLIC $<TARGET_PROPERTY:${target_to_test},private_include_directories>)
 
     target_link_libraries(${global_test_target} PRIVATE $<TARGET_OBJECTS:${test_target}> ${test_target})
 
@@ -67,9 +67,9 @@ macro(copy_required_file target file)
 endmacro()
 
 macro(copy_local_file target file)
-    if(PROJECT_IS_LOCAL)
+    if (PROJECT_IS_LOCAL)
         copy_required_file(${target} ${file})
-    endif()
+    endif ()
 endmacro()
 
 macro(set_private_testable_include dirs)
@@ -79,4 +79,10 @@ macro(set_private_testable_include dirs)
             APPEND PROPERTY private_include_directories
             ${dirs}
     )
+endmacro()
+
+macro(set_default variable value)
+    if (NOT ${variable})
+        set(${variable} ${value})
+    endif ()
 endmacro()

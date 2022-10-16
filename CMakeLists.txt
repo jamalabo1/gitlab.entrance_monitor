@@ -10,6 +10,16 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+include(utils)
+
+### set project default variables
+
+set_default(PROJECT_IS_LOCAL OFF)
+
+set_default(CORE_USE_AZURE_KEYVAULT ON)
+
+## end set project variables
+
 add_subdirectory(src)
 add_subdirectory(apps)
 add_subdirectory(tests)
