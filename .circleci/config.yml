@@ -72,7 +72,7 @@ workflows:
       - create-deployment:
           cluster-name: entrance-monitor-cluster
           requires:
-              - deploy_<< matrix.target >>
+              - build_<< matrix.target >>
           resource-group: entrance-monitor
           context: entrance-monitor
           matrix:
