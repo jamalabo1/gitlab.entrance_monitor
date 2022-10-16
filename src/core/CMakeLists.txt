@@ -8,94 +8,115 @@ find_package(Msgpack REQUIRED)
 find_package(OpenCV REQUIRED)
 # to fix issue of OpenCV_LIBS including libraries that are not built.
 set(OpenCV_LIBS "opencv_core;opencv_dnn;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_photo;opencv_video;opencv_videoio;opencv_bioinspired;opencv_cudaarithm;opencv_cudabgsegm;opencv_cudacodec;opencv_cudafilters;opencv_cudaimgproc;opencv_cudalegacy;opencv_cudawarping;opencv_cudev;opencv_dnn_objdetect;opencv_dnn_superres;opencv_fuzzy;opencv_hfs;opencv_img_hash;opencv_intensity_transform;opencv_line_descriptor;opencv_phase_unwrapping;opencv_plot;opencv_quality;opencv_reg;opencv_tracking;opencv_xphoto")
-#set(OpenCV_LIBS "opencv_core")
-find_package(amqpcpp REQUIRED)
 
-#find_package(Eigen3 IMPORTED  REQUIRED)
+find_package(amqpcpp REQUIRED)
 find_package(azure-identity-cpp CONFIG REQUIRED)
 find_package(azure-security-keyvault-secrets-cpp CONFIG REQUIRED)
 
+SET(impl_headers
+        impl/amqp.h
+        impl/amqp/channel_holder_impl.h
+        impl/amqp/amqp_io_context_impl.h
+        impl/amqp/amqp_connection_impl.h
 
-SET(private_headers
-        amqp.h
-        consumer_message.h
-        interfaces/channel_holder.h
+        impl/communication/consume/consumer_impl.h
+        impl/communication/consume/consumer_message.h
 
-        amqp/channel_holder_impl.h
-        amqp/amqp_io_context_impl.h
+        impl/communication/publish/publisher_impl.h
+        impl/communication/publish/publisher_factory.h
 
-        impl/consumer_impl.h
-        impl/publisher_impl.h
-        impl/consumer_factory_impl.h
-        impl/publisher_factory.h
 
-        amqp/amqp_io_runner_impl.h
-        amqp/amqp_connection_impl.h
+        impl/io_context_impl.h
+        impl/gui_handler_impl.h
 
-        interfaces/amqp/connection.h
-        interfaces/amqp/io_context.h
+        impl/retry/retry_policy_impl.h
+        )
 
-        impl/configuration_impl.h impl/io_runner_impl.h impl/gui_handler_impl.h)
+set(configurations_srcs
+        impl/configurations/configurations_local_impl.h
+        impl/configurations/configurations_local_impl.cpp
+        )
 
+if (CORE_USE_AZURE_KEYVAULT)
+    message(STATUS "Using azure key-vault as configuration implementation")
+    set(configurations_srcs
+            impl/configurations/configurations_azure_impl.h
+            impl/configurations/configurations_azure_impl.cpp
+            )
+endif ()
 
 add_library(
         core
+        ${configurations_srcs}
+
         core.cpp
-        ptrs.cpp
-        paths.cpp
-        publisher.cpp
-        publisher_factory.cpp
-        consumer_factory.cpp
-        consumer_impl.cpp
+        standalone.cpp
+        service.cpp
+        task.cpp
         msgpacker.cpp
 
-        configurations_impl.cpp
-        consumer_message_handler.cpp
-        gui_handler_impl.cpp
-        consumer_message.cpp
-        amqp.cpp
-        publisher_impl.cpp
-        io_runner_impl.cpp
-        task_service.cpp
+        utils/mat.cpp
+        utils/time.cpp
+        utils/worker.cpp
 
-        amqp/connection_factory.cpp
-        amqp/channel_holder_impl.cpp
-        amqp/amqp_io_context_impl.cpp
-        amqp/amqp_io_runner_impl.cpp
-        amqp/amqp_connection_impl.cpp
+        impl/communication/publish/publisher.cpp
+        impl/communication/publish/publisher_factory.cpp
+        impl/communication/publish/publisher_impl.cpp
 
-        ${private_headers}
+        impl/communication/consume/consumer_impl.cpp
+        impl/communication/consume/consumer_message.cpp
+        impl/communication/consume/consumer_message_handler.cpp
+
+        impl/communication/communication.cpp
+        impl/communication/consume/consume.cpp
+        impl/communication/publish/publish.cpp
+
+        impl/amqp/amqp.cpp
+        impl/amqp/channel_holder_impl.cpp
+        impl/amqp/amqp_io_context_impl.cpp
+        impl/amqp/amqp_connection_impl.cpp
+
+        impl/retry/retry.cpp
+        impl/retry/retry_policy_impl.cpp
+
+        impl/gui_handler_impl.cpp
+        impl/io_context_impl.cpp
+
+        ${impl_headers}
 )
 
-target_link_libraries(core PRIVATE Azure::azure-identity Azure::azure-security-keyvault-secrets )
+set_private_testable_include(
+        ${CMAKE_CURRENT_LIST_DIR}/impl
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces
+)
 
 
 target_include_directories(
         core
         PRIVATE
+
         $<TARGET_PROPERTY:amqpcpp,INTERFACE_INCLUDE_DIRECTORIES>
-        impl
+        $<TARGET_PROPERTY:core,private_include_directories>
         interfaces
+
         PUBLIC
         ${Msgpack_INCLUDE_DIR}
         ${FRUIT_INCLUDE_DIR}
         ${Boost_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS}
-        include
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
-
 
 target_link_libraries(
         core
         PRIVATE
+        Azure::azure-identity
+        Azure::azure-security-keyvault-secrets
         ${OpenCV_LIBS}
-        ${Boost_LIBRARIES}
-        ${Fruit_LIBS}
         amqpcpp
-)
-
-target_compile_definitions(
-        core
+        dl
+        backtrace
         PUBLIC
-        NOMINMAX
+        ${Fruit_LIBS}
 )

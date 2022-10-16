@@ -6,7 +6,7 @@
 #define ENTRANCE_MONITOR_V2_AMQP_CONNECTION_H
 
 #include <core/init.h>
-#include <amqp/io_context.h>
+#include "amqp/io_context.h"
 #include <amqpcpp.h>
 
 namespace core::amqp {
@@ -14,11 +14,14 @@ namespace core::amqp {
     class AmqpConnection {
 
     public:
+        virtual ~AmqpConnection() = default;
+
         virtual shared_ptr<AMQP::Channel> create_channel() = 0;
     };
 
-
-    using AmqpConnectionComponent = fruit::Component<MakeRequiredComponents(AmqpIoContext), AmqpConnection>;
+    using AmqpConnectionFactory = unique_factory(AmqpConnection);
+    using $Connection = $Exported<AmqpConnection, AmqpConnectionFactory>;
+    using AmqpConnectionComponent = $Connection::Component<AmqpIoContext>;
 
     AmqpConnectionComponent getAmqpConnectionComponent();
 }

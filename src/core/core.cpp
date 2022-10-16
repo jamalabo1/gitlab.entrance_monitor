@@ -4,16 +4,19 @@
 
 #include <core/core.h>
 
-using namespace core;
-using namespace core::amqp;
-using namespace core::consume;
-using namespace core::publish;
 
-CoreComponents core::getCoreComponents() {
-    return fruit::createComponent()
-            .install(getGUIHandlerComponent)
-            .install(getConsumerComponent)
-            .install(getIoRunnerComponent)
-            .install(getPublisherFactoryComponent)
-            .install(getAmqpIoRunnerComponent);
+namespace core {
+    using fruit::createComponent;
+    using retry::getRetryComponents;
+    using communication::getCommunicationComponents;
+
+
+    Components getCoreComponents() {
+        return createComponent()
+                .install(getGUIHandlerComponent)
+                .install(getIoContextComponent)
+                .install(getCommunicationComponents)
+                .install(getRetryComponents);
+    }
+
 }

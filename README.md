@@ -18,7 +18,7 @@ speaker
     │   ├── blocking_computation    # computes the blockage of an object to the entrance.
     │   ├── results_aggregator      # aggregates the blockage results into a decision.
     │   ├── audio_controller        # controls audio output based on a decision.
-    │   ├── core                    # core components of the application (amqp/task_service/consumer,publisher...).
+    │   ├── core                    # core components of the application (amqp/task_service/consumer,publish...).
     │   ├── utils                   # utils project.
     │   └── models                  # view models shared between the services.
 
