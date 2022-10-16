@@ -20,7 +20,8 @@
 #include <core/retry.h>
 
 namespace core {
-    EXPORT_MODULE(getCoreComponents, $IoContext, $GUIHandler, amqp::$Components, communication::$Components, retry::$Components);
+    EXPORT_MODULE(getCoreComponents, $IoContext, $GUIHandler, /*amqp::$Components,*/ communication::$Components,
+                  retry::$Components);
 }
 
 #endif //ENTRANCE_MONITOR_V2_CORE_H

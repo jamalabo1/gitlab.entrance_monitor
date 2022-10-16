@@ -19,7 +19,8 @@ namespace core::communication::publish {
     };
 
     using $PublisherFactory = $Exported<PublisherFactory>;
-    using PublisherFactoryComponent = ExportCoreComponentWithRequired(ExportRequiredComponents($Publisher), $PublisherFactory);
+    using PublisherFactoryComponent = ExportCoreComponentWithRequired(ExportRequiredComponents($Publisher),
+                                                                      $PublisherFactory);
 
     PublisherFactoryComponent getCommunicationPublisherFactoryComponent();
 }

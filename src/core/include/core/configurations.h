@@ -41,6 +41,7 @@ namespace core {
     };
 
     using ConfigurationsComponent = fruit::Component<Configurations>;
+
     ConfigurationsComponent getConfigurationsComponent();
 }
 

@@ -74,7 +74,8 @@ public:
     using Typenames = typelist<Ts...>;
 
     template<class... TR>
-    using Component = MakeComponentFromTypeListWithRequired(MakeRequiredComponentsFromTypeList(typename $typelist<TR...>::Typenames), Typenames);
+    using Component = MakeComponentFromTypeListWithRequired(
+            MakeRequiredComponentsFromTypeList(typename $typelist<TR...>::Typenames), Typenames);
 
     using PureComponent = Component<>;
 };

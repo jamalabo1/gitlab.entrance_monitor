@@ -17,12 +17,12 @@ namespace core::communication::publish::impl {
         void publish_message(const std::vector<uint8_t> &data) const override;
 
     public:
-        INJECT(PublisherImpl(ASSISTED(std::string) exchange_name, amqp::ChannelHolder *channel));
+        INJECT(PublisherImpl(ASSISTED(std::string), unique_factory(amqp::ChannelHolder)));
 
 
     private:
         const std::string exchange_name;
-        amqp::ChannelHolder *channel;
+        unique_ptr<amqp::ChannelHolder> channel;
     };
 }
 

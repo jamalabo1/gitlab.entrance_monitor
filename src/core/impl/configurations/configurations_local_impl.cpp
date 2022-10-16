@@ -6,17 +6,23 @@
 #include <filesystem>
 #include <boost/property_tree/json_parser.hpp>
 
-namespace fs = std::filesystem;
+namespace core {
 
-core::impl::ConfigurationsLocalImpl::ConfigurationsLocalImpl() {
-    boost::property_tree::read_json("configs.local.json", pt_);
-}
+    namespace impl {
+        using std::string;
+        using boost::property_tree::read_json;
 
-std::string core::impl::ConfigurationsLocalImpl::get_value_from_key(const std::string &key) {
-    return pt_.get<std::string>(key);
-}
+        ConfigurationsLocalImpl::ConfigurationsLocalImpl() {
+            read_json("configs.local.json", pt_);
+        }
 
-core::ConfigurationsComponent core::getConfigurationsComponent() {
-    return fruit::createComponent()
-        .bind<Configurations,impl::ConfigurationsLocalImpl>();
+        string ConfigurationsLocalImpl::get_value_from_key(const string &key) {
+            return pt_.get<string>(key);
+        }
+    }
+
+    ConfigurationsComponent getConfigurationsComponent() {
+        return fruit::createComponent()
+                .bind<Configurations, impl::ConfigurationsLocalImpl>();
+    }
 }
