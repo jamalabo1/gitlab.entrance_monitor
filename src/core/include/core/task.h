@@ -52,7 +52,7 @@ namespace core {
 
         struct RunOptions {
             using ExecutorCallback = std::function<void()>;
-            using Executor = std::function<void(ExecutorCallback)>;
+            using Executor = std::function<void(ExecutorCallback&&)>;
 
             Executor executor;
 

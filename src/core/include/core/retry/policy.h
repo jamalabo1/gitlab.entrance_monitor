@@ -23,6 +23,7 @@ namespace core::retry {
             boost::function<void()> fail_handler;
         };
 
+        // ping has to be called at-least one time to start the countdown
         /// ping function to reset the handling timer.
         virtual void ping() = 0;
     };

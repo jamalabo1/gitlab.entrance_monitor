@@ -18,12 +18,17 @@ namespace {
 
     };
 
-
-    TEST_F(CancellationTokenTestFixture, CancellationTokenChangesStateOnCancel) {
-
+    TEST(CancellationTokenTest, CancellationTokenCompliesWithDefault) {
         core::CancellationToken token;
 
         ASSERT_EQ(token.isActive(), core::CancellationToken::default_state);
+    }
+
+    TEST(CancellationTokenTest, CancellationTokenChangesStateOnCancel) {
+
+        core::CancellationToken token;
+
+        ASSERT_TRUE(token.isActive());
 
         token.cancel();
 
@@ -31,7 +36,8 @@ namespace {
         EXPECT_TRUE(token.isCanceled());
     }
 
-    TEST_F(CancellationTokenTestFixture, CancellationTokenCanStopThread) {
+
+    TEST(CancellationTokenTest, CancellationTokenCanStopThread) {
 
         core::CancellationToken token;
 
@@ -55,7 +61,7 @@ namespace {
 
         boost::asio::deadline_timer t(pool, boost::posix_time::seconds(5));
 
-        t.async_wait([&](const boost::system::error_code &ec){
+        t.async_wait([&](const boost::system::error_code &ec) {
             EXPECT_TRUE(is_test_func_running);
             token.cancel();
             pool.stop();
@@ -65,6 +71,47 @@ namespace {
 
         EXPECT_TRUE(token.isCanceled());
         EXPECT_FALSE(is_test_func_running);
+    }
 
+    TEST(CancellationTokenTest, CancellationTokenCanStopBlockingThread) {
+        auto token = make_shared<core::CancellationToken>();
+
+        ASSERT_TRUE(token->isActive());
+
+        boost::asio::thread_pool io(2);
+        boost::asio::deadline_timer worker_timer(io);
+        boost::asio::deadline_timer cancel_timer(io);
+        auto worker_duration = boost::posix_time::seconds(5);
+        worker_timer.expires_from_now(worker_duration);
+
+        atomic_bool waiting_for_timer = false;
+        atomic_bool changed_state = false;
+        atomic_bool quited_while = false;
+
+        boost::asio::post(io, [&]() {
+            while (token->isActive()) {
+                waiting_for_timer = true;
+                worker_timer.wait();
+                changed_state = true;
+            }
+            quited_while = true;
+        });
+
+        // we can cancel the token here after running the task because it's not important how much the task lasted, what we want is to check if the while quits even before finishing the iteration.
+
+        auto cancel_duration = worker_duration / 2;
+        cancel_timer.expires_from_now(cancel_duration);
+        cancel_timer.async_wait([&](const boost::system::error_code &ec) {
+            token->cancel();
+        });
+
+        // wait for the io to finish running, because after that we can check the results.
+        io.join();
+
+        // if the quited_while is true and changed_state is false then this is the desired state that we are looking for.
+
+        EXPECT_TRUE(waiting_for_timer);
+        EXPECT_TRUE(quited_while);
+        EXPECT_FALSE(changed_state);
     }
 }

@@ -6,6 +6,8 @@
 
 #include <utility>
 
+#include <utils/types.h>
+
 namespace core {
 
     health::Status Task::health_check() const {
@@ -31,6 +33,6 @@ namespace core {
     }
 
     std::string Task::name() const {
-        return typeid(this).name();
+        return utils::type_name(this);
     }
 }

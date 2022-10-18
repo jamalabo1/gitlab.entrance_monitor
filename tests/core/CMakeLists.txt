@@ -14,7 +14,7 @@ add_library(core_tests
         utils/vector_test.cpp
 
         impl/configurations_impl_test.cpp
-        )
+        task_test.cpp impl/retry/retry_policy_impl_test.cpp)
 
 target_include_directories(core_tests PRIVATE mock)
 

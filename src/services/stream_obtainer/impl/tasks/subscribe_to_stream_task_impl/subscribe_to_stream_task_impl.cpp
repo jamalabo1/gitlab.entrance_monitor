@@ -39,7 +39,12 @@ namespace stream_obtainer::tasks {
         bool SubscribeToStreamTaskImpl::configure() {
             BOOST_LOG_TRIVIAL(debug) << "[SubscribeToStreamTaskImpl::configure]: configuring task";
             BOOST_LOG_TRIVIAL(trace) << "opening `VideoCapture` stream";
-            return cap_->open(stream_url_);
+            auto open_result = cap_->open(stream_url_);
+            if (open_result) {
+                // start the countdown.
+                retry_policy_->ping();
+            }
+            return open_result;
         }
 
         core::Task::TaskResult SubscribeToStreamTaskImpl::operator()() {

@@ -43,6 +43,24 @@ namespace core {
         BOOST_LOG_TRIVIAL(info) << "finished running standalone service";
     }
 
+
+    void run_io_context(shared_ptr<core::IoContext> io_context) {
+        boost::thread_group pool;
+
+        auto hc = utils::worker::get_cores();
+
+        BOOST_LOG_TRIVIAL(trace) << "device hardware concurrency: " << hc;
+
+        for (auto i = 0u; i < hc; ++i)
+            pool.create_thread([&] { io_context->run(); });
+
+        BOOST_LOG_TRIVIAL(debug) << "joining all threads (" << hc << ") for io_context.";
+
+        pool.join_all();
+
+        BOOST_LOG_TRIVIAL(debug) << "threads finished joining at ";
+    }
+
     int run_services(shared_ptr<IoContext> io_context, const vector<Service *> &services) {
 
         auto post = [&](function<void()> &&func) {
@@ -101,17 +119,7 @@ namespace core {
             });
         }
 
-        boost::thread_group pool;
-        auto hc = utils::worker::get_cores();
-
-        BOOST_LOG_TRIVIAL(trace) << "device hardware concurrency: " << hc;
-
-        for (auto i = 0u; i < hc; ++i)
-            pool.create_thread([&] { io_context->run(); });
-
-        BOOST_LOG_TRIVIAL(debug) << "joining all threads (" << hc << ") for io_context.";
-        pool.join_all();
-        BOOST_LOG_TRIVIAL(debug) << "threads finished joining at ";
+        run_io_context(io_context);
 
         return -1;
     }

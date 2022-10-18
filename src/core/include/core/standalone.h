@@ -20,19 +20,6 @@
 
 #endif
 
-
-namespace core {
-    void runner(fruit::Injector<core::IoContext> &);
-
-    void init_service_runner();
-
-    ///
-    /// \param io_context io context for running services on (post)
-    /// \param services services which have tasks to be ran
-    /// \return -1
-    int run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services);
-}
-
 #define DEFINE_STACK_TRACKED_CALL(Block)  \
 try Block \
 catch(...) {                                      \
@@ -48,4 +35,18 @@ fruit::Injector injector(component);                                            
 core::runner(injector);                                                              \
 })\
 }
+
+namespace core {
+    void runner(fruit::Injector<core::IoContext> &);
+
+    void init_service_runner();
+
+    void run_io_context(shared_ptr<core::IoContext> io_context);
+    ///
+    /// \param io_context io context for running services on (post)
+    /// \param services services which have tasks to be ran
+    /// \return -1
+    int run_services(shared_ptr<core::IoContext> io_context, const std::vector<core::Service *> &services);
+}
+
 #endif //ENTRANCE_MONITOR_V2_CORE_STANDALONE_H

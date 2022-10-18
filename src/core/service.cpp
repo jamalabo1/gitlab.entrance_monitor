@@ -2,6 +2,7 @@
 // Created by jamal on 30/08/2022.
 //
 #include <core/service.h>
+#include <utils/types.h>
 
 namespace core {
 
@@ -26,7 +27,7 @@ namespace core {
     }
 
     std::string Service::name() const {
-        return typeid(this).name();
+        return utils::type_name(this);
     }
 
 }

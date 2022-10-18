@@ -7,6 +7,7 @@
 
 //#include <gtest/mock
 #define TESTING_BUILD
+
 #include <azure/keyvault/secrets.hpp>
 #include <gmock/gmock.h>
 

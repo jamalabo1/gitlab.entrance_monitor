@@ -7,20 +7,20 @@
 
 namespace {
 
-class ConfigurationsImplTestFixture : public ::testing::Test {
+    class ConfigurationsImplTestFixture : public ::testing::Test {
 
-protected:
+    protected:
 
-    fruit::Injector<core::Configurations> injector;
+        fruit::Injector<core::Configurations> injector;
 
-    static fruit::Component<core::Configurations> getRootComponent() {
+        static fruit::Component<core::Configurations> getRootComponent() {
 
-    }
+        }
 
-    ConfigurationsImplTestFixture() : injector(getRootComponent) {
+        ConfigurationsImplTestFixture() : injector(getRootComponent) {
 
-    }
+        }
 
-};
+    };
 
 }
