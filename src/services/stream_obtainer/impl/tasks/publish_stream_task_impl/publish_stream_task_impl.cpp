@@ -8,6 +8,8 @@
 #include <utils/mat.h>
 #include <utils/reference_time.h>
 #include <utils/vector.h>
+#include <utils/uuid.h>
+
 #include <core/msgpacker.h>
 
 #include <view_models/frame_view.pb.h>
@@ -25,6 +27,8 @@ namespace stream_obtainer::tasks {
         using std::string;
         using cv::Mat;
         using cv::Size;
+
+        using utils::uuid::generateId;
         using utils::reference_time::getCurrentTimestamp;
         using utils::mat::mat_to_encoded_string;
 
@@ -73,10 +77,9 @@ namespace stream_obtainer::tasks {
                 BOOST_LOG_TRIVIAL(trace) << "creating frame view";
                 FrameView frameView;
 
-                frameView.set_id("test-id");
+                frameView.set_id(generateId());
                 frameView.set_timestamp(currentTimestamp);
                 frameView.set_frame_data(mat_to_encoded_string(resizedFrame));
-//                auto frameView = FrameView2::(mat_to_encoded_vector(resizedFrame), currentTimestamp);
 
 
                 BOOST_LOG_TRIVIAL(trace) << "publishing frame with id " << frameView.id();
@@ -98,6 +101,4 @@ namespace stream_obtainer::tasks {
         return CORE_TASK_CREATE_COMPONENT(PublishStreamTask)
                 .install(getCommunicationPublishComponents);
     }
-
 }
-

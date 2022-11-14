@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package views;
+option csharp_namespace = "EntranceMonitor.ViewModels";
+
+message BlockingResultView {
+  string id = 1;
+  bool result = 2;
+  uint64 timestamp = 3;
+}

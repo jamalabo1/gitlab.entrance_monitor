@@ -22,7 +22,7 @@ namespace core {
                 (
                 boost::log::trivial::severity >=
                 #if APP_DEBUG
-                boost::log::trivial::trace
+                boost::log::trivial::debug
 #else
                 boost::log::trivial::info
 #endif

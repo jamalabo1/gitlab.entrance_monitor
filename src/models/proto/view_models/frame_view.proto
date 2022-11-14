@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 package views;
+option csharp_namespace = "EntranceMonitor.ViewModels";
+
 
 message FrameView {
   string id = 1;

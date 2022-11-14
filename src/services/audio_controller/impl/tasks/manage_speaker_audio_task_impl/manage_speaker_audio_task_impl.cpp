@@ -7,14 +7,14 @@
 #include <core/logging.h>
 #include <core/msgpacker.h>
 
-#include <view_models/blocking_result_view.h>
+#include <view_models/blocking_result_view.pb.h>
 
 namespace audio_controller::tasks {
 
     namespace impl {
 
         using namespace core::communication::consume;
-        using core::msgpacker::unpack;
+        using core::msgpacker::pb::unpack;
 
         using core::amqp::ArgsTable;
 
@@ -53,16 +53,14 @@ namespace audio_controller::tasks {
                 const ConsumerMessage::ptr_t &envelope) const {
             auto view = unpack<BlockingResultView>(envelope);
 
-            BOOST_LOG_TRIVIAL(debug) << "blocking result message was received with result: " << view.result;
+            BOOST_LOG_TRIVIAL(debug) << "blocking result message was received with result: " << view.result();
             // is blocking
-            if (view.result) {
+            if (view.result()) {
                 sound_controller_->play();
             } else {
                 sound_controller_->stop();
             }
         }
-
-
     }
 
     using core::communication::consume::getCommunicationConsumeComponents;

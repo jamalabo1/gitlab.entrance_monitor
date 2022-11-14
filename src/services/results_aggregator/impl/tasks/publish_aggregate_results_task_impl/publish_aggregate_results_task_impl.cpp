@@ -6,14 +6,16 @@
 
 #include <core/logging.h>
 
-#include <view_models/computed_result_view.h>
+#include <utils/uuid.h>
 
+#include <view_models/computed_result_view.pb.h>
 
 namespace results_aggregator::tasks {
     namespace impl {
 
         using std::function;
         using views::ComputedResultView;
+        using utils::uuid::generateId;
 
         PublishAggregateResultsTaskImpl::PublishAggregateResultsTaskImpl(
                 shared_ptr<core::communication::publish::PublisherFactory>
@@ -57,9 +59,12 @@ namespace results_aggregator::tasks {
 
         core::Task::TaskResult PublishAggregateResultsTaskImpl::operator()() {
             double result = aggregator_->aggregate();
-            ComputedResultView view(result > 0.5);
+            ComputedResultView view;
 
-            publisher_->publish(view);
+            view.set_id(generateId());
+            view.set_is_blocking(result > 0.5);
+
+            publisher_->publish_pb(view);
             return TaskResult{};
         }
     }

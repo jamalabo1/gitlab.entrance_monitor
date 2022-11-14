@@ -1,8 +1,14 @@
-﻿global using System.Net;
+﻿global using Autofac.Extensions.DependencyInjection;
+global using Autofac;
+global using System.Net;
 global using System.Text.Json;
+global using HealthChecks.UI.Client;
 global using System.Text.Json.Serialization;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using EntranceMonitor.API.Models;
 global using EntranceMonitor.Domain.AggregateRoot.ServiceStream;
 global using EntranceMonitor.Domain.Abstract;
 global using EntranceMonitor.API.Infrastructure.Converters;
+global using EntranceMonitor.API.Application.SignalR;

@@ -59,6 +59,7 @@ add_library(
         utils/mat.cpp
         utils/time.cpp
         utils/worker.cpp
+        utils/uuid.cpp
 
         impl/communication/publish/publisher.cpp
         impl/communication/publish/publisher_factory.cpp

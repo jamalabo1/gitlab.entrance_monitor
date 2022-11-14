@@ -6,6 +6,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntranceMonitor.Domain", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntranceMonitor.Infrastructure", "EntranceMonitor.Infrastructure\EntranceMonitor.Infrastructure.csproj", "{A0153492-7D42-469B-9CF4-0CA42FD3D7B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntranceMonitor.Events", "EntranceMonitor.Events\EntranceMonitor.Events.csproj", "{848FBF75-C169-48A2-AB23-95FDD0D3CF74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntranceMonitor.EventBus", "EntranceMonitor.EventBus\EntranceMonitor.EventBus.csproj", "{D2B4FC98-A710-4788-8D5F-CFFB9FAE53F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{1D5B0376-2C52-4DF4-9578-1E89996B0A2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntranceMonitor.EventBusRabbitMQ", "EntranceMonitor.EventBusRabbitMQ\EntranceMonitor.EventBusRabbitMQ.csproj", "{9C99B159-A00A-42AA-89B9-6FAADF542ED4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +32,21 @@ Global
 		{A0153492-7D42-469B-9CF4-0CA42FD3D7B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0153492-7D42-469B-9CF4-0CA42FD3D7B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0153492-7D42-469B-9CF4-0CA42FD3D7B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{848FBF75-C169-48A2-AB23-95FDD0D3CF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{848FBF75-C169-48A2-AB23-95FDD0D3CF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{848FBF75-C169-48A2-AB23-95FDD0D3CF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{848FBF75-C169-48A2-AB23-95FDD0D3CF74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2B4FC98-A710-4788-8D5F-CFFB9FAE53F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B4FC98-A710-4788-8D5F-CFFB9FAE53F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B4FC98-A710-4788-8D5F-CFFB9FAE53F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B4FC98-A710-4788-8D5F-CFFB9FAE53F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C99B159-A00A-42AA-89B9-6FAADF542ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C99B159-A00A-42AA-89B9-6FAADF542ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C99B159-A00A-42AA-89B9-6FAADF542ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C99B159-A00A-42AA-89B9-6FAADF542ED4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D2B4FC98-A710-4788-8D5F-CFFB9FAE53F9} = {1D5B0376-2C52-4DF4-9578-1E89996B0A2A}
+		{9C99B159-A00A-42AA-89B9-6FAADF542ED4} = {1D5B0376-2C52-4DF4-9578-1E89996B0A2A}
 	EndGlobalSection
 EndGlobal

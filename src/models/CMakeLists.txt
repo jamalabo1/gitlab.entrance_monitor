@@ -32,6 +32,8 @@ add_library(
         view_models
         proto/view_models/frame_view.proto
         proto/view_models/detection_result_view.proto
+        proto/view_models/computed_result_view.proto
+        proto/view_models/blocking_result_view.proto
 )
 
 target_link_libraries(
@@ -48,9 +50,8 @@ target_link_libraries(
 
 target_include_directories(
         view_models
-        PRIVATE
-        ${CMAKE_CURRENT_BINARY_DIR}
         PUBLIC
+        ${CMAKE_CURRENT_BINARY_DIR}
         ${PROTOBUF_INCLUDE_DIRS}
         include
         ${CMAKE_CURRENT_BINARY_DIR}/proto

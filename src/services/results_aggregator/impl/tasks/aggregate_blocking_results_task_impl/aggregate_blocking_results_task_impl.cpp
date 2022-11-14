@@ -7,14 +7,14 @@
 #include <core/logging.h>
 #include <core/msgpacker.h>
 
-#include <view_models/blocking_result_view.h>
+#include <view_models/blocking_result_view.pb.h>
 
 namespace results_aggregator::tasks {
     using namespace core::communication;
 
     namespace impl {
 
-        using core::msgpacker::unpack;
+        using core::msgpacker::pb::unpack;
         using views::BlockingResultView;
 
         AggregateBlockingResultsTaskImpl::AggregateBlockingResultsTaskImpl(
@@ -49,10 +49,10 @@ namespace results_aggregator::tasks {
 
             auto view = unpack<BlockingResultView>(envelope);
 
-            BOOST_LOG_TRIVIAL(trace) << "received blocking result: " << view.result << " on timestamp "
-                                     << view.frame_timestamp;
+            BOOST_LOG_TRIVIAL(trace) << "received blocking result: " << view.result() << " on timestamp "
+                                     << view.timestamp();
 
-            aggregator_->add(view.frame_timestamp, view.result);
+            aggregator_->add(view.timestamp(), view.result());
         }
     }
 

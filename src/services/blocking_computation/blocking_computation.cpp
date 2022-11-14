@@ -24,6 +24,4 @@ namespace blocking_computation {
                 .install(getBlockingComputationTasks)
                 .addMultibinding<Service, BlockingComputationService>();
     }
-
-
 }

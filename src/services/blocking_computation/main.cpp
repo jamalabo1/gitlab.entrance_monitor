@@ -1,8 +1,6 @@
 //
 // Created by jamal on 13/08/2022.
 //
-
-
 #include <core/standalone.h>
 #include <blocking_computation/blocking_computation.h>
 
@@ -16,6 +14,5 @@ Component<IoContext> getRootComponent() {
             .install(getConfigurationsComponent)
             .install(getBlockingComputationComponent);
 }
-
 
 BUILD_STANDALONE_FROM_SERVICE(getRootComponent);

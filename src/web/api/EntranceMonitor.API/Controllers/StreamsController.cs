@@ -14,6 +14,8 @@ public class StreamsController : Controller
             new("7226476f-7430-4638-bcff-0ffe62900e27", "blocking.{1}"),
             new("a6d189c6-abb8-4f52-884a-c72f39ba78a5", "results.{1}")
         };
+
+
         return new ApiResponse<List<ServiceStream>>(HttpStatusCode.OK, list);
     }
 }

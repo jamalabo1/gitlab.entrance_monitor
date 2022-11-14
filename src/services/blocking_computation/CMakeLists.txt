@@ -54,3 +54,5 @@ target_link_libraries(
 )
 
 install_project_binaries(blocking_computation_standalone)
+
+copy_local_file(blocking_computation_standalone configs.local.json)

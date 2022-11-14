@@ -34,9 +34,9 @@ namespace blocking_computation::utils {
                          Size &frameDimension, vector<Point> &boundingPoints) {
         static auto kernel_size = Size(3, 3);
 
-        if (detection_result_object.confidence < 80) return {};
+        if (detection_result_object.confidence() < 80) return {};
 
-        Mat object = unpack_frame_mat(detection_result_object.object);
+        Mat object = unpack_frame_mat(detection_result_object.object());
 
 
         Mat gray;
@@ -44,7 +44,7 @@ namespace blocking_computation::utils {
 
         Mat object_mask = Mat::zeros(frameDimension, CV_8UC1);
 
-        Rect roi(cv::Point(detection_result_object.box[0], detection_result_object.box[1]), gray.size());
+        Rect roi(cv::Point(detection_result_object.box(0), detection_result_object.box(0)), gray.size());
         gray.copyTo(object_mask(roi));
 
 
@@ -95,5 +95,4 @@ namespace blocking_computation::utils {
         int intersection_sum = countNonZero(intersection_mask);
         return intersection_sum > 10;
     }
-
 }

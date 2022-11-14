@@ -8,8 +8,8 @@
 
 #include <core/logging.h>
 
-#include <view_models/blocking_result_view.h>
-#include <view_models/detection_result_view.h>
+#include <view_models/blocking_result_view.pb.h>
+#include <view_models/detection_result_view.pb.h>
 
 #include "match_to_shape.h"
 #include "compute_intersection.h"
@@ -23,6 +23,9 @@ namespace blocking_computation::tasks {
         using cv::Point;
         using core::amqp::ArgsTable;
         using core::communication::consume::ConsumeOptions;
+
+        //
+        using core::msgpacker::pb::unpack;
 
         // views
         using views::DetectionResultView;
@@ -80,15 +83,15 @@ namespace blocking_computation::tasks {
                     Point(1114, 508),
                     Point(1403, 476),
             };
-            auto detectionResultView = core::msgpacker::unpack<DetectionResultView>(envelope);
+            auto detectionResultView = unpack<DetectionResultView>(envelope);
 
 
-            BOOST_LOG_TRIVIAL(trace) << "received detection result with " << detectionResultView.objects.size()
-                                     << " objects and frame-width: " << detectionResultView.frame_dimensions[0];
+            BOOST_LOG_TRIVIAL(trace) << "received detection result with " << detectionResultView.objects_size()
+                                     << " objects and frame-width: " << detectionResultView.frame_dimensions(0);
 
 
-            auto frame_dimension = Size(detectionResultView.frame_dimensions[0],
-                                        detectionResultView.frame_dimensions[1]);
+            auto frame_dimension = Size(detectionResultView.frame_dimensions(0),
+                                        detectionResultView.frame_dimensions(1));
 
             auto relative_points = match_to_shape(bounding_points, original_shape, frame_dimension);
 
@@ -97,10 +100,19 @@ namespace blocking_computation::tasks {
 
             boost::thread_group pool;
 
-            for (const auto &obj: detectionResultView.objects) {
+            BOOST_LOG_TRIVIAL(trace) << "looping over detected objects";
+
+            for (auto i = 0; i < detectionResultView.objects_size(); i++) {
+                BOOST_LOG_TRIVIAL(trace) << "creating thread for the object n." << i;
                 //obj, &frame_dimension, &results_count, &relative_points
-                pool.create_thread([&]() {
+                pool.create_thread([&, i]() {
+                    auto obj = detectionResultView.objects(i);
+
+                    BOOST_LOG_TRIVIAL(trace) << "computing the intersection for the object n." << i;
+
                     auto result = compute_intersection(obj, frame_dimension, relative_points);
+
+                    BOOST_LOG_TRIVIAL(trace) << "intersection computing result: " << result.has_value();
                     if (result.has_value() && result.get()) {
                         results_count++;
                         // no need to resume the computation since the requirement is at-least one blocking object.
@@ -115,9 +127,13 @@ namespace blocking_computation::tasks {
             } catch (...) {
                 // TODO: proper handling, the current exception ignoring is for interrupting the threads.
             }
-            BlockingResultView blockingResult(results_count > 0, detectionResultView.timestamp);
 
-            publisher_->publish(blockingResult);
+            BlockingResultView blocking_result;
+
+            blocking_result.set_result(results_count > 0);
+            blocking_result.set_timestamp(detectionResultView.timestamp());
+
+            publisher_->publish_pb(blocking_result);
         }
     } // impl
 

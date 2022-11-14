@@ -9,6 +9,7 @@
 
 #include <utils/reference_time.h>
 #include <utils/mat.h>
+#include <utils/uuid.h>
 
 //#include <view_models/detection_result_view.h>
 #include <view_models/detection_result_view.pb.h>
@@ -26,11 +27,16 @@ namespace object_detector::tasks {
 
         using std::vector;
         using std::string;
+
+        using core::amqp::ArgsTable;
+
         using core::msgpacker::pb::unpack;
-        using core::msgpacker::pb::unpack_frame_mat;
+        using core::msgpacker::unpack_frame_mat;
+
+        using utils::uuid::generateId;
         using utils::reference_time::getCurrentTimestamp;
         using utils::mat::mat_to_encoded_vector;
-        using core::amqp::ArgsTable;
+
 
 //        using views::FrameView;
         using views::FrameView;
@@ -41,11 +47,10 @@ namespace object_detector::tasks {
 //        using views::DetectionResultView;
 
         DetectObjectsInStreamTaskImpl::DetectObjectsInStreamTaskImpl(
-                shared_ptr<object_detector::Detector> detector,
-                shared_ptr<consume::Consumer> consumer,
-                shared_ptr<publish::PublisherFactory> publisher_factory
+                shared_ptr <object_detector::Detector> detector,
+                shared_ptr <consume::Consumer> consumer,
+                shared_ptr <publish::PublisherFactory> publisher_factory
         ) : consumer_(consumer), detector_(detector), publisher_factory_(publisher_factory), consume_options_(nullptr) {
-
         }
 
         bool DetectObjectsInStreamTaskImpl::configure() {
@@ -61,8 +66,8 @@ namespace object_detector::tasks {
 
         core::Task::RunOptions
         DetectObjectsInStreamTaskImpl::setup(
-                shared_ptr<core::IoContext> io_context,
-                shared_ptr<core::CancellationToken> token) {
+                shared_ptr <core::IoContext> io_context,
+                shared_ptr <core::CancellationToken> token) {
             ArgsTable args = {
                     {"x-max-length", 5} // MAX ACCUMULATIVE QUEUE SIZE IS 5,
                     // This ~means the max latency in the _queue is 5 frames.
@@ -89,11 +94,10 @@ namespace object_detector::tasks {
 
         }
 
-
         void DetectObjectsInStreamTaskImpl::operator()(
                 const consume::ConsumerMessage::ptr_t &envelope) const {
             BOOST_LOG_TRIVIAL(trace)
-                << "[detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()]: message received";
+            << "[detect_objects_in_stream::impl::DetectObjectsInStreamTaskImpl::operator()]: message received";
 
             auto frameView = unpack<FrameView>(envelope);
 
@@ -108,6 +112,13 @@ namespace object_detector::tasks {
 
 
             DetectionResultView result_view;
+            result_view.set_id(generateId());
+            result_view.set_frame_id(frameView.id());
+            result_view.set_timestamp(getCurrentTimestamp());
+
+            // set the dimensions of the received frame for dynamic processing.
+            result_view.add_frame_dimensions(frame.size().width);
+            result_view.add_frame_dimensions(frame.size().height);
 
             for (size_t i = 0; i < result.confidences.size(); i++) {
                 int classId = result.ids[i];
@@ -120,25 +131,24 @@ namespace object_detector::tasks {
 
                 auto box = result.boxes[i];
                 auto object_view = result_view.add_objects();
-//                mat_to_encoded_vector(frame(box)), getCurrentTimestamp()
+
+                // add frame view object
                 auto object_frame_view = object_view->mutable_object();
-                object_frame_view->set_timestamp(getCurrentTimestamp());
+
+                // set only the frame data of the object for further computation
                 object_frame_view->set_frame_data(utils::mat::mat_to_encoded_string(frame(box)));
 
+                // set the dimensions of the box of the detection.
                 for (auto val: {box.x, box.y, box.width, box.height}) {
                     object_view->add_box(val);
                 }
-                object_view->set_confidence(conf);
-                object_view->set_classid(classId);
-//                DetectionResultObjectView::box_type box_vector = {box.x, box.y, box.width, box.height};
-//                object_views.emplace_back(
-//                        object_view
-//                );
-            }
 
-//            auto frame_size = frame.size();
-//            DetectionResultView::dimensions_type frame_dimension = {frame_size.width, frame_size.height};
-//            auto resultView = DetectionResultView(frameView.id(), frameView.timestamp(), object_views, frame_dimension);
+                // set the confidence of the detection
+                object_view->set_confidence(conf);
+
+                // set the classId of the detection
+                object_view->set_classid(classId);
+            }
 
             // publish the results.
             publisher_->publish_pb(result_view);

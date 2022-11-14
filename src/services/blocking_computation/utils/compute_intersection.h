@@ -8,7 +8,7 @@
 #include <vector>
 #include <boost/optional.hpp>
 #include <opencv2/core/types.hpp>
-#include <view_models/detection_result_view.h>
+#include <view_models/detection_result_view.pb.h>
 
 namespace blocking_computation::utils {
     boost::optional<bool>

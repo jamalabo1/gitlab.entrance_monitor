@@ -44,7 +44,7 @@ void init()
 {
 #ifdef APP_DEBUG
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_VERBOSE);
-    auto log_level = boost::log::trivial::trace;
+    auto log_level = boost::log::trivial::debug;
 #elif
     auto log_level = boost::log::trivial::info;
 #endif
