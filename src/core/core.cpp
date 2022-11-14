@@ -4,12 +4,10 @@
 
 #include <core/core.h>
 
-
 namespace core {
     using fruit::createComponent;
     using retry::getRetryComponents;
     using communication::getCommunicationComponents;
-
 
     Components getCoreComponents() {
         return createComponent()
@@ -18,5 +16,4 @@ namespace core {
                 .install(getCommunicationComponents)
                 .install(getRetryComponents);
     }
-
 }

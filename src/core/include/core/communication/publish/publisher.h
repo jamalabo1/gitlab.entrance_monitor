@@ -20,11 +20,19 @@ namespace core::communication::publish {
 
         void publish(const std::vector<uint8_t> &data) const;
 
-
         template<typename T>
         void publish(T &packable_object) const {
             auto vector = core::msgpacker::pack(packable_object);
             publish_message(vector);
+        }
+
+        template<typename T>
+        void publish_pb(T &packable_object) const {
+            std::string data;
+            packable_object.SerializeToString(&data);
+
+//            auto vector = core::msgpacker::pack(packable_object);
+            publish_message(string_to_vector(data));
         }
     };
 

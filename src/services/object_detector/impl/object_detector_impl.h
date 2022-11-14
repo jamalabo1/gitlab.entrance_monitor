@@ -7,7 +7,7 @@
 
 
 #include "detector.h"
-#include <opencv2/dnn.hpp>
+#include <opencv2/dnn/dnn.hpp>
 
 
 namespace object_detector::impl {

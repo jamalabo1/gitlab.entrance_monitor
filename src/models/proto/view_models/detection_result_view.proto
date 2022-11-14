@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "proto/view_models/frame_view.proto";
+
+package views;
+
+
+message DetectionResultObjectView {
+  //  using box_type = std::array<int, 4>;
+
+  FrameView object = 1;
+  uint32 confidence = 2;
+  uint32 classId = 3;
+  // 4 element box
+  repeated uint32 box = 4;
+
+}
+
+message DetectionResultView {
+  string id = 1;
+  string frameId = 2;
+  uint64 timestamp = 3;
+  repeated uint32 frame_dimensions = 4;
+  repeated DetectionResultObjectView objects = 5;
+}

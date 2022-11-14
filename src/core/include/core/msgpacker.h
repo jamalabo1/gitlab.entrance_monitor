@@ -8,16 +8,39 @@
 #include <system_error>
 #include <unordered_map>
 #include <msgpack/msgpack.hpp>
+#include <opencv2/core/mat.hpp>
 
 #include <core/communication/consume/consumer_message.h>
 
+#include <utils/vector.h>
 #include <utils/string_utils.h>
 
-#include <view_models/frame_view.h>
-#include <opencv2/core/mat.hpp>
+//#include <view_models/frame_view.h>
+#include <view_models/frame_view.pb.h>
+
 
 namespace core::msgpacker {
 
+    namespace pb {
+        using utils::vector::vector_to_string;
+
+        template<class T>
+        T unpack(const std::string &data) {
+            T instance;
+            instance.ParseFromString(data);
+            return instance;
+        }
+
+        template<class T>
+        T unpack(const std::vector<uint8_t> &data) {
+            return unpack<T>(vector_to_string(data));
+        }
+
+        template<class T>
+        T unpack(const core::communication::consume::ConsumerMessage::ptr_t &message) {
+            return unpack<T>(message->Body());
+        }
+    }
 
     template<class T>
     T unpack(const std::vector<uint8_t> &data) {
@@ -44,6 +67,7 @@ namespace core::msgpacker {
     cv::Mat unpack_frame_mat(const std::string &);
 
     cv::Mat unpack_frame_mat(const views::FrameView &);
+//    cv::Mat unpack_frame_mat(const views::FrameView &);
 
     views::FrameView unpack_frame(const std::string &);
 }

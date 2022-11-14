@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package views;
+
+message FrameView {
+  string id = 1;
+  uint64 timestamp = 2;
+  bytes  frame_data = 3;
+  optional string extension = 4;
+}

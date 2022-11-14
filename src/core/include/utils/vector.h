@@ -24,7 +24,11 @@ namespace utils::vector {
         );
 
         return nextVector;
+    }
 
+    template<typename BaseType>
+    inline std::string vector_to_string(const std::vector<BaseType> &data) {
+        return std::string(data.begin(), data.end());
     }
 }
 

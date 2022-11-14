@@ -3,13 +3,18 @@
 //
 
 #include "detect_objects_in_stream_impl.h"
-#include <core/logging.h>
+
 #include <core/msgpacker.h>
+#include <core/logging.h>
+
 #include <utils/reference_time.h>
 #include <utils/mat.h>
 
-#include <view_models/frame_view.h>
-#include <view_models/detection_result_view.h>
+//#include <view_models/detection_result_view.h>
+#include <view_models/detection_result_view.pb.h>
+
+//#include <view_models/frame_view.h>
+#include <view_models/frame_view.pb.h>
 
 
 using namespace core::communication;
@@ -21,15 +26,19 @@ namespace object_detector::tasks {
 
         using std::vector;
         using std::string;
-        using core::msgpacker::unpack;
-        using core::msgpacker::unpack_frame_mat;
+        using core::msgpacker::pb::unpack;
+        using core::msgpacker::pb::unpack_frame_mat;
         using utils::reference_time::getCurrentTimestamp;
         using utils::mat::mat_to_encoded_vector;
         using core::amqp::ArgsTable;
 
+//        using views::FrameView;
         using views::FrameView;
         using views::DetectionResultObjectView;
         using views::DetectionResultView;
+
+//        using views::DetectionResultObjectView;
+//        using views::DetectionResultView;
 
         DetectObjectsInStreamTaskImpl::DetectObjectsInStreamTaskImpl(
                 shared_ptr<object_detector::Detector> detector,
@@ -89,16 +98,16 @@ namespace object_detector::tasks {
             auto frameView = unpack<FrameView>(envelope);
 
 
-            BOOST_LOG_TRIVIAL(trace) << "received frame with id " << string(frameView.id);
+            BOOST_LOG_TRIVIAL(trace) << "received frame with id " << frameView.id();
             auto frame = unpack_frame_mat(frameView);
 
             auto result = detector_->detect_objects(frame);
 
             BOOST_LOG_TRIVIAL(trace) << "detected " << result.ids.size() << " objects in frame with id "
-                                     << string(frameView.id);
+                                     << frameView.id();
 
 
-            vector<DetectionResultObjectView> object_views;
+            DetectionResultView result_view;
 
             for (size_t i = 0; i < result.confidences.size(); i++) {
                 int classId = result.ids[i];
@@ -110,24 +119,29 @@ namespace object_detector::tasks {
                 int8_t conf = (result.confidences[i] * 100);
 
                 auto box = result.boxes[i];
-                FrameView object(mat_to_encoded_vector(frame(box)), getCurrentTimestamp());
-                DetectionResultObjectView::box_type box_vector = {box.x, box.y, box.width, box.height};
-                object_views.emplace_back(
-                        DetectionResultObjectView(
-                                object,
-                                conf,
-                                classId,
-                                box_vector
-                        )
-                );
+                auto object_view = result_view.add_objects();
+//                mat_to_encoded_vector(frame(box)), getCurrentTimestamp()
+                auto object_frame_view = object_view->mutable_object();
+                object_frame_view->set_timestamp(getCurrentTimestamp());
+                object_frame_view->set_frame_data(utils::mat::mat_to_encoded_string(frame(box)));
+
+                for (auto val: {box.x, box.y, box.width, box.height}) {
+                    object_view->add_box(val);
+                }
+                object_view->set_confidence(conf);
+                object_view->set_classid(classId);
+//                DetectionResultObjectView::box_type box_vector = {box.x, box.y, box.width, box.height};
+//                object_views.emplace_back(
+//                        object_view
+//                );
             }
 
-            auto frame_size = frame.size();
-            DetectionResultView::dimensions_type frame_dimension = {frame_size.width, frame_size.height};
-            auto resultView = DetectionResultView(frameView.id, frameView.timestamp, object_views, frame_dimension);
+//            auto frame_size = frame.size();
+//            DetectionResultView::dimensions_type frame_dimension = {frame_size.width, frame_size.height};
+//            auto resultView = DetectionResultView(frameView.id(), frameView.timestamp(), object_views, frame_dimension);
 
             // publish the results.
-            publisher_->publish(resultView);
+            publisher_->publish_pb(result_view);
         }
     }
 

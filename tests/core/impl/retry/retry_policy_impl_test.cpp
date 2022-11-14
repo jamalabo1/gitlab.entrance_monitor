@@ -1,6 +1,7 @@
 //
 // Created by jamal on 16/10/2022.
 //
+#include "core/standalone.h"
 #include "retry/retry_policy_impl.h"
 
 #include "configurations_mock.h"
@@ -45,7 +46,7 @@ namespace {
         // now we expect the retry_handler to be called 5 seconds from now.
 //        EXPECT_CALL(retry_handler, Call()).After(1);
 
-        core::run_io_context(ctx);
+        //core::run_io_context(ctx);
     }
 
 }

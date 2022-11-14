@@ -7,8 +7,10 @@
 
 #include <utils/mat.h>
 #include <utils/reference_time.h>
+#include <utils/vector.h>
+#include <core/msgpacker.h>
 
-#include <view_models/frame_view.h>
+#include <view_models/frame_view.pb.h>
 
 
 namespace stream_obtainer::tasks {
@@ -24,9 +26,10 @@ namespace stream_obtainer::tasks {
         using cv::Mat;
         using cv::Size;
         using utils::reference_time::getCurrentTimestamp;
-        using utils::mat::mat_to_encoded_vector;
+        using utils::mat::mat_to_encoded_string;
 
         using views::FrameView;
+//        using views::FrameView;
 
         PublishStreamTaskImpl::PublishStreamTaskImpl(FramesQueue *framesQueue,
                                                      PublisherFactory *publisherFactory)
@@ -68,14 +71,21 @@ namespace stream_obtainer::tasks {
                 uint64_t currentTimestamp = getCurrentTimestamp();
 
                 BOOST_LOG_TRIVIAL(trace) << "creating frame view";
-                auto frameView = FrameView(mat_to_encoded_vector(resizedFrame), currentTimestamp);
+                FrameView frameView;
 
-                BOOST_LOG_TRIVIAL(trace) << "publishing frame with id " << string(frameView.id);
-                publisher_->publish(
+                frameView.set_id("test-id");
+                frameView.set_timestamp(currentTimestamp);
+                frameView.set_frame_data(mat_to_encoded_string(resizedFrame));
+//                auto frameView = FrameView2::(mat_to_encoded_vector(resizedFrame), currentTimestamp);
+
+
+                BOOST_LOG_TRIVIAL(trace) << "publishing frame with id " << frameView.id();
+                publisher_->publish_pb(
                         frameView
                 );
 
                 float fps = queue_->getFPS();
+
                 BOOST_LOG_TRIVIAL(trace) << "queue_ fps: " << fps;
             }
 

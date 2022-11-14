@@ -3,13 +3,15 @@
 //
 #include <core/logging.h>
 #include "publisher_impl.h"
-
+#include <utils/vector.h>
 
 namespace core::communication::publish {
 
     namespace impl {
         using std::string;
         using std::vector;
+
+        using utils::vector::vector_to_string;
 
         PublisherImpl::PublisherImpl(ASSISTED(string) exchange_name,
                                      unique_factory(amqp::ChannelHolder) channel_factory) :
@@ -21,7 +23,7 @@ namespace core::communication::publish {
 
             BOOST_LOG_TRIVIAL(trace) << "publishing message with size: " << data.size() * sizeof(uint8_t);
 
-            string sdata(data.begin(), data.end());
+            string sdata = vector_to_string(data);
 
             bool result = CCD(channel)->publish(exchange_name, "", sdata);
 

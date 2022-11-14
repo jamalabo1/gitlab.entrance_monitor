@@ -16,9 +16,6 @@ public:
     INJECT(MockConfigurationsImpl()) = default;
 };
 
-fruit::Component<core::Configurations> getMockConfigurationComponent() {
-    return fruit::createComponent()
-            .bind<core::Configurations, MockConfigurationsImpl>();
-}
+fruit::Component<core::Configurations> getMockConfigurationComponent();
 
 #endif //ENTRANCE_MONITOR_V2_CONFIGURATIONS_MOCK_H

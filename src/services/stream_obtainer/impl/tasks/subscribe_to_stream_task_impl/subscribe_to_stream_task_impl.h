@@ -32,7 +32,6 @@ namespace stream_obtainer::tasks::impl {
         bool retry_handler();
 
         void retry_stop_handler();
-
     };
 }
 

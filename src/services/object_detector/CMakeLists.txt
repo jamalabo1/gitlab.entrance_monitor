@@ -31,7 +31,7 @@ add_library(
 target_include_directories(
         object_detector_lib
         PRIVATE
-        ${OpenCV_INCLUDE_DIRS}
+        #        ${OpenCV_INCLUDE_DIRS}
         ${CURL_INCLUDE_DIR}
         impl
         utils
@@ -53,6 +53,7 @@ add_executable(
 
 target_link_libraries(
         object_detector_standalone
+        PRIVATE
         object_detector_lib
 )
 

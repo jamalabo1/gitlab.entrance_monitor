@@ -8,6 +8,7 @@ find_package(Msgpack REQUIRED)
 find_package(OpenCV REQUIRED)
 # to fix issue of OpenCV_LIBS including libraries that are not built.
 set(OpenCV_LIBS "opencv_core;opencv_dnn;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_photo;opencv_video;opencv_videoio;opencv_bioinspired;opencv_cudaarithm;opencv_cudabgsegm;opencv_cudacodec;opencv_cudafilters;opencv_cudaimgproc;opencv_cudalegacy;opencv_cudawarping;opencv_cudev;opencv_dnn_objdetect;opencv_dnn_superres;opencv_fuzzy;opencv_hfs;opencv_img_hash;opencv_intensity_transform;opencv_line_descriptor;opencv_phase_unwrapping;opencv_plot;opencv_quality;opencv_reg;opencv_tracking;opencv_xphoto")
+find_package(protobuf REQUIRED)
 
 find_package(amqpcpp REQUIRED)
 find_package(azure-identity-cpp CONFIG REQUIRED)
@@ -114,6 +115,7 @@ target_link_libraries(
         Azure::azure-identity
         Azure::azure-security-keyvault-secrets
         ${OpenCV_LIBS}
+        protobuf::libprotobuf
         amqpcpp
         dl
         backtrace

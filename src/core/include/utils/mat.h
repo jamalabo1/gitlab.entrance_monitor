@@ -13,6 +13,8 @@
 //cv::Mat base64_to_mat(const std::string& base64);
 namespace utils::mat {
     std::vector<uint8_t> mat_to_encoded_vector(const cv::Mat &, const std::string & = "jpg");
+
+    std::string mat_to_encoded_string(const cv::Mat &, const std::string & = "jpg");
 };
 
 #endif //ENTRANCE_MONITOR_V2_MAT_H

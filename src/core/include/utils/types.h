@@ -9,7 +9,7 @@
 #include <boost/type_index.hpp>
 
 namespace utils {
-    template <class T>
+    template<class T>
     std::string type_name(T) {
         return boost::typeindex::type_id<T>().pretty_name();
     }

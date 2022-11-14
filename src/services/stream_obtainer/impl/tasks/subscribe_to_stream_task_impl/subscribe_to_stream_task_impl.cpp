@@ -107,7 +107,6 @@ namespace stream_obtainer::tasks {
             // stop the stream obtaining loop
             token_->cancel();
         }
-
     }
 
     SubscribeToStreamTaskComponent getStreamObtainerSubscribeToStreamTask() {

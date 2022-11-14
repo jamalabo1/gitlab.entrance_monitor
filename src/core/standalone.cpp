@@ -54,6 +54,14 @@ namespace core {
         for (auto i = 0u; i < hc; ++i)
             pool.create_thread([&] { io_context->run(); });
 
+
+        BOOST_LOG_TRIVIAL(trace) << "registering signals handler for termination";
+
+        boost::asio::signal_set signals(GET_BOOST_IO_CONTEXT(io_context), SIGINT, SIGTERM);
+        signals.async_wait(
+                boost::bind(&boost::asio::io_service::stop, io_context->get_context()
+                ));
+
         BOOST_LOG_TRIVIAL(debug) << "joining all threads (" << hc << ") for io_context.";
 
         pool.join_all();

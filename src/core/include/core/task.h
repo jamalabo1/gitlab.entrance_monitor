@@ -11,10 +11,12 @@
 #include <boost/asio.hpp>
 
 
-#define CORE_DEFINE_TASK_DEFAULT(ServiceName, task_name, ...) \
-class task_name : public core::Task {}; \
-using $##task_name = $Exported<task_name>; \
-using task_name##Component = $##task_name::Component<__VA_ARGS__>; \
+#define CORE_DEFINE_TASK_DEFAULT(ServiceName, task_name, ...)        \
+class task_name : public core::Task {                                \
+public: std::string name() const override { return #task_name; }     \
+};                                                                   \
+using $##task_name = $Exported<task_name>;                           \
+using task_name##Component = $##task_name::Component<__VA_ARGS__>;   \
 task_name##Component get##ServiceName##task_name()
 
 #define CORE_TASK_CREATE_COMPONENT(TaskName)                    \
@@ -52,7 +54,7 @@ namespace core {
 
         struct RunOptions {
             using ExecutorCallback = std::function<void()>;
-            using Executor = std::function<void(ExecutorCallback&&)>;
+            using Executor = std::function<void(ExecutorCallback &&)>;
 
             Executor executor;
 

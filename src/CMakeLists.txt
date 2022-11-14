@@ -24,3 +24,7 @@ add_subdirectory(core)
 link_libraries(core)
 
 add_subdirectory(services)
+
+#foreach (target stream_obtainer object_detector)
+#    target_link_libraries(${target}_lib PRIVATE ${Fruit_LIBS} ${Boost_LIBRARIES})
+#endforeach ()

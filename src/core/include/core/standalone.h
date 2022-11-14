@@ -42,6 +42,7 @@ namespace core {
     void init_service_runner();
 
     void run_io_context(shared_ptr<core::IoContext> io_context);
+
     ///
     /// \param io_context io context for running services on (post)
     /// \param services services which have tasks to be ran

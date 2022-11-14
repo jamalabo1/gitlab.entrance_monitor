@@ -3,7 +3,7 @@ project(stream_obtainer)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(OpenCV REQUIRED)
+#find_package(OpenCV REQUIRED)
 
 set(
         impl_headers
@@ -29,7 +29,7 @@ target_include_directories(
         stream_obtainer_lib
         PRIVATE
         interfaces
-        ${OpenCV_INCLUDE_DIRS}
+        #        ${OpenCV_INCLUDE_DIRS}
         PUBLIC
         include
 )
@@ -40,7 +40,7 @@ add_executable(
         main.cpp
 )
 
-target_link_libraries(stream_obtainer_standalone stream_obtainer_lib core)
+target_link_libraries(stream_obtainer_standalone stream_obtainer_lib)
 
 install_project_binaries(stream_obtainer_standalone)
 
